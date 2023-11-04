@@ -19,17 +19,17 @@ namespace Strawberry::UI
 		Node(Node& node);
 
 
-		Core::Math::Vec2i GetPosition() const;
-		Core::Math::Vec2i GetLocalPosition() const;
+		[[nodiscard]] Core::Math::Vec2i GetPosition() const;
+		[[nodiscard]] Core::Math::Vec2i GetLocalPosition() const;
 
-		Core::Math::Vec2i GetSize() const;
-		Core::Math::Vec2i GetLocalSize() const;
+		[[nodiscard]] Core::Math::Vec2i GetSize() const;
+		[[nodiscard]] Core::Math::Vec2i GetLocalSize() const;
 
-		Core::Math::Vec2f GetScale() const;
-		Core::Math::Vec2f GetLocalScale() const;
+		[[nodiscard]] Core::Math::Vec2f GetScale() const;
+		[[nodiscard]] Core::Math::Vec2f GetLocalScale() const;
 
 
-		Core::ReflexivePointer<Node> GetChild(size_t index);
+		[[nodiscard]] Core::ReflexivePointer<Node> GetChild(size_t index);
 
 
 	private:
