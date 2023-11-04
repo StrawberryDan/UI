@@ -8,11 +8,6 @@ namespace Strawberry::UI
 	{}
 
 
-	Node::Node(Node& node)
-		: mParent(node)
-	{}
-
-
 	Core::Math::Vec2f Node::GetPosition() const
 	{
 		return mParent ? mParent->GetPosition() : Core::Math::Vec2f() + GetLocalPosition();
@@ -49,8 +44,45 @@ namespace Strawberry::UI
 	}
 
 
+	Core::ReflexivePointer<Node> Node::GetParent() const
+	{
+		return Core::ReflexivePointer<Node>();
+	}
+
+
+	size_t Node::GetChildCount() const
+	{
+		return mChildren.size();
+	}
+
+
 	Core::ReflexivePointer<Node> Node::GetChild(size_t index)
 	{
+		return mChildren[index]->GetReflexivePointer();
+	}
+
+
+	Core::ReflexivePointer<Node> Node::AppendChild(std::unique_ptr<Node> node)
+	{
+		Core::Assert(node->GetParent() == nullptr);
+		mChildren.emplace_back(std::move(node));
+		return mChildren.back()->GetReflexivePointer();
+	}
+
+
+	Core::ReflexivePointer<Node> Node::PrependChild(std::unique_ptr<Node> node)
+	{
+		Core::Assert(node->GetParent() == nullptr);
+		mChildren.emplace(mChildren.begin(), std::move(node));
+		return mChildren.front()->GetReflexivePointer();
+	}
+
+
+	Core::ReflexivePointer<Node> Node::InsertChild(size_t index, std::unique_ptr<Node> node)
+	{
+		Core::Assert(node->GetParent() == nullptr);
+		Core::Assert(index <= GetChildCount());
+		mChildren.emplace(mChildren.begin() + static_cast<int>(index), std::move(node));
 		return mChildren[index]->GetReflexivePointer();
 	}
 }

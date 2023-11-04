@@ -16,7 +16,6 @@ namespace Strawberry::UI
 	{
 	public:
 		Node();
-		Node(Node& node);
 
 
 		[[nodiscard]] Core::Math::Vec2f GetPosition() const;
@@ -29,7 +28,16 @@ namespace Strawberry::UI
 		[[nodiscard]] Core::Math::Vec2f GetLocalScale() const;
 
 
+		[[nodiscard]] Core::ReflexivePointer<Node> GetParent() const;
+
+
+		[[nodiscard]] size_t GetChildCount() const;
+
 		[[nodiscard]] Core::ReflexivePointer<Node> GetChild(size_t index);
+
+		Core::ReflexivePointer<Node> AppendChild(std::unique_ptr<Node> node);
+		Core::ReflexivePointer<Node> PrependChild(std::unique_ptr<Node> node);
+		Core::ReflexivePointer<Node> InsertChild(size_t index, std::unique_ptr<Node> node);
 
 
 	private:
