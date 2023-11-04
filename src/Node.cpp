@@ -13,25 +13,25 @@ namespace Strawberry::UI
 	{}
 
 
-	Core::Math::Vec2i Node::GetPosition() const
+	Core::Math::Vec2f Node::GetPosition() const
 	{
-		return mParent ? mParent->GetPosition() : Core::Math::Vec2i() + GetLocalPosition();
+		return mParent ? mParent->GetPosition() : Core::Math::Vec2f() + GetLocalPosition();
 	}
 
 
-	Core::Math::Vec2i Node::GetLocalPosition() const
+	Core::Math::Vec2f Node::GetLocalPosition() const
 	{
 		return mLocalPosition;
 	}
 
 
-	Core::Math::Vec2i Node::GetSize() const
+	Core::Math::Vec2f Node::GetSize() const
 	{
-		return mParent ? mParent->GetSize() : Core::Math::Vec2i() + GetLocalSize();
+		return GetScale() * GetLocalSize();
 	}
 
 
-	Core::Math::Vec2i Node::GetLocalSize() const
+	Core::Math::Vec2f Node::GetLocalSize() const
 	{
 		return mLocalSize;
 	}
@@ -39,7 +39,7 @@ namespace Strawberry::UI
 
 	Core::Math::Vec2f Node::GetScale() const
 	{
-		return mParent ? mParent->GetScale() : Core::Math::Vec2f() + GetLocalScale();
+		return mParent ? mParent->GetScale() : Core::Math::Vec2f(1.0f, 1.0f) * GetLocalScale();
 	}
 
 

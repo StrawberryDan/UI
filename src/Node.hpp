@@ -19,11 +19,11 @@ namespace Strawberry::UI
 		Node(Node& node);
 
 
-		[[nodiscard]] Core::Math::Vec2i GetPosition() const;
-		[[nodiscard]] Core::Math::Vec2i GetLocalPosition() const;
+		[[nodiscard]] Core::Math::Vec2f GetPosition() const;
+		[[nodiscard]] Core::Math::Vec2f GetLocalPosition() const;
 
-		[[nodiscard]] Core::Math::Vec2i GetSize() const;
-		[[nodiscard]] Core::Math::Vec2i GetLocalSize() const;
+		[[nodiscard]] Core::Math::Vec2f GetSize() const;
+		[[nodiscard]] Core::Math::Vec2f GetLocalSize() const;
 
 		[[nodiscard]] Core::Math::Vec2f GetScale() const;
 		[[nodiscard]] Core::Math::Vec2f GetLocalScale() const;
@@ -36,8 +36,8 @@ namespace Strawberry::UI
 		Core::ReflexivePointer<Node> mParent;
 		std::vector<std::unique_ptr<Node>> mChildren;
 
-		Core::Math::Vec2i mLocalPosition;
-		Core::Math::Vec2i mLocalSize;
-		Core::Math::Vec2f mLocalScale;
+		Core::Math::Vec2f mLocalPosition = Core::Math::Vec2f(0.0f, 0.0f);
+		Core::Math::Vec2f mLocalSize     = Core::Math::Vec2f(0.0f, 0.0f);
+		Core::Math::Vec2f mLocalScale    = Core::Math::Vec2f(1.0f, 1.0f);
 	};
 }
