@@ -2,8 +2,8 @@
 
 
 // Strawberry Core
-#include <Strawberry/Core/Types/ReflexivePointer.hpp>
-#include <Strawberry/Core/Math/Vector.hpp>
+#include "Strawberry/Core/Types/ReflexivePointer.hpp"
+#include "Strawberry/Core/Math/Vector.hpp"
 // Standard Library
 #include <memory>
 #include <vector>
@@ -11,11 +11,20 @@
 
 namespace Strawberry::UI
 {
+	class Renderer;
+
+
 	class Node
 		: public Core::EnableReflexivePointer<Node>
 	{
 	public:
 		Node();
+
+
+		virtual void Update() {}
+
+
+		virtual void Render(Renderer& renderer) = 0;
 
 
 		[[nodiscard]] Core::Math::Vec2f GetPosition() const;
@@ -26,6 +35,11 @@ namespace Strawberry::UI
 
 		[[nodiscard]] Core::Math::Vec2f GetScale() const;
 		[[nodiscard]] Core::Math::Vec2f GetLocalScale() const;
+
+
+		void SetLocalPosition(Core::Math::Vec2f position);
+		void SetLocalSize(Core::Math::Vec2f size);
+		void SetLocalScale(Core::Math::Vec2f scale);
 
 
 		[[nodiscard]] Core::ReflexivePointer<Node> GetParent() const;

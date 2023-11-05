@@ -10,7 +10,8 @@ namespace Strawberry::UI
 
 	Core::Math::Vec2f Node::GetPosition() const
 	{
-		return mParent ? mParent->GetPosition() : Core::Math::Vec2f() + GetLocalPosition();
+		auto parentPosition = mParent ? mParent->GetPosition() : Core::Math::Vec2f();
+		return parentPosition + GetLocalPosition();
 	}
 
 
@@ -34,13 +35,32 @@ namespace Strawberry::UI
 
 	Core::Math::Vec2f Node::GetScale() const
 	{
-		return mParent ? mParent->GetScale() : Core::Math::Vec2f(1.0f, 1.0f) * GetLocalScale();
+		auto parentScale = mParent ? mParent->GetScale() : Core::Math::Vec2f(1.0f, 1.0f);
+		return parentScale * GetLocalScale();
 	}
 
 
 	Core::Math::Vec2f Node::GetLocalScale() const
 	{
 		return mLocalScale;
+	}
+
+
+	void Node::SetLocalPosition(Core::Math::Vec2f position)
+	{
+		mLocalPosition = position;
+	}
+
+
+	void Node::SetLocalSize(Core::Math::Vec2f size)
+	{
+		mLocalSize = size;
+	}
+
+
+	void Node::SetLocalScale(Core::Math::Vec2f scale)
+	{
+		mLocalScale = scale;
 	}
 
 
@@ -65,6 +85,7 @@ namespace Strawberry::UI
 	Core::ReflexivePointer<Node> Node::AppendChild(std::unique_ptr<Node> node)
 	{
 		Core::Assert(node->GetParent() == nullptr);
+		node->mParent = GetReflexivePointer();
 		mChildren.emplace_back(std::move(node));
 		return mChildren.back()->GetReflexivePointer();
 	}
@@ -73,6 +94,7 @@ namespace Strawberry::UI
 	Core::ReflexivePointer<Node> Node::PrependChild(std::unique_ptr<Node> node)
 	{
 		Core::Assert(node->GetParent() == nullptr);
+		node->mParent = GetReflexivePointer();
 		mChildren.emplace(mChildren.begin(), std::move(node));
 		return mChildren.front()->GetReflexivePointer();
 	}
@@ -82,6 +104,7 @@ namespace Strawberry::UI
 	{
 		Core::Assert(node->GetParent() == nullptr);
 		Core::Assert(index <= GetChildCount());
+		node->mParent = GetReflexivePointer();
 		mChildren.emplace(mChildren.begin() + static_cast<int>(index), std::move(node));
 		return mChildren[index]->GetReflexivePointer();
 	}
