@@ -27,8 +27,8 @@ int main()
 	pane->SetLocalSize({100, 100});
 
 	std::unique_ptr<UI::Pane> subpane = std::make_unique<UI::Pane>();
-	subpane->SetLocalPosition({100, 0});
-	subpane->SetLocalSize({50, 100});
+	subpane->SetLocalPosition({110, 0});
+	subpane->SetLocalSize({50, 50});
 	pane->AppendChild(std::move(subpane));
 
 	while(!window.CloseRequested())
