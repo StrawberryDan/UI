@@ -2,7 +2,6 @@
 
 
 // Strawberry Core
-#include "Strawberry/Core/Types/ReflexivePointer.hpp"
 #include "Strawberry/Core/Math/Vector.hpp"
 // Standard Library
 #include <memory>
@@ -15,7 +14,7 @@ namespace Strawberry::UI
 
 
 	class Node
-		: public Core::EnableReflexivePointer<Node>
+		: public std::enable_shared_from_this<Node>
 	{
 	public:
 		Node();
@@ -45,21 +44,30 @@ namespace Strawberry::UI
 		void SetLocalScale(Core::Math::Vec2f scale);
 
 
-		[[nodiscard]] Core::ReflexivePointer<Node> GetParent() const;
+		[[nodiscard]] std::shared_ptr<Node> GetParent() const;
 
 
 		[[nodiscard]] size_t GetChildCount() const;
 
-		[[nodiscard]] Core::ReflexivePointer<Node> GetChild(size_t index);
+		[[nodiscard]] std::shared_ptr<Node> GetChild(size_t index);
 
-		Core::ReflexivePointer<Node> AppendChild(std::unique_ptr<Node> node);
-		Core::ReflexivePointer<Node> PrependChild(std::unique_ptr<Node> node);
-		Core::ReflexivePointer<Node> InsertChild(size_t index, std::unique_ptr<Node> node);
+
+		template <std::derived_from<Node> T, typename... Args>
+		std::shared_ptr<T> AppendChild(const Args&... args)
+		{
+			auto node = std::make_shared<T>(std::forward<Args>(args)...);
+			AppendChild(std::static_pointer_cast<Node>(node));
+			return node;
+		}
+
+		std::shared_ptr<Node> AppendChild(std::shared_ptr<Node> node);
+		std::shared_ptr<Node> PrependChild(std::shared_ptr<Node> node);
+		std::shared_ptr<Node> InsertChild(size_t index, std::shared_ptr<Node> node);
 
 
 	private:
-		Core::ReflexivePointer<Node> mParent;
-		std::vector<std::unique_ptr<Node>> mChildren;
+		std::weak_ptr<Node> mParent;
+		std::vector<std::shared_ptr<Node>> mChildren;
 
 		Core::Math::Vec2f mLocalPosition = Core::Math::Vec2f(0.0f, 0.0f);
 		Core::Math::Vec2f mLocalSize     = Core::Math::Vec2f(0.0f, 0.0f);

@@ -22,21 +22,26 @@ int main()
 
 	UI::Renderer uiRenderer(queue, Core::Math::Vec2u(1920, 1080));
 
-	std::unique_ptr<UI::Pane> pane  = std::make_unique<UI::Pane>();
+	std::shared_ptr<UI::Pane> pane  = std::make_shared<UI::Pane>();
 	pane->SetLocalPosition({40, 40});
 	pane->SetLocalSize({100, 100});
 
-	std::unique_ptr<UI::Pane> subpane = std::make_unique<UI::Pane>();
+	auto subpane = pane->AppendChild<UI::Pane>();
 	subpane->SetLocalPosition({110, 0});
 	subpane->SetLocalSize({50, 50});
-	pane->AppendChild(std::move(subpane));
 
 	while(!window.CloseRequested())
 	{
 		Graphics::Window::PollInput();
 		while (auto event = window.NextEvent())
 		{
+			if (auto keyEvent = event->Value<Graphics::Window::Events::Key>())
+			{
+				if (keyEvent->keyCode == Strawberry::Graphics::Input::KeyCode::LEFT)
+				{
 
+				}
+			}
 		}
 
 		pane->Render(uiRenderer);
