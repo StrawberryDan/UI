@@ -14,4 +14,16 @@ namespace Strawberry::UI
 			GetChild(i)->Render(renderer);
 		}
 	}
+
+
+	const Core::Math::Vec4f& Pane::GetFillColor() const
+	{
+		return mFillColor;
+	}
+
+
+	void Pane::SetFillColor(const Core::Math::Vec4f& fillColor)
+	{
+		mFillColor = fillColor;
+	}
 }

@@ -29,6 +29,7 @@ int main()
 	auto subpane = pane->AppendChild<UI::Pane>();
 	subpane->SetLocalPosition({110, 0});
 	subpane->SetLocalSize({50, 50});
+	subpane->SetFillColor({0.5, 0.3, 0.3, 1.0});
 
 	while(!window.CloseRequested())
 	{

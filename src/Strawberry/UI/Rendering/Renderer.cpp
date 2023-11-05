@@ -31,8 +31,9 @@ namespace Strawberry::UI
 		Core::IO::DynamicByteBuffer vertexPushConstants;
 		vertexPushConstants.Push(pane.GetPosition());
 		vertexPushConstants.Push(pane.GetSize());
+		vertexPushConstants.Push(pane.GetFillColor());
 
-		mCommandBuffer.PushConstants(mRectanglePipeline, VK_SHADER_STAGE_VERTEX_BIT, vertexPushConstants, 0);
+		mCommandBuffer.PushConstants(mRectanglePipeline, VK_SHADER_STAGE_VERTEX_BIT | VK_SHADER_STAGE_FRAGMENT_BIT, vertexPushConstants, 0);
 		mCommandBuffer.Draw(4);
 	}
 
@@ -76,7 +77,7 @@ namespace Strawberry::UI
 
 		return Graphics::Vulkan::Pipeline::Builder(renderPass)
 			.WithPrimitiveTopology(VK_PRIMITIVE_TOPOLOGY_TRIANGLE_STRIP)
-			.WithPushConstantRange(VK_SHADER_STAGE_VERTEX_BIT, 2 * sizeof(Core::Math::Vec2f), 0)
+			.WithPushConstantRange(VK_SHADER_STAGE_VERTEX_BIT | VK_SHADER_STAGE_FRAGMENT_BIT, 2 * sizeof(Core::Math::Vec2f) + sizeof(Core::Math::Vec4f), 0)
 			.WithDescriptorSetLayout(Graphics::Vulkan::DescriptorSetLayout()
 				.WithBinding(VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, 1, VK_SHADER_STAGE_VERTEX_BIT))
 			.WithShaderStage(VK_SHADER_STAGE_VERTEX_BIT, std::move(vertexShader))

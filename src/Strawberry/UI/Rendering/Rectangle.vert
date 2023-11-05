@@ -16,6 +16,7 @@ layout(push_constant) uniform PushConstants
 {
     vec2 rectPos;
     vec2 rectSize;
+    vec4 fillColor;
 };
 
 void main() {
