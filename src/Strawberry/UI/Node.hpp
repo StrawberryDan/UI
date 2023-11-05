@@ -21,6 +21,9 @@ namespace Strawberry::UI
 		Node();
 
 
+		virtual ~Node() = default;
+
+
 		virtual void Update() {}
 
 
