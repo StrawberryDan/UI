@@ -22,7 +22,7 @@ if (NOT TARGET StrawberryUI)
         message(FATAL_ERROR "Failed to find Strawberry Audio at ${CMAKE_CURRENT_SOURCE_DIR}/../Audio")
     endif()
 
-    add_library(StrawberryUI
+    add_library(StrawberryUI STATIC
             src/Strawberry/UI/Node.hpp
             src/Strawberry/UI/Node.cpp
             src/Strawberry/UI/Pane.hpp
@@ -30,12 +30,15 @@ if (NOT TARGET StrawberryUI)
             src/Strawberry/UI/Rendering/Renderer.hpp
             src/Strawberry/UI/Rendering/Renderer.cpp
     )
-    target_link_options(StrawberryCodec PUBLIC "-static")
     target_link_libraries(StrawberryUI PUBLIC StrawberryCore StrawberryGraphics StrawberryAudio)
     target_include_directories(StrawberryUI PUBLIC src)
     set_target_properties(StrawberryUI PROPERTIES CXX_STANDARD 20)
     add_target_shader(StrawberryUI ${CMAKE_CURRENT_SOURCE_DIR}/src/Strawberry/UI/Rendering/Rectangle.vert ${CMAKE_CURRENT_SOURCE_DIR}/src/Strawberry/UI/Rendering/Rectangle.vert.bin)
     add_target_shader(StrawberryUI ${CMAKE_CURRENT_SOURCE_DIR}/src/Strawberry/UI/Rendering/Rectangle.frag ${CMAKE_CURRENT_SOURCE_DIR}/src/Strawberry/UI/Rendering/Rectangle.frag.bin)
+
+    if (NOT ${CMAKE_SYSTEM_NAME} STREQUAL "Darwin")
+        target_link_options(StrawberryUI PRIVATE "-static")
+    endif()
 
 
     add_executable(StrawberryUI_Test
