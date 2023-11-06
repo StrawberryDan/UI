@@ -40,6 +40,7 @@ namespace Strawberry::UI
 		Graphics::Vulkan::RenderPass mRenderPass;
 		Graphics::Vulkan::Framebuffer mFramebuffer;
 		Graphics::Vulkan::Pipeline mRectanglePipeline;
-		Graphics::Vulkan::Buffer mRectanglePipelineVertexUniform;
+		Graphics::Vulkan::DescriptorSet mRectanglePipelineVertexShaderDescriptorSet;
+		Graphics::Vulkan::Buffer mRectanglePipelineVertexShaderUniformBuffer;
 	};
 }

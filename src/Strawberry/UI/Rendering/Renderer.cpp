@@ -13,14 +13,15 @@ namespace Strawberry::UI
 		, mRenderPass(CreateRenderPass(queue))
 		, mFramebuffer(mRenderPass, mRenderSize)
 		, mRectanglePipeline(CreateRectanglePipeline(mRenderPass, renderSize))
-		, mRectanglePipelineVertexUniform(*queue.GetDevice(), sizeof(Core::Math::Mat4f), VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT)
+		, mRectanglePipelineVertexShaderDescriptorSet(mRectanglePipeline.AllocateDescriptorSet(0))
+		, mRectanglePipelineVertexShaderUniformBuffer(*queue.GetDevice(), sizeof(Core::Math::Mat4f), VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT)
 	{
 		Core::IO::DynamicByteBuffer vertexConstants;
 		Core::Math::Mat4f viewMatrix = Core::Math::Translate(Core::Math::Vec3f(-1.0, -1.0, 0.0))
 				* Core::Math::Scale(renderSize.AsType<float>().WithAdditionalValues(1.0f).Map([](float x) { return 2.0f / x; }));
 		vertexConstants.Push(viewMatrix);
-		mRectanglePipelineVertexUniform.SetData(vertexConstants);
-		mRectanglePipeline.SetUniformBuffer(mRectanglePipelineVertexUniform, 0, 0);
+		mRectanglePipelineVertexShaderUniformBuffer.SetData(vertexConstants);
+		mRectanglePipelineVertexShaderDescriptorSet.SetUniformBuffer(mRectanglePipelineVertexShaderUniformBuffer, 0, 0);
 
 		BeginRenderPass();
 	}
@@ -91,7 +92,7 @@ namespace Strawberry::UI
 	{
 		mCommandBuffer.Begin(true);
 		mCommandBuffer.BindPipeline(mRectanglePipeline);
-		mCommandBuffer.BindDescriptorSet(mRectanglePipeline, 0);
+		mCommandBuffer.BindDescriptorSet(mRectanglePipeline, 0, mRectanglePipelineVertexShaderDescriptorSet);
 		mCommandBuffer.BeginRenderPass(mRenderPass, mFramebuffer);
 	}
 
