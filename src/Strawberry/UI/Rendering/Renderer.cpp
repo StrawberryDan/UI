@@ -22,8 +22,6 @@ namespace Strawberry::UI
 		vertexConstants.Push(viewMatrix);
 		mRectanglePipelineVertexShaderUniformBuffer.SetData(vertexConstants);
 		mRectanglePipelineVertexShaderDescriptorSet.SetUniformBuffer(mRectanglePipelineVertexShaderUniformBuffer, 0, 0);
-
-		BeginRenderPass();
 	}
 
 
@@ -34,16 +32,17 @@ namespace Strawberry::UI
 		vertexPushConstants.Push(pane.GetSize());
 		vertexPushConstants.Push(pane.GetFillColor());
 
+		BeginRenderPass();
 		mCommandBuffer.PushConstants(mRectanglePipeline, VK_SHADER_STAGE_VERTEX_BIT | VK_SHADER_STAGE_FRAGMENT_BIT, vertexPushConstants, 0);
 		mCommandBuffer.Draw(4);
+		EndRenderPass();
 	}
 
 
 	Graphics::Vulkan::Framebuffer Renderer::GetFramebuffer()
 	{
-		EndRenderPass();
 		auto result = std::exchange(mFramebuffer, Graphics::Vulkan::Framebuffer(mRenderPass, mRenderSize));
-		BeginRenderPass();
+		mFramebuffer.GetColorAttachment(0).ClearColor(*mQueue);
 		return result;
 	}
 
@@ -51,7 +50,7 @@ namespace Strawberry::UI
 	Graphics::Vulkan::RenderPass Renderer::CreateRenderPass(const Graphics::Vulkan::Queue& queue)
 	{
 		return Graphics::Vulkan::RenderPass::Builder(*queue.GetDevice())
-			.WithColorAttachment(VK_FORMAT_R32G32B32A32_SFLOAT, VK_ATTACHMENT_LOAD_OP_CLEAR, VK_ATTACHMENT_STORE_OP_STORE)
+			.WithColorAttachment(VK_FORMAT_R32G32B32A32_SFLOAT, VK_ATTACHMENT_LOAD_OP_LOAD, VK_ATTACHMENT_STORE_OP_STORE)
 			.WithSubpass(Graphics::Vulkan::SubpassDescription()
 				.WithColorAttachment(0))
 			.Build();
