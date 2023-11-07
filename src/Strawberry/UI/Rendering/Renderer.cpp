@@ -11,10 +11,10 @@ namespace Strawberry::UI
 		, mCommandBuffer(queue)
 		, mRenderSize(renderSize)
 		, mRenderPass(CreateRenderPass(queue))
-		, mFramebuffer(mRenderPass, mRenderSize)
 		, mRectanglePipeline(CreateRectanglePipeline(mRenderPass, renderSize))
 		, mRectanglePipelineVertexShaderDescriptorSet(mRectanglePipeline.AllocateDescriptorSet(0))
 		, mRectanglePipelineVertexShaderUniformBuffer(*queue.GetDevice(), sizeof(Core::Math::Mat4f), VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT)
+		, mTextRenderer(*mQueue, mRenderSize)
 	{
 		Core::IO::DynamicByteBuffer vertexConstants;
 		Core::Math::Mat4f viewMatrix = Core::Math::Translate(Core::Math::Vec3f(-1.0, -1.0, 0.0))
@@ -27,23 +27,58 @@ namespace Strawberry::UI
 
 	void Renderer::Render(const Pane& pane)
 	{
+		if (!mFramebuffer)
+		{
+			mFramebuffer = Graphics::Vulkan::Framebuffer(mRenderPass, mRenderSize);
+			mFramebuffer->GetColorAttachment(0).ClearColor(*mQueue);
+		}
+
 		Core::IO::DynamicByteBuffer vertexPushConstants;
 		vertexPushConstants.Push(pane.GetPosition());
 		vertexPushConstants.Push(pane.GetSize());
 		vertexPushConstants.Push(pane.GetFillColor());
 
-		BeginRenderPass();
+		mCommandBuffer.Begin(true);
+		mCommandBuffer.BindPipeline(mRectanglePipeline);
+		mCommandBuffer.BindDescriptorSet(mRectanglePipeline, 0, mRectanglePipelineVertexShaderDescriptorSet);
+		mCommandBuffer.BeginRenderPass(mRenderPass, mFramebuffer.Value());
 		mCommandBuffer.PushConstants(mRectanglePipeline, VK_SHADER_STAGE_VERTEX_BIT | VK_SHADER_STAGE_FRAGMENT_BIT, vertexPushConstants, 0);
 		mCommandBuffer.Draw(4);
-		EndRenderPass();
+		mCommandBuffer.EndRenderPass();
+		mCommandBuffer.End();
+		mQueue->Submit(mCommandBuffer);
+	}
+
+
+	void Renderer::Render(const Text& text)
+	{
+		if (!mFramebuffer)
+		{
+			mFramebuffer = Graphics::Vulkan::Framebuffer(mRenderPass, mRenderSize);
+			mFramebuffer->GetColorAttachment(0).ClearColor(*mQueue);
+		}
+
+		mTextRenderer.SetFramebuffer(mFramebuffer.Unwrap());
+		mTextRenderer.Draw(text.GetFontFace(), text.GetString(), text.GetPosition().AsType<int>(), {1.0f, 1.0f, 1.0f, 1.0f});
+		mFramebuffer = mTextRenderer.GetFramebuffer();
+	}
+
+
+	void Renderer::SetFramebuffer(Graphics::Vulkan::Framebuffer framebuffer)
+	{
+		mFramebuffer = std::move(framebuffer);
 	}
 
 
 	Graphics::Vulkan::Framebuffer Renderer::GetFramebuffer()
 	{
-		auto result = std::exchange(mFramebuffer, Graphics::Vulkan::Framebuffer(mRenderPass, mRenderSize));
-		mFramebuffer.GetColorAttachment(0).ClearColor(*mQueue);
-		return result;
+		if (!mFramebuffer)
+		{
+			mFramebuffer = Graphics::Vulkan::Framebuffer(mRenderPass, mRenderSize);
+			mFramebuffer->GetColorAttachment(0).ClearColor(*mQueue);
+		}
+
+		return mFramebuffer.Unwrap();
 	}
 
 
@@ -84,22 +119,5 @@ namespace Strawberry::UI
 			.WithShaderStage(VK_SHADER_STAGE_FRAGMENT_BIT, std::move(fragmentShader))
 			.WithViewport({0.0f, 0.0f}, renderSize.AsType<float>())
 			.Build();
-	}
-
-
-	void Renderer::BeginRenderPass()
-	{
-		mCommandBuffer.Begin(true);
-		mCommandBuffer.BindPipeline(mRectanglePipeline);
-		mCommandBuffer.BindDescriptorSet(mRectanglePipeline, 0, mRectanglePipelineVertexShaderDescriptorSet);
-		mCommandBuffer.BeginRenderPass(mRenderPass, mFramebuffer);
-	}
-
-
-	void Renderer::EndRenderPass()
-	{
-		mCommandBuffer.EndRenderPass();
-		mCommandBuffer.End();
-		mQueue->Submit(mCommandBuffer);
 	}
 }

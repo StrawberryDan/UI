@@ -13,6 +13,8 @@ using namespace Strawberry;
 
 int main()
 {
+	Graphics::FreeType::Initialise();
+
 	Graphics::Window::Window window("StrawberryUI Test", Core::Math::Vec2i(1920, 1080));
 	Graphics::Vulkan::Instance instance;
 	auto device = instance.Create<Graphics::Vulkan::Device>();
@@ -22,14 +24,18 @@ int main()
 
 	UI::Renderer uiRenderer(queue, Core::Math::Vec2u(1920, 1080));
 
+	Graphics::FontFace font = Graphics::FontFace::FromFile("data/Pixels.ttf").Unwrap();
+
 	std::shared_ptr<UI::Pane> pane  = std::make_shared<UI::Pane>();
 	pane->SetLocalPosition({40, 40});
 	pane->SetLocalSize({100, 100});
 
-	auto subpane = pane->AppendChild<UI::Pane>();
+	auto subpane = pane->AppendChild<UI::Text>(font);
 	subpane->SetLocalPosition({110, 0});
 	subpane->SetLocalSize({50, 50});
 	subpane->SetFillColor({0.5, 0.3, 0.3, 1.0});
+	subpane->SetString("Hello");
+	subpane->SetFontSize(100);
 
 	while(!window.CloseRequested())
 	{
@@ -51,5 +57,8 @@ int main()
 		swapchain.Present(framebuffer);
 		window.SwapBuffers();
 	}
+
+	Graphics::FreeType::Terminate();
+
 	return 0;
 }

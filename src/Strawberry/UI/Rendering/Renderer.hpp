@@ -5,6 +5,9 @@
 #include "Strawberry/Graphics/Vulkan/RenderPass.hpp"
 #include "Strawberry/Graphics/Vulkan/Pipeline.hpp"
 #include "Strawberry/Graphics/Vulkan/CommandBuffer.hpp"
+#include "Strawberry/UI/Text.hpp"
+#include <Strawberry/Core/Types/Optional.hpp>
+#include <Strawberry/Graphics/Text/TextRenderer.hpp>
 
 
 namespace Strawberry::UI
@@ -19,8 +22,10 @@ namespace Strawberry::UI
 
 
 		void Render(const Pane& pane);
+		void Render(const Text& text);
 
 
+		void SetFramebuffer(Graphics::Vulkan::Framebuffer framebuffer);
 		Graphics::Vulkan::Framebuffer GetFramebuffer();
 
 
@@ -38,9 +43,12 @@ namespace Strawberry::UI
 		Graphics::Vulkan::CommandBuffer mCommandBuffer;
 		Core::Math::Vec2u mRenderSize;
 		Graphics::Vulkan::RenderPass mRenderPass;
-		Graphics::Vulkan::Framebuffer mFramebuffer;
+		Core::Optional<Graphics::Vulkan::Framebuffer> mFramebuffer;
+
 		Graphics::Vulkan::Pipeline mRectanglePipeline;
 		Graphics::Vulkan::DescriptorSet mRectanglePipelineVertexShaderDescriptorSet;
 		Graphics::Vulkan::Buffer mRectanglePipelineVertexShaderUniformBuffer;
+
+		Graphics::TextRenderer mTextRenderer;
 	};
 }

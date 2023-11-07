@@ -53,9 +53,9 @@ namespace Strawberry::UI
 
 
 		template <std::derived_from<Node> T, typename... Args>
-		std::shared_ptr<T> AppendChild(const Args&... args)
+		std::shared_ptr<T> AppendChild(Args&&... args)
 		{
-			auto node = std::make_shared<T>(std::forward<Args>(args)...);
+			auto node = std::make_shared<T>(std::forward<Args&&>(args)...);
 			AppendChild(std::static_pointer_cast<Node>(node));
 			return node;
 		}

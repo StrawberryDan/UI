@@ -29,7 +29,9 @@ if (NOT TARGET StrawberryUI)
             src/Strawberry/UI/Pane.cpp
             src/Strawberry/UI/Rendering/Renderer.hpp
             src/Strawberry/UI/Rendering/Renderer.cpp
-    )
+			src/Strawberry/UI/Text.cpp
+			src/Strawberry/UI/Text.hpp
+	)
     target_link_libraries(StrawberryUI PUBLIC StrawberryCore StrawberryGraphics StrawberryAudio)
     target_include_directories(StrawberryUI PUBLIC src)
     set_target_properties(StrawberryUI PROPERTIES CXX_STANDARD 20)
