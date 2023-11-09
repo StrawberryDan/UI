@@ -15,6 +15,7 @@ namespace Strawberry::UI
 	Text::Text(const Graphics::FontFace& fontFace)
 		: mFontFace(fontFace)
 	{
+		SetFillColor({0.0f, 0.0f, 0.0f, 0.0f});
 		SetFontSize(16);
 	}
 
@@ -49,6 +50,18 @@ namespace Strawberry::UI
 	{
 		mFontSize = fontSize;
 		mFontFace->SetPixelSize(mFontSize);
+	}
+
+
+	const Core::Math::Vec4f& Text::GetFontColor() const
+	{
+		return mFontColor;
+	}
+
+
+	void Text::SetFontColor(const Core::Math::Vec4f color)
+	{
+		mFontColor = color;
 	}
 
 

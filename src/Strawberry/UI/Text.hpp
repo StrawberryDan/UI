@@ -30,6 +30,10 @@ namespace Strawberry::UI
 		void SetFontFace(const Graphics::FontFace& face);
 
 
+		const Core::Math::Vec4f& GetFontColor() const;
+		void SetFontColor(const Core::Math::Vec4f color);
+
+
 		uint32_t GetFontSize() const;
 		void SetFontSize(uint32_t fontSize);
 
@@ -44,5 +48,6 @@ namespace Strawberry::UI
 		std::u32string mString;
 		Core::ReflexivePointer<Graphics::FontFace> mFontFace;
 		uint32_t mFontSize;
+		Core::Math::Vec4f mFontColor = Core::Math::Vec4f(0.0f, 0.0f, 0.0f, 1.0f);
 	};
 }

@@ -59,7 +59,7 @@ namespace Strawberry::UI
 		}
 
 		mTextRenderer.SetFramebuffer(mFramebuffer.Unwrap());
-		mTextRenderer.Draw(text.GetFontFace(), text.GetString(), text.GetPosition().AsType<int>(), {1.0f, 1.0f, 1.0f, 1.0f});
+		mTextRenderer.Draw(text.GetFontFace(), text.GetString(), text.GetPosition().AsType<int>(), text.GetFontColor());
 		mFramebuffer = mTextRenderer.GetFramebuffer();
 	}
 
