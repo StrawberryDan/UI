@@ -3,7 +3,7 @@
 #include "Strawberry/UI/Text.hpp"
 #include "RectangleRenderer.hpp"
 #include "Strawberry/Graphics/Renderer.hpp"
-#include <Strawberry/Graphics/Text/TextRenderer.hpp>
+#include "Strawberry/Graphics/2D/TextRenderer.hpp"
 #include "Strawberry/Core/Types/Delayed.hpp"
 
 namespace Strawberry::UI

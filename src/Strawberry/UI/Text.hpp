@@ -6,7 +6,7 @@
 //----------------------------------------------------------------------------------------------------------------------
 #include "Pane.hpp"
 // Strawberry Graphics
-#include <Strawberry/Graphics/Text/FontFace.hpp>
+#include "Strawberry/Graphics/2D/FontFace.hpp"
 // Standard Library
 #include <string>
 
