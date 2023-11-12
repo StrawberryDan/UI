@@ -24,7 +24,7 @@ namespace Strawberry::UI
 		virtual ~Node() = default;
 
 
-		virtual void Update() {}
+		virtual void Update(float deltaTime) {}
 
 
 		virtual void Render(Renderer& renderer) {}
