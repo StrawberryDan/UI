@@ -50,4 +50,8 @@ if (NOT TARGET StrawberryUI)
         test/Main.cpp)
     target_link_libraries(StrawberryUI_Test PUBLIC StrawberryUI)
     set_target_properties(StrawberryUI_Test PROPERTIES CXX_STANDARD 20)
+
+    if (NOT ${CMAKE_SYSTEM_NAME} STREQUAL "Darwin")
+        target_link_options(StrawberryUI_Test PRIVATE "-static")
+    endif()
 endif()
