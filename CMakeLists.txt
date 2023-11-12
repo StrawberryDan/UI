@@ -31,8 +31,12 @@ if (NOT TARGET StrawberryUI)
             src/Strawberry/UI/Rendering/Renderer.cpp
 			src/Strawberry/UI/Text.cpp
 			src/Strawberry/UI/Text.hpp
+            src/Strawberry/UI/Image.hpp
+            src/Strawberry/UI/Button.hpp
+            src/Strawberry/UI/Sprite.hpp
             src/Strawberry/UI/Frame.hpp
             src/Strawberry/UI/Frame.cpp
+            src/Strawberry/UI/EventDispatcher.hpp
             src/Strawberry/UI/Rendering/RectangleRenderer.hpp
             src/Strawberry/UI/Rendering/RectangleRenderer.cpp
     )
