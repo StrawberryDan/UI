@@ -26,7 +26,7 @@ namespace Strawberry::UI
 		virtual void Update() {}
 
 
-		virtual void Render(Renderer& renderer) = 0;
+		virtual void Render(Renderer& renderer) {}
 
 
 		[[nodiscard]] Core::Math::Vec2f GetPosition() const;
