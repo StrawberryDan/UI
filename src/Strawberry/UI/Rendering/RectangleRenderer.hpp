@@ -25,15 +25,16 @@ namespace Strawberry::UI
 		: public Graphics::Renderer
 	{
 	public:
-		RectangleRenderer(Graphics::Vulkan::Queue& queue, Graphics::Vulkan::RenderPass& renderPass, Core::Math::Vec2u renderSize);
+		RectangleRenderer(Graphics::Vulkan::Queue& queue, Core::Math::Vec2u renderSize);
 
 
 		void Render(const Pane& pane);
 
 
 	protected:
-		static Graphics::Vulkan::Pipeline CreateRectanglePipeline(const Graphics::Vulkan::RenderPass& renderPass,
-																  Core::Math::Vec2u renderSize);
+		static Graphics::Vulkan::RenderPass CreateRenderPass(const Graphics::Vulkan::Device& device);
+		static Graphics::Vulkan::Pipeline CreatePipeline(const Graphics::Vulkan::RenderPass& renderPass,
+														 Core::Math::Vec2u renderSize);
 
 
 	private:

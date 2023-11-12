@@ -15,9 +15,9 @@
 //----------------------------------------------------------------------------------------------------------------------
 namespace Strawberry::UI
 {
-	RectangleRenderer::RectangleRenderer(Graphics::Vulkan::Queue& queue, Graphics::Vulkan::RenderPass& renderPass, Core::Math::Vec2u resolution)
-		: Graphics::Renderer(queue, renderPass, resolution)
-		, mPipeline(CreateRectanglePipeline(*GetRenderPass(), GetResolution()))
+	RectangleRenderer::RectangleRenderer(Graphics::Vulkan::Queue& queue, Core::Math::Vec2u resolution)
+		: Graphics::Renderer(queue, CreateRenderPass(*queue.GetDevice()), resolution)
+		, mPipeline(CreatePipeline(*GetRenderPass(), GetResolution()))
 		, mVertexDescriptorSet(mPipeline.AllocateDescriptorSet(0))
 		, mVertexUniformBuffer(*GetQueue()->GetDevice(), sizeof(Core::Math::Mat4f), VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT | VK_BUFFER_USAGE_TRANSFER_DST_BIT)
 	{
@@ -50,9 +50,18 @@ namespace Strawberry::UI
 	}
 
 
+	Graphics::Vulkan::RenderPass RectangleRenderer::CreateRenderPass(const Graphics::Vulkan::Device& device)
+	{
+		return Graphics::Vulkan::RenderPass::Builder(device)
+			.WithColorAttachment(VK_FORMAT_R32G32B32A32_SFLOAT, VK_ATTACHMENT_LOAD_OP_LOAD, VK_ATTACHMENT_STORE_OP_STORE)
+			.WithSubpass(Graphics::Vulkan::SubpassDescription().WithColorAttachment(0))
+			.Build();
+	}
+
+
 	Graphics::Vulkan::Pipeline
-	RectangleRenderer::CreateRectanglePipeline(const Graphics::Vulkan::RenderPass& renderPass,
-											   Core::Math::Vec2u renderSize)
+	RectangleRenderer::CreatePipeline(const Graphics::Vulkan::RenderPass& renderPass,
+									  Core::Math::Vec2u renderSize)
 	{
 		static const uint8_t vertexShaderCode[] =
 		{

@@ -27,7 +27,6 @@ namespace Strawberry::UI
 
 
 	private:
-		Core::Delayed<Graphics::Vulkan::RenderPass> mRenderPass;
 		RectangleRenderer mRectangleRenderer;
 		Graphics::TextRenderer mTextRenderer;
 	};
