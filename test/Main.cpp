@@ -5,7 +5,8 @@
 #include "Strawberry/Graphics/Vulkan/Device.hpp"
 #include "Strawberry/Graphics/Vulkan/Queue.hpp"
 #include "Strawberry/Graphics/Vulkan/Swapchain.hpp"
-#include "../src/Strawberry/UI/Pane.hpp"
+#include "Strawberry/UI/Pane.hpp"
+#include "Strawberry/UI/Frame.hpp"
 
 
 using namespace Strawberry;
@@ -26,16 +27,18 @@ int main()
 
 	Graphics::FontFace font = Graphics::FontFace::FromFile("data/Pixels.ttf").Unwrap();
 
-	std::shared_ptr<UI::Pane> pane  = std::make_shared<UI::Pane>();
-	pane->SetLocalPosition({40, 40});
-	pane->SetLocalSize({100, 100});
+	UI::Pane pane;
+	pane.SetLocalPosition({40, 40});
+	pane.SetLocalSize({100, 100});
 
-	auto subpane = pane->AppendChild<UI::Text>(font);
+	auto subpane = pane.AppendChild<UI::Text>(font);
 	subpane->SetLocalPosition({110, 0});
 	subpane->SetLocalSize({50, 50});
 	subpane->SetFillColor({0.5, 0.3, 0.3, 1.0});
 	subpane->SetString("Hello");
 	subpane->SetFontSize(100);
+
+	UI::Frame frame(std::move(pane));
 
 	while(!window.CloseRequested())
 	{
@@ -51,7 +54,7 @@ int main()
 			}
 		}
 
-		pane->Render(uiRenderer);
+		frame.Render(uiRenderer);
 		auto framebuffer = uiRenderer.GetFramebuffer();
 
 		swapchain.Present(framebuffer);
