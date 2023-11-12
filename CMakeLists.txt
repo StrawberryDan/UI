@@ -33,8 +33,9 @@ if (NOT TARGET StrawberryUI)
 			src/Strawberry/UI/Text.hpp
             src/Strawberry/UI/Frame.hpp
             src/Strawberry/UI/Frame.cpp
-	)
-
+            src/Strawberry/UI/Rendering/RectangleRenderer.hpp
+            src/Strawberry/UI/Rendering/RectangleRenderer.cpp
+    )
     target_link_libraries(StrawberryUI PUBLIC StrawberryCore StrawberryGraphics StrawberryAudio)
     target_include_directories(StrawberryUI PUBLIC src)
     set_target_properties(StrawberryUI PROPERTIES CXX_STANDARD 20)

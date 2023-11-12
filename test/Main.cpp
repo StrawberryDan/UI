@@ -55,7 +55,7 @@ int main()
 		}
 
 		frame.Render(uiRenderer);
-		auto framebuffer = uiRenderer.GetFramebuffer();
+		auto framebuffer = uiRenderer.TakeFramebuffer();
 
 		swapchain.Present(framebuffer);
 		window.SwapBuffers();

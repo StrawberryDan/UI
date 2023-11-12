@@ -1,14 +1,10 @@
 #pragma once
 
-#include "Strawberry/Graphics/Vulkan/Queue.hpp"
-#include "Strawberry/Graphics/Vulkan/Framebuffer.hpp"
-#include "Strawberry/Graphics/Vulkan/RenderPass.hpp"
-#include "Strawberry/Graphics/Vulkan/Pipeline.hpp"
-#include "Strawberry/Graphics/Vulkan/CommandBuffer.hpp"
 #include "Strawberry/UI/Text.hpp"
-#include <Strawberry/Core/Types/Optional.hpp>
+#include "RectangleRenderer.hpp"
+#include "Strawberry/Graphics/Renderer.hpp"
 #include <Strawberry/Graphics/Text/TextRenderer.hpp>
-
+#include "Strawberry/Core/Types/Delayed.hpp"
 
 namespace Strawberry::UI
 {
@@ -16,39 +12,23 @@ namespace Strawberry::UI
 
 
 	class Renderer
+		: public Graphics::Renderer
 	{
 	public:
-		Renderer(const Graphics::Vulkan::Queue& queue, Core::Math::Vec2u renderSize);
+		Renderer(Graphics::Vulkan::Queue& queue, Core::Math::Vec2u resolution);
 
 
 		void Render(const Pane& pane);
 		void Render(const Text& text);
 
 
-		void SetFramebuffer(Graphics::Vulkan::Framebuffer framebuffer);
-		Graphics::Vulkan::Framebuffer GetFramebuffer();
-
-
 	protected:
-		static Graphics::Vulkan::RenderPass CreateRenderPass(const Graphics::Vulkan::Queue& queue);
-		static Graphics::Vulkan::Pipeline CreateRectanglePipeline(const Graphics::Vulkan::RenderPass& renderPass,
-																  Core::Math::Vec2u renderSize);
-
-		void BeginRenderPass();
-		void EndRenderPass();
+		Graphics::Vulkan::RenderPass& CreateRenderPass(const Graphics::Vulkan::Queue& queue);
 
 
 	private:
-		Core::ReflexivePointer<Graphics::Vulkan::Queue> mQueue;
-		Graphics::Vulkan::CommandBuffer mCommandBuffer;
-		Core::Math::Vec2u mRenderSize;
-		Graphics::Vulkan::RenderPass mRenderPass;
-		Core::Optional<Graphics::Vulkan::Framebuffer> mFramebuffer;
-
-		Graphics::Vulkan::Pipeline mRectanglePipeline;
-		Graphics::Vulkan::DescriptorSet mRectanglePipelineVertexShaderDescriptorSet;
-		Graphics::Vulkan::Buffer mRectanglePipelineVertexShaderUniformBuffer;
-
+		Core::Delayed<Graphics::Vulkan::RenderPass> mRenderPass;
+		RectangleRenderer mRectangleRenderer;
 		Graphics::TextRenderer mTextRenderer;
 	};
 }
