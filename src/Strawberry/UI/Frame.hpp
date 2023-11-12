@@ -19,9 +19,9 @@ namespace Strawberry::UI
 	public:
 		Frame();
 		Frame(std::unique_ptr<Node>&& root);
-		Frame(std::derived_from<Node> auto&& node)
+		Frame(std::derived_from<Node> auto node)
 		{
-			AddRoot(std::forward<decltype(node)>(node));
+			AddRoot(std::move(node));
 		}
 
 
@@ -31,10 +31,11 @@ namespace Strawberry::UI
 
 		uint32_t GetRootCount() const;
 		Node& GetRoot(uint32_t index);
-		void AddRoot(std::unique_ptr<Node>&& node);
-		void AddRoot(std::derived_from<Node> auto&& node)
+		void AddRoot(std::unique_ptr<Node> node);
+		void AddRoot(std::derived_from<Node> auto node)
 		{
-			AddRoot(std::make_unique<std::decay_t<decltype(node)>>(std::forward<decltype(node)>(node)));
+			using NodeType = std::decay_t<decltype(node)>;
+			AddRoot(std::make_unique<NodeType>(std::move(node)));
 		}
 
 

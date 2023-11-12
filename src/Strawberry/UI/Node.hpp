@@ -20,6 +20,10 @@ namespace Strawberry::UI
 	public:
 		Node();
 
+		Node(const Node&) = delete;
+		Node& operator=(const Node&) = delete;
+		Node(Node&&) = default;
+		Node& operator=(Node&&) = default;
 
 		virtual ~Node() = default;
 
