@@ -3,6 +3,7 @@
 
 // Strawberry Core
 #include "Strawberry/Core/Math/Vector.hpp"
+#include "Strawberry/Core/Types/ReflexivePointer.hpp"
 // Standard Library
 #include <memory>
 #include <vector>
@@ -14,7 +15,7 @@ namespace Strawberry::UI
 
 
 	class Node
-		: public std::enable_shared_from_this<Node>
+		: public Core::EnableReflexivePointer<Node>
 	{
 	public:
 		Node();
@@ -44,7 +45,7 @@ namespace Strawberry::UI
 		void SetLocalScale(Core::Math::Vec2f scale);
 
 
-		[[nodiscard]] std::shared_ptr<Node> GetParent() const;
+		[[nodiscard]] Core::ReflexivePointer<Node> GetParent() const;
 
 
 		[[nodiscard]] size_t GetChildCount() const;
@@ -66,7 +67,7 @@ namespace Strawberry::UI
 
 
 	private:
-		std::weak_ptr<Node> mParent;
+		Core::ReflexivePointer<Node> mParent;
 		std::vector<std::shared_ptr<Node>> mChildren;
 
 		Core::Math::Vec2f mLocalPosition = Core::Math::Vec2f(0.0f, 0.0f);

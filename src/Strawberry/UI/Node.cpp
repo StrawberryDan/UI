@@ -10,8 +10,7 @@ namespace Strawberry::UI
 
 	Core::Math::Vec2f Node::GetPosition() const
 	{
-		auto lockedParent = mParent.lock();
-		auto parentPosition = lockedParent ? lockedParent->GetPosition() : Core::Math::Vec2f();
+		auto parentPosition = mParent ? mParent->GetPosition() : Core::Math::Vec2f();
 		return parentPosition + GetLocalPosition();
 	}
 
@@ -36,8 +35,7 @@ namespace Strawberry::UI
 
 	Core::Math::Vec2f Node::GetScale() const
 	{
-		auto lockedParent = mParent.lock();
-		auto parentScale = lockedParent ? lockedParent->GetScale() : Core::Math::Vec2f(1.0f, 1.0f);
+		auto parentScale = mParent ? mParent->GetScale() : Core::Math::Vec2f(1.0f, 1.0f);
 		return parentScale * GetLocalScale();
 	}
 
@@ -66,9 +64,9 @@ namespace Strawberry::UI
 	}
 
 
-	std::shared_ptr<Node> Node::GetParent() const
+	Core::ReflexivePointer<Node> Node::GetParent() const
 	{
-		return mParent.lock();
+		return mParent;
 	}
 
 
@@ -87,7 +85,7 @@ namespace Strawberry::UI
 	std::shared_ptr<Node> Node::AppendChild(std::shared_ptr<Node> node)
 	{
 		Core::Assert(node->GetParent() == nullptr);
-		node->mParent = weak_from_this();
+		node->mParent = GetReflexivePointer();
 		mChildren.emplace_back(std::move(node));
 		return mChildren.back();
 	}
@@ -96,7 +94,7 @@ namespace Strawberry::UI
 	std::shared_ptr<Node> Node::PrependChild(std::shared_ptr<Node> node)
 	{
 		Core::Assert(node->GetParent() == nullptr);
-		node->mParent = shared_from_this();
+		node->mParent = GetReflexivePointer();
 		mChildren.emplace(mChildren.begin(), std::move(node));
 		return mChildren.front();
 	}
@@ -106,7 +104,7 @@ namespace Strawberry::UI
 	{
 		Core::Assert(node->GetParent() == nullptr);
 		Core::Assert(index <= GetChildCount());
-		node->mParent = shared_from_this();
+		node->mParent = GetReflexivePointer();
 		mChildren.emplace(mChildren.begin() + static_cast<int>(index), std::move(node));
 		return mChildren[index];
 	}
