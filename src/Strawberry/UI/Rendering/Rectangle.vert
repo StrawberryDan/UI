@@ -20,8 +20,8 @@ layout(push_constant) uniform PushConstants
 };
 
 void main() {
-    vec3 position = vec3(vertices[gl_VertexIndex], 0.0);
-    position = vec3(rectSize, 1.0) * position;
-    position = position + vec3(rectPos, 0.0);
-    gl_Position = viewMatrix * vec4(position, 1.0);
+    vec2 position = vertices[gl_VertexIndex];
+    position = rectSize * position;
+    position = position + rectPos;
+    gl_Position = viewMatrix * vec4(position, 0.0, 1.0);
 }
