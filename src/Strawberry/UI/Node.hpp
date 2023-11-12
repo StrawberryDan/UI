@@ -1,6 +1,9 @@
 #pragma once
 
 
+#include "EventListener.hpp"
+// Strawberry Graphics
+#include "Strawberry/Graphics/Event.hpp"
 // Strawberry Core
 #include "Strawberry/Core/Math/Vector.hpp"
 #include "Strawberry/Core/Types/ReflexivePointer.hpp"
@@ -12,6 +15,7 @@
 namespace Strawberry::UI
 {
 	class Renderer;
+	class EventListener;
 
 
 	class Node
@@ -32,21 +36,6 @@ namespace Strawberry::UI
 
 
 		virtual void Render(Renderer& renderer) {}
-
-
-		[[nodiscard]] Core::Math::Vec2f GetPosition() const;
-		[[nodiscard]] Core::Math::Vec2f GetLocalPosition() const;
-
-		[[nodiscard]] Core::Math::Vec2f GetSize() const;
-		[[nodiscard]] Core::Math::Vec2f GetLocalSize() const;
-
-		[[nodiscard]] Core::Math::Vec2f GetScale() const;
-		[[nodiscard]] Core::Math::Vec2f GetLocalScale() const;
-
-
-		void SetLocalPosition(Core::Math::Vec2f position);
-		void SetLocalSize(Core::Math::Vec2f size);
-		void SetLocalScale(Core::Math::Vec2f scale);
 
 
 		[[nodiscard]] Core::ReflexivePointer<Node> GetParent() const;
@@ -70,9 +59,35 @@ namespace Strawberry::UI
 		std::shared_ptr<Node> InsertChild(size_t index, std::shared_ptr<Node> node);
 
 
+		void AddEventListener(std::unique_ptr<EventListener> eventListener);
+		void AddEventListener(std::derived_from<EventListener> auto eventListener)
+		{
+			AddEventListener(std::make_unique<std::decay_t<decltype(eventListener)>>(std::forward<decltype(eventListener)>(eventListener)));
+		}
+
+		std::vector<EventListener*> GatherEventListeners(const Graphics::Window::Event& event);
+
+
+		[[nodiscard]] Core::Math::Vec2f GetPosition() const;
+		[[nodiscard]] Core::Math::Vec2f GetLocalPosition() const;
+
+		[[nodiscard]] Core::Math::Vec2f GetSize() const;
+		[[nodiscard]] Core::Math::Vec2f GetLocalSize() const;
+
+		[[nodiscard]] Core::Math::Vec2f GetScale() const;
+		[[nodiscard]] Core::Math::Vec2f GetLocalScale() const;
+
+
+		void SetLocalPosition(Core::Math::Vec2f position);
+		void SetLocalSize(Core::Math::Vec2f size);
+		void SetLocalScale(Core::Math::Vec2f scale);
+
+
 	private:
 		Core::ReflexivePointer<Node> mParent;
 		std::vector<std::shared_ptr<Node>> mChildren;
+
+		std::vector<std::unique_ptr<EventListener>> mEventListeners;
 
 		Core::Math::Vec2f mLocalPosition = Core::Math::Vec2f(0.0f, 0.0f);
 		Core::Math::Vec2f mLocalSize     = Core::Math::Vec2f(0.0f, 0.0f);

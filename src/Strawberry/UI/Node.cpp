@@ -1,4 +1,5 @@
 #include "Node.hpp"
+#include "EventListener.hpp"
 #include <Strawberry/Core/Assert.hpp>
 
 namespace Strawberry::UI
@@ -6,6 +7,52 @@ namespace Strawberry::UI
 	Node::Node()
 		: mParent()
 	{}
+
+
+	Core::ReflexivePointer<Node> Node::GetParent() const
+	{
+		return mParent;
+	}
+
+
+	size_t Node::GetChildCount() const
+	{
+		return mChildren.size();
+	}
+
+
+	std::shared_ptr<Node> Node::GetChild(size_t index)
+	{
+		return mChildren[index];
+	}
+
+
+	std::shared_ptr<Node> Node::AppendChild(std::shared_ptr<Node> node)
+	{
+		Core::Assert(node->GetParent() == nullptr);
+		node->mParent = GetReflexivePointer();
+		mChildren.emplace_back(std::move(node));
+		return mChildren.back();
+	}
+
+
+	std::shared_ptr<Node> Node::PrependChild(std::shared_ptr<Node> node)
+	{
+		Core::Assert(node->GetParent() == nullptr);
+		node->mParent = GetReflexivePointer();
+		mChildren.emplace(mChildren.begin(), std::move(node));
+		return mChildren.front();
+	}
+
+
+	std::shared_ptr<Node> Node::InsertChild(size_t index, std::shared_ptr<Node> node)
+	{
+		Core::Assert(node->GetParent() == nullptr);
+		Core::Assert(index <= GetChildCount());
+		node->mParent = GetReflexivePointer();
+		mChildren.emplace(mChildren.begin() + static_cast<int>(index), std::move(node));
+		return mChildren[index];
+	}
 
 
 	Core::Math::Vec2f Node::GetPosition() const
@@ -64,48 +111,8 @@ namespace Strawberry::UI
 	}
 
 
-	Core::ReflexivePointer<Node> Node::GetParent() const
+	void Node::AddEventListener(std::unique_ptr<EventListener> eventListener)
 	{
-		return mParent;
-	}
-
-
-	size_t Node::GetChildCount() const
-	{
-		return mChildren.size();
-	}
-
-
-	std::shared_ptr<Node> Node::GetChild(size_t index)
-	{
-		return mChildren[index];
-	}
-
-
-	std::shared_ptr<Node> Node::AppendChild(std::shared_ptr<Node> node)
-	{
-		Core::Assert(node->GetParent() == nullptr);
-		node->mParent = GetReflexivePointer();
-		mChildren.emplace_back(std::move(node));
-		return mChildren.back();
-	}
-
-
-	std::shared_ptr<Node> Node::PrependChild(std::shared_ptr<Node> node)
-	{
-		Core::Assert(node->GetParent() == nullptr);
-		node->mParent = GetReflexivePointer();
-		mChildren.emplace(mChildren.begin(), std::move(node));
-		return mChildren.front();
-	}
-
-
-	std::shared_ptr<Node> Node::InsertChild(size_t index, std::shared_ptr<Node> node)
-	{
-		Core::Assert(node->GetParent() == nullptr);
-		Core::Assert(index <= GetChildCount());
-		node->mParent = GetReflexivePointer();
-		mChildren.emplace(mChildren.begin() + static_cast<int>(index), std::move(node));
-		return mChildren[index];
+		mEventListeners.emplace_back(std::move(eventListener));
 	}
 }
