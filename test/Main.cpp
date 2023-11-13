@@ -27,16 +27,20 @@ int main()
 
 	Graphics::FontFace font = Graphics::FontFace::FromFile("data/Pixels.ttf").Unwrap();
 
+	Graphics::Vulkan::Image cassius = Graphics::Vulkan::Image::FromFile(queue, "data/cassius.png").Unwrap();
+
 	UI::Pane pane;
 	pane.SetLocalPosition({40, 40});
-	pane.SetLocalSize({100, 100});
+	pane.SetLocalSize({167, 184});
 
 	auto subpane = pane.AppendChild<UI::Text>(font);
-	subpane->SetLocalPosition({110, 0});
-	subpane->SetLocalSize({50, 50});
-	subpane->SetFillColor({0.5, 0.3, 0.3, 1.0});
-	subpane->SetString("Hello");
-	subpane->SetFontSize(100);
+	subpane->SetLocalPosition({170, 0});
+	subpane->SetLocalSize({300, 50});
+	subpane->SetFontColor({1.0, 1.0, 1.0, 1.0});
+	subpane->SetString("Help me! Those Capua Sky Bandits have trapped me in this Vulkan UI Rendering Example.");
+	subpane->SetFontSize(75);
+
+	auto imagepane = pane.AppendChild<UI::Image>(cassius);
 
 	UI::Frame frame(std::move(pane));
 
