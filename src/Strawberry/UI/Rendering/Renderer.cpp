@@ -10,6 +10,7 @@ namespace Strawberry::UI
 		: Graphics::Renderer(queue, resolution)
 		, mRectangleRenderer(*GetQueue(), GetResolution())
 		, mTextRenderer(*GetQueue(), GetResolution())
+		, mImageRenderer(*GetQueue(), GetResolution())
 	{
 
 	}
@@ -28,7 +29,19 @@ namespace Strawberry::UI
 	{
 		if (FramebufferAvailable())
 			mTextRenderer.SetFramebuffer(TakeFramebuffer());
-		mTextRenderer.Draw(text.GetFontFace(), text.GetString(), text.GetPosition().AsType<int>(), text.GetFontColor());
+		mTextRenderer.Draw(text.GetFontFace(), text.GetString(), text.GetPosition(), text.GetFontColor());
 		SetFramebuffer(mTextRenderer.TakeFramebuffer());
+	}
+
+
+	void Renderer::Render(const Image& image)
+	{
+		// Return early if the image has no texture assigned yet.
+		if (!image.GetImage()) return;
+
+		if (FramebufferAvailable())
+			mImageRenderer.SetFramebuffer(TakeFramebuffer());
+		mImageRenderer.Draw(*image.GetImage(), image.GetPosition(), image.GetSize());
+		SetFramebuffer(mImageRenderer.TakeFramebuffer());
 	}
 }

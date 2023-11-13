@@ -5,6 +5,9 @@
 #include "Strawberry/Graphics/Renderer.hpp"
 #include "Strawberry/Graphics/2D/TextRenderer.hpp"
 #include "Strawberry/Core/Types/Delayed.hpp"
+#include "Strawberry/Graphics/2D/ImageRenderer.hpp"
+#include "Strawberry/UI/Image.hpp"
+
 
 namespace Strawberry::UI
 {
@@ -20,14 +23,12 @@ namespace Strawberry::UI
 
 		void Render(const Pane& pane);
 		void Render(const Text& text);
-
-
-	protected:
-		Graphics::Vulkan::RenderPass& CreateRenderPass(const Graphics::Vulkan::Queue& queue);
+		void Render(const Image& image);
 
 
 	private:
 		RectangleRenderer mRectangleRenderer;
 		Graphics::TextRenderer mTextRenderer;
+		Graphics::ImageRenderer mImageRenderer;
 	};
 }
