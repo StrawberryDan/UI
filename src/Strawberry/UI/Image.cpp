@@ -1,37 +1,34 @@
-#pragma once
 //======================================================================================================================
 //  Includes
 //----------------------------------------------------------------------------------------------------------------------
 #include "Image.hpp"
-#include "Node.hpp"
-// Strawberry Graphics
-#include "Strawberry/Graphics/Vulkan/Image.hpp"
-// Strawberry Core
-#include "Strawberry/Core/Types/ReflexivePointer.hpp"
+#include "Rendering/Renderer.hpp"
+
 
 //======================================================================================================================
-//  Class Declaration
+//  Method Definitions
 //----------------------------------------------------------------------------------------------------------------------
 namespace Strawberry::UI
 {
-	class Renderer;
+	Image::Image(Graphics::Vulkan::Image& image)
+		: mImage(image.GetReflexivePointer())
+	{}
 
 
-	class Image
-		: public Node
+	void Image::Render(Renderer& renderer)
 	{
-	public:
-		Image(Graphics::Vulkan::Image& image);
+		renderer.Render(*this);
+	}
 
 
-		void Render(Renderer& renderer) override;
+	void Image::SetImage(Graphics::Vulkan::Image& image)
+	{
+		mImage = image.GetReflexivePointer();
+	}
 
 
-		void SetImage(Graphics::Vulkan::Image& image);
-		Core::ReflexivePointer<Graphics::Vulkan::Image> GetImage() const;
-
-
-	private:
-		Core::ReflexivePointer<Graphics::Vulkan::Image> mImage;
-	};
+	Core::ReflexivePointer<Graphics::Vulkan::Image> Image::GetImage() const
+	{
+		return mImage;
+	}
 }

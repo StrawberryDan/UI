@@ -40,6 +40,8 @@ if (NOT TARGET StrawberryUI)
             src/Strawberry/UI/Rendering/RectangleRenderer.hpp
             src/Strawberry/UI/Rendering/RectangleRenderer.cpp
             src/Strawberry/UI/EventListener.hpp
+            src/Strawberry/UI/Image.hpp
+            src/Strawberry/UI/Image.cpp
     )
     target_link_libraries(StrawberryUI PUBLIC StrawberryCore StrawberryGraphics StrawberryAudio)
     target_include_directories(StrawberryUI PUBLIC src)
