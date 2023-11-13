@@ -115,4 +115,20 @@ namespace Strawberry::UI
 	{
 		mEventListeners.emplace_back(std::move(eventListener));
 	}
+
+
+	std::vector<EventListener*> Node::GatherEventListeners(const Graphics::Window::Event& event)
+	{
+		std::vector<EventListener*> listeners;
+		listeners.reserve(mEventListeners.size());
+
+		for (auto& listener : mEventListeners)
+		{
+			if (listener->InterestedIn(event))
+			{
+				listeners.push_back(listener.get());
+			}
+		}
+		return listeners;
+	}
 }

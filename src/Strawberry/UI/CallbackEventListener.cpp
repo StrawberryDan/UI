@@ -1,34 +1,23 @@
-#pragma once
 //======================================================================================================================
 //  Includes
 //----------------------------------------------------------------------------------------------------------------------
-// Strawberry Graphics
-#include "Strawberry/Graphics/Event.hpp"
-// Standard Library
-#include <functional>
+#include "CallbackEventListener.hpp"
 
 
 //======================================================================================================================
-//  Class Declaration
+//  Method Definitions
 //----------------------------------------------------------------------------------------------------------------------
 namespace Strawberry::UI
 {
-	class EventListener
+	CallbackEventListener::CallbackEventListener(EventListener::Predicate predicate, CallbackEventListener::Callback callback)
+		: EventListener(std::move(predicate))
+		, mCallback(std::move(callback))
+	{}
+
+
+	void CallbackEventListener::Process(const Graphics::Window::Event& event)
 	{
-	public:
-		using Predicate = std::function<bool(const Graphics::Window::Event&)>;
-
-
-		EventListener(Predicate predicate);
-
-
-		virtual bool Process(const Graphics::Window::Event&) = 0;
-
-
-		bool InterestedIn(const Graphics::Window::Event& event) const;
-
-
-	protected:
-		Predicate mPredicate;
-	};
+		Core::Assert(mPredicate(event));
+		mCallback(event);
+	}
 }

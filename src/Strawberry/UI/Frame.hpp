@@ -15,7 +15,11 @@
 namespace Strawberry::UI
 {
 	class Frame
+		: public Core::EnableReflexivePointer<Frame>
 	{
+		friend class EventDispatcher;
+
+
 	public:
 		Frame();
 		Frame(std::unique_ptr<Node>&& root);
@@ -39,9 +43,15 @@ namespace Strawberry::UI
 		}
 
 
+	protected:
+		Core::ReflexivePointer<Node> GetFocus();
+		void SetFocus(Node& node);
+
+
 	private:
 		std::vector<std::unique_ptr<Node>> mRoots;
 		std::vector<EventDispatcher> mEventDispatchers;
+		Core::ReflexivePointer<Node> mFocus;
 	};
 }
 

@@ -23,25 +23,29 @@ if (NOT TARGET StrawberryUI)
     endif()
 
     add_library(StrawberryUI STATIC
-            src/Strawberry/UI/Node.hpp
-            src/Strawberry/UI/Node.cpp
-            src/Strawberry/UI/Pane.hpp
-            src/Strawberry/UI/Pane.cpp
-            src/Strawberry/UI/Rendering/Renderer.hpp
-            src/Strawberry/UI/Rendering/Renderer.cpp
 			src/Strawberry/UI/Text.cpp
 			src/Strawberry/UI/Text.hpp
-            src/Strawberry/UI/Image.hpp
             src/Strawberry/UI/Button.hpp
-            src/Strawberry/UI/Sprite.hpp
-            src/Strawberry/UI/Frame.hpp
-            src/Strawberry/UI/Frame.cpp
+            src/Strawberry/UI/EventDispatcher.cpp
             src/Strawberry/UI/EventDispatcher.hpp
-            src/Strawberry/UI/Rendering/RectangleRenderer.hpp
-            src/Strawberry/UI/Rendering/RectangleRenderer.cpp
             src/Strawberry/UI/EventListener.hpp
-            src/Strawberry/UI/Image.hpp
+            src/Strawberry/UI/Frame.cpp
+            src/Strawberry/UI/Frame.hpp
             src/Strawberry/UI/Image.cpp
+            src/Strawberry/UI/Image.hpp
+            src/Strawberry/UI/Image.hpp
+            src/Strawberry/UI/Node.cpp
+            src/Strawberry/UI/Node.hpp
+            src/Strawberry/UI/Pane.cpp
+            src/Strawberry/UI/Pane.hpp
+            src/Strawberry/UI/Rendering/RectangleRenderer.cpp
+            src/Strawberry/UI/Rendering/RectangleRenderer.hpp
+            src/Strawberry/UI/Rendering/Renderer.cpp
+            src/Strawberry/UI/Rendering/Renderer.hpp
+            src/Strawberry/UI/Sprite.hpp
+            src/Strawberry/UI/CallbackEventListener.hpp
+            src/Strawberry/UI/CallbackEventListener.cpp
+            src/Strawberry/UI/EventListener.cpp
     )
     target_link_libraries(StrawberryUI PUBLIC StrawberryCore StrawberryGraphics StrawberryAudio)
     target_include_directories(StrawberryUI PUBLIC src)
