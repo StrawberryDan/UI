@@ -4,11 +4,12 @@
 //======================================================================================================================
 //  Includes
 //----------------------------------------------------------------------------------------------------------------------
-#include "Pane.hpp"
+#include "Node.hpp"
 // Strawberry Graphics
 #include "Strawberry/Graphics/2D/FontFace.hpp"
 // Standard Library
 #include <string>
+#include <memory>
 
 
 //======================================================================================================================
@@ -17,7 +18,7 @@
 namespace Strawberry::UI
 {
 	class Text
-		: public Pane
+		: public Node
 	{
 	public:
 		Text(const Graphics::FontFace& fontFace);

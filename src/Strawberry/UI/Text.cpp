@@ -14,16 +14,11 @@ namespace Strawberry::UI
 {
 	Text::Text(const Graphics::FontFace& fontFace)
 		: mFontFace(fontFace)
-	{
-		SetFillColor({0.0f, 0.0f, 0.0f, 0.0f});
-		SetFontSize(16);
-	}
+	{}
 
 
 	void Text::Render(Strawberry::UI::Renderer& renderer)
 	{
-		Pane::Render(renderer);
-
 		renderer.Render(*this);
 	}
 
