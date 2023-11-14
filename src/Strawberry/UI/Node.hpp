@@ -38,6 +38,11 @@ namespace Strawberry::UI
 		virtual void Render(Renderer& renderer) {}
 
 
+		void Visit(const std::function<void(Node&)> function);
+		void PreVisit(const std::function<void(Node&)>& function);
+		void PostVisit(const std::function<void(Node&)>& function);
+
+
 		[[nodiscard]] Core::ReflexivePointer<Node> GetParent() const;
 
 
@@ -81,6 +86,9 @@ namespace Strawberry::UI
 		void SetLocalPosition(Core::Math::Vec2f position);
 		void SetLocalSize(Core::Math::Vec2f size);
 		void SetLocalScale(Core::Math::Vec2f scale);
+
+
+		bool ContainsPoint(Core::Math::Vec2u screenPosition);
 
 
 	private:

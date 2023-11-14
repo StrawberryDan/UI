@@ -9,6 +9,32 @@ namespace Strawberry::UI
 	{}
 
 
+	void Node::Visit(const std::function<void(Node&)>& function)
+	{
+		PreVisit(function);
+	}
+
+
+	void Node::PreVisit(const std::function<void(Node&)>& function)
+	{
+		function(*this);
+		for (auto& child : mChildren)
+		{
+			child->Visit(function);
+		}
+	}
+
+
+	void Node::PostVisit(const std::function<void(Node&)>& function)
+	{
+		for (auto& child : mChildren)
+		{
+			child->Visit(function);
+		}
+		function(*this);
+	}
+
+
 	Core::ReflexivePointer<Node> Node::GetParent() const
 	{
 		return mParent;
@@ -108,6 +134,14 @@ namespace Strawberry::UI
 	void Node::SetLocalScale(Core::Math::Vec2f scale)
 	{
 		mLocalScale = scale;
+	}
+
+
+	bool Node::ContainsPoint(Core::Math::Vec2u screenPosition)
+	{
+		auto relative = screenPosition.AsType<float>() - GetPosition();
+		const Core::Math::Vec2f size = GetSize();
+		return relative[0] <= size[0] && relative[1] < size[1];
 	}
 
 
