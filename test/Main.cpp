@@ -37,11 +37,11 @@ int main()
 	pane.AddEventListener(UI::CallbackEventListener(
 			[](const Graphics::Window::Event& x){ return x.IsType<Graphics::Window::Events::MouseButton>(); },
 			[](const auto& event) {
-				Core::Logging::Info("Square!"); return true;
+				Core::Logging::Info("Square!"); return false;
 			}));
 
 	auto subpane = pane.AppendChild<UI::Text>(font);
-	subpane->SetLocalPosition({170, 0});
+	subpane->SetLocalPosition({190, 0});
 	subpane->SetLocalSize({300, 50});
 	subpane->SetFontColor({1.0, 1.0, 1.0, 1.0});
 	subpane->SetString("Help me! Those Capua Sky Bandits have trapped me in this Vulkan UI Rendering Example.");
@@ -50,9 +50,9 @@ int main()
 	auto imagepane = pane.AppendChild<UI::Image>(cassius);
 	imagepane->SetLocalPosition({10, 10});
 	imagepane->AddEventListener(UI::CallbackEventListener(
-			[](const Graphics::Window::Event& x){ return true; /* x.IsType<Graphics::Window::Events::MouseButton>(); */ },
+			[](const Graphics::Window::Event& x){ return x.IsType<Graphics::Window::Events::MouseButton>(); },
 			[](const auto& event) {
-				Core::Logging::Info("Cassius!!"); return true;
+				Core::Logging::Info("Cassius!!"); return false;
 			}));
 
 	UI::Frame frame(std::move(pane));

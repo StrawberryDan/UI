@@ -31,6 +31,9 @@ namespace Strawberry::UI
 		Core::ReflexivePointer<Graphics::Vulkan::Image> GetImage() const;
 
 
+		bool ContainsPoint(Core::Math::Vec2f screenPosition) override;
+
+
 	private:
 		Core::ReflexivePointer<Graphics::Vulkan::Image> mImage;
 	};

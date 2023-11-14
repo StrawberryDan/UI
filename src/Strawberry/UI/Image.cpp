@@ -33,4 +33,17 @@ namespace Strawberry::UI
 	{
 		return mImage;
 	}
+
+
+	bool Image::ContainsPoint(Core::Math::Vec2f screenPosition)
+	{
+		if (!Node::ContainsPoint(screenPosition)) return false;
+
+		Core::AssertEQ(mImage->GetFormat(), VK_FORMAT_R8G8B8A8_SRGB);
+		Core::Math::Vec2u pixel = (screenPosition - GetPosition())
+			 .Map([](float x) { return std::round(x); }).AsType<unsigned int>();
+		auto pixelBytes = mImage->ReadPixel(pixel);
+
+		return pixelBytes[0] > 0 && pixelBytes[1] > 0 && pixelBytes[2] > 0 && pixelBytes[3] > 0;
+	}
 }
