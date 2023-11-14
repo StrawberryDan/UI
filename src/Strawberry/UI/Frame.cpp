@@ -29,9 +29,12 @@ namespace Strawberry::UI
 
 	void Frame::Render(Renderer& renderer)
 	{
-		for (auto& root : mRoots)
+		if (IsVisible())
 		{
-			root->Render(renderer);
+			for (auto& root: mRoots)
+			{
+				root->Render(renderer);
+			}
 		}
 	}
 
@@ -64,6 +67,18 @@ namespace Strawberry::UI
 		}
 
 		return true;
+	}
+
+
+	bool Frame::IsVisible() const
+	{
+		return mVisible;
+	}
+
+
+	void Frame::SetVisible(bool visible)
+	{
+		mVisible = visible;
 	}
 
 

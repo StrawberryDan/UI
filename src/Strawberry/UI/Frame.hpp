@@ -46,6 +46,10 @@ namespace Strawberry::UI
 		bool Dispatch(const Graphics::Window::Event& event);
 
 
+		bool IsVisible() const;
+		void SetVisible(bool visible);
+
+
 	protected:
 		Core::ReflexivePointer<Node> GetFocus();
 		void SetFocus(Node& node);
@@ -55,6 +59,8 @@ namespace Strawberry::UI
 		std::vector<std::unique_ptr<Node>> mRoots;
 		std::vector<EventDispatcher> mEventDispatchers;
 		Core::ReflexivePointer<Node> mFocus;
+
+		bool mVisible = true;
 	};
 }
 
