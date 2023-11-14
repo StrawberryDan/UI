@@ -26,8 +26,11 @@ if (NOT TARGET StrawberryUI)
 			src/Strawberry/UI/Text.cpp
 			src/Strawberry/UI/Text.hpp
             src/Strawberry/UI/Button.hpp
+            src/Strawberry/UI/CallbackEventListener.cpp
+            src/Strawberry/UI/CallbackEventListener.hpp
             src/Strawberry/UI/EventDispatcher.cpp
             src/Strawberry/UI/EventDispatcher.hpp
+            src/Strawberry/UI/EventListener.cpp
             src/Strawberry/UI/EventListener.hpp
             src/Strawberry/UI/Frame.cpp
             src/Strawberry/UI/Frame.hpp
@@ -43,9 +46,7 @@ if (NOT TARGET StrawberryUI)
             src/Strawberry/UI/Rendering/Renderer.cpp
             src/Strawberry/UI/Rendering/Renderer.hpp
             src/Strawberry/UI/Sprite.hpp
-            src/Strawberry/UI/CallbackEventListener.hpp
-            src/Strawberry/UI/CallbackEventListener.cpp
-            src/Strawberry/UI/EventListener.cpp
+            src/Strawberry/UI/Sprite.cpp
     )
     target_link_libraries(StrawberryUI PUBLIC StrawberryCore StrawberryGraphics StrawberryAudio)
     target_include_directories(StrawberryUI PUBLIC src)

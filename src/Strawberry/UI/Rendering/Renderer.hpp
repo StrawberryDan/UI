@@ -7,6 +7,8 @@
 #include "Strawberry/Core/Types/Delayed.hpp"
 #include "Strawberry/Graphics/2D/ImageRenderer.hpp"
 #include "Strawberry/UI/Image.hpp"
+#include "Strawberry/Graphics/2D/SpriteRenderer.hpp"
+#include "Strawberry/UI/Sprite.hpp"
 
 
 namespace Strawberry::UI
@@ -24,11 +26,13 @@ namespace Strawberry::UI
 		void Render(const Pane& pane);
 		void Render(const Text& text);
 		void Render(const Image& image);
+		void Render(const Sprite& sprite);
 
 
 	private:
 		RectangleRenderer mRectangleRenderer;
 		Graphics::TextRenderer mTextRenderer;
 		Graphics::ImageRenderer mImageRenderer;
+		Graphics::SpriteRenderer mSpriteRenderer;
 	};
 }

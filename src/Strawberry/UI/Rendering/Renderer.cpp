@@ -11,9 +11,8 @@ namespace Strawberry::UI
 		, mRectangleRenderer(*GetQueue(), GetResolution())
 		, mTextRenderer(*GetQueue(), GetResolution())
 		, mImageRenderer(*GetQueue(), GetResolution())
-	{
-
-	}
+		, mSpriteRenderer(*GetQueue(), GetResolution())
+	{}
 
 
 	void Renderer::Render(const Pane& pane)
@@ -43,5 +42,17 @@ namespace Strawberry::UI
 			mImageRenderer.SetFramebuffer(TakeFramebuffer());
 		mImageRenderer.Draw(*image.GetImage(), image.GetPosition(), image.GetSize());
 		SetFramebuffer(mImageRenderer.TakeFramebuffer());
+	}
+
+
+	void Renderer::Render(const Sprite& sprite)
+	{
+		if (FramebufferAvailable())
+			mSpriteRenderer.SetFramebuffer(TakeFramebuffer());
+		Graphics::Transform2D transform;
+		transform.SetPosition(sprite.GetPosition());
+		transform.SetSize(sprite.GetSize());
+		mSpriteRenderer.Draw(sprite.GetSprite(), transform);
+		SetFramebuffer(mSpriteRenderer.TakeFramebuffer());
 	}
 }
