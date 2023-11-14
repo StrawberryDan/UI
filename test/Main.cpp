@@ -50,7 +50,7 @@ int main()
 	auto imagepane = pane.AppendChild<UI::Image>(cassius);
 	imagepane->SetLocalPosition({10, 10});
 	imagepane->AddEventListener(UI::CallbackEventListener(
-			[](const Graphics::Window::Event& x){ return x.IsType<Graphics::Window::Events::MouseButton>(); },
+			[](const Graphics::Window::Event& x){ return true; /* x.IsType<Graphics::Window::Events::MouseButton>(); */ },
 			[](const auto& event) {
 				Core::Logging::Info("Cassius!!"); return true;
 			}));

@@ -90,6 +90,7 @@ namespace Strawberry::UI
 	{
 		if (auto target = FindNodeAtPoint(event.position))
 		{
+			mFrame->SetFocus(*target.Value());
 			while(target)
 			{
 				auto listeners = target->GatherEventListeners(event);
