@@ -61,9 +61,12 @@ namespace Strawberry::UI
 
 	bool Frame::Dispatch(const Graphics::Window::Event& event)
 	{
-		for (int i = 0; i < GetRootCount(); i++)
+		if (IsVisible())
 		{
-			if (!mEventDispatchers[i].Dispatch(event)) return false;
+			for (int i = 0; i < GetRootCount(); i++)
+			{
+				if (!mEventDispatchers[i].Dispatch(event)) return false;
+			}
 		}
 
 		return true;
