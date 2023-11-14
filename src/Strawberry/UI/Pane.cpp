@@ -10,9 +10,7 @@ namespace Strawberry::UI
 		renderer.Render(*this);
 
 		for (int i = 0; i < GetChildCount(); i++)
-		{
 			GetChild(i)->Render(renderer);
-		}
 	}
 
 

@@ -9,6 +9,13 @@ namespace Strawberry::UI
 	{}
 
 
+	void Node::Render(Renderer& renderer)
+	{
+		for (int i = 0; i < GetChildCount(); i++)
+			GetChild(i)->Render(renderer);
+	}
+
+
 	void Node::Visit(const std::function<void(Node&)>& function)
 	{
 		PreVisit(function);

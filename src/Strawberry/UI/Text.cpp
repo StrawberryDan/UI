@@ -20,6 +20,9 @@ namespace Strawberry::UI
 	void Text::Render(Strawberry::UI::Renderer& renderer)
 	{
 		renderer.Render(*this);
+
+		for (int i = 0; i < GetChildCount(); i++)
+			GetChild(i)->Render(renderer);
 	}
 
 

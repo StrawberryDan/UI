@@ -35,7 +35,7 @@ namespace Strawberry::UI
 		virtual void Update(float deltaTime) {}
 
 
-		virtual void Render(Renderer& renderer) {}
+		virtual void Render(Renderer& renderer);
 
 
 		void Visit(const std::function<void(Node&)>& function);
