@@ -18,7 +18,7 @@ namespace Strawberry::UI
 	}
 
 
-	void Frame::Update(float deltaTime)
+	void Frame::Update(Core::Seconds deltaTime)
 	{
 		for (auto& root : mRoots)
 		{

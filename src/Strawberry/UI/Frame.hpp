@@ -29,7 +29,7 @@ namespace Strawberry::UI
 		}
 
 
-		void Update(float deltaTime);
+		void Update(Core::Seconds deltaTime);
 		void Render(Renderer& renderer);
 
 
