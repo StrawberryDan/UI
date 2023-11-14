@@ -14,7 +14,9 @@ namespace Strawberry::UI
 {
 	Text::Text(const Graphics::FontFace& fontFace)
 		: mFontFace(fontFace)
-	{}
+	{
+		SetFontSize(GetFontSize());
+	}
 
 
 	void Text::Render(Strawberry::UI::Renderer& renderer)
