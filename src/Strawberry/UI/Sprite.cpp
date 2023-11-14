@@ -28,10 +28,13 @@ namespace Strawberry::UI
 
 	void Sprite::Render(Renderer& renderer)
 	{
-		renderer.Render(*this);
+		if (GetVisible())
+		{
+			renderer.Render(*this);
 
-		for (int i = 0; i < GetChildCount(); i++)
-			GetChild(i)->Render(renderer);
+			for (int i = 0; i < GetChildCount(); i++)
+				GetChild(i)->Render(renderer);
+		}
 	}
 
 

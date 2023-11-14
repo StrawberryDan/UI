@@ -88,6 +88,10 @@ namespace Strawberry::UI
 		void SetLocalScale(Core::Math::Vec2f scale);
 
 
+		bool GetVisible() const;
+		void SetVisible(bool visible);
+
+
 		virtual bool ContainsPoint(Core::Math::Vec2f screenPosition);
 
 
@@ -100,5 +104,7 @@ namespace Strawberry::UI
 		Core::Math::Vec2f mLocalPosition = Core::Math::Vec2f(0.0f, 0.0f);
 		Core::Math::Vec2f mLocalSize     = Core::Math::Vec2f(0.0f, 0.0f);
 		Core::Math::Vec2f mLocalScale    = Core::Math::Vec2f(1.0f, 1.0f);
+
+		bool mVisible = true;
 	};
 }

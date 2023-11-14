@@ -136,7 +136,7 @@ namespace Strawberry::UI
 		Core::Optional<Node*> result;
 
 		mNode->PostVisit([&](Node& node) {
-			if (!result && node.ContainsPoint(screenPosition))
+			if (!result && node.GetVisible() && node.ContainsPoint(screenPosition))
 			{
 				result = &node;
 			}

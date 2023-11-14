@@ -144,6 +144,18 @@ namespace Strawberry::UI
 	}
 
 
+	bool Node::GetVisible() const
+	{
+		return mVisible;
+	}
+
+
+	void Node::SetVisible(bool visible)
+	{
+		mVisible = visible;
+	}
+
+
 	bool Node::ContainsPoint(Core::Math::Vec2f screenPosition)
 	{
 		auto relative = screenPosition - GetPosition();
