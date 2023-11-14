@@ -30,7 +30,8 @@ namespace Strawberry::UI
 				return false;
 			},
 			[this](const Graphics::Window::Event& event) {
-				mCallback();
+				if (mCallback)
+					mCallback();
 				return false;
 			}));
 	}
