@@ -137,9 +137,9 @@ namespace Strawberry::UI
 	}
 
 
-	bool Node::ContainsPoint(Core::Math::Vec2u screenPosition)
+	bool Node::ContainsPoint(Core::Math::Vec2f screenPosition)
 	{
-		auto relative = screenPosition.AsType<float>() - GetPosition();
+		auto relative = screenPosition - GetPosition();
 		const Core::Math::Vec2f size = GetSize();
 		return relative[0] <= size[0] && relative[1] < size[1];
 	}

@@ -88,7 +88,7 @@ namespace Strawberry::UI
 		void SetLocalScale(Core::Math::Vec2f scale);
 
 
-		bool ContainsPoint(Core::Math::Vec2u screenPosition);
+		bool ContainsPoint(Core::Math::Vec2f screenPosition);
 
 
 	private:
