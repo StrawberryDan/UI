@@ -7,7 +7,7 @@
 namespace Strawberry::UI
 {
 	Renderer::Renderer(Graphics::Vulkan::Queue& queue, Core::Math::Vec2u resolution)
-		: Graphics::Renderer(queue, resolution)
+		: Graphics::Renderer(queue, CreateRenderpass(*queue.GetDevice()), resolution)
 		, mRectangleRenderer(*GetQueue(), GetResolution())
 		, mTextRenderer(*GetQueue(), GetResolution())
 		, mImageRenderer(*GetQueue(), GetResolution())
@@ -63,5 +63,15 @@ namespace Strawberry::UI
 			mImageRenderer.SetFramebuffer(TakeFramebuffer());
 		mImageRenderer.Draw(*button.GetImage(), button.GetPosition(), button.GetSize());
 		SetFramebuffer(mImageRenderer.TakeFramebuffer());
+	}
+
+
+	Graphics::Vulkan::RenderPass Renderer::CreateRenderpass(Graphics::Vulkan::Device& device)
+	{
+		// Renderpass with one color attachment
+		return Graphics::Vulkan::RenderPass::Builder(device)
+			.WithColorAttachment(VK_FORMAT_R32G32B32A32_SFLOAT, VK_ATTACHMENT_LOAD_OP_LOAD, VK_ATTACHMENT_STORE_OP_STORE)
+			.WithSubpass(Graphics::Vulkan::SubpassDescription()	.WithColorAttachment(0))
+			.Build();
 	}
 }

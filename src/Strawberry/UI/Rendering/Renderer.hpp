@@ -31,6 +31,10 @@ namespace Strawberry::UI
 		void Render(const Button& button);
 
 
+	protected:
+		static Graphics::Vulkan::RenderPass CreateRenderpass(Graphics::Vulkan::Device& device);
+
+
 	private:
 		RectangleRenderer mRectangleRenderer;
 		Graphics::TextRenderer mTextRenderer;
