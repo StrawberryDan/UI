@@ -21,7 +21,7 @@ namespace Strawberry::UI
 
 	void Text::Render(Strawberry::UI::Renderer& renderer)
 	{
-		if (GetVisible())
+		if (IsVisible())
 		{
 			renderer.Render(*this);
 

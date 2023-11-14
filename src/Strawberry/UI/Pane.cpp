@@ -7,7 +7,7 @@ namespace Strawberry::UI
 
 	void Pane::Render(Renderer& renderer)
 	{
-		if (GetVisible())
+		if (IsVisible())
 		{
 			renderer.Render(*this);
 

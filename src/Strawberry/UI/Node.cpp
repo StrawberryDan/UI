@@ -144,7 +144,7 @@ namespace Strawberry::UI
 	}
 
 
-	bool Node::GetVisible() const
+	bool Node::IsVisible() const
 	{
 		return mVisible;
 	}

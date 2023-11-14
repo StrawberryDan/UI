@@ -46,7 +46,7 @@ namespace Strawberry::UI
 
 	void Button::Render(Renderer& renderer)
 	{
-		if (GetVisible())
+		if (IsVisible())
 		{
 			renderer.Render(*this);
 

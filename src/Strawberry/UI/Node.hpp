@@ -88,7 +88,7 @@ namespace Strawberry::UI
 		void SetLocalScale(Core::Math::Vec2f scale);
 
 
-		bool GetVisible() const;
+		bool IsVisible() const;
 		void SetVisible(bool visible);
 
 

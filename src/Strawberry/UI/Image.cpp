@@ -19,7 +19,7 @@ namespace Strawberry::UI
 
 	void Image::Render(Renderer& renderer)
 	{
-		if (GetVisible())
+		if (IsVisible())
 		{
 			renderer.Render(*this);
 

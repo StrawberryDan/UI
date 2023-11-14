@@ -28,7 +28,7 @@ namespace Strawberry::UI
 
 	void Sprite::Render(Renderer& renderer)
 	{
-		if (GetVisible())
+		if (IsVisible())
 		{
 			renderer.Render(*this);
 
