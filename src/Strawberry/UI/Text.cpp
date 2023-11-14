@@ -47,7 +47,7 @@ namespace Strawberry::UI
 	void Text::SetFontSize(uint32_t fontSize)
 	{
 		mFontSize = fontSize;
-		mFontFace->SetPixelSize(mFontSize);
+		UpdateSize();
 	}
 
 
@@ -72,6 +72,7 @@ namespace Strawberry::UI
 	void Text::SetString(const std::u32string& string)
 	{
 		mString = string;
+		UpdateSize();
 	}
 
 
@@ -84,5 +85,20 @@ namespace Strawberry::UI
 	void Text::SetString(const std::string& string)
 	{
 		SetString(std::u8string(string.begin(), string.end()));
+	}
+
+
+	void Text::UpdateSize()
+	{
+		mFontFace->SetPixelSize(mFontSize);
+
+		Core::Math::Vec2f newSize;
+		for (auto c : GetString())
+		{
+			newSize[0] += mFontFace->GetGlyphAdvance(c)[0];
+			newSize[1] = std::max(newSize[1], mFontFace->GetGlyphBoundingBox(c)[1]);
+		}
+
+		SetLocalSize(newSize);
 	}
 }

@@ -45,6 +45,10 @@ namespace Strawberry::UI
 		void SetString(const std::string& string);
 
 
+	protected:
+		void UpdateSize();
+
+
 	private:
 		std::u32string mString;
 		Core::ReflexivePointer<Graphics::FontFace> mFontFace;
