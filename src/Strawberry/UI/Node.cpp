@@ -160,7 +160,19 @@ namespace Strawberry::UI
 	{
 		auto relative = screenPosition - GetPosition();
 		const Core::Math::Vec2f size = GetSize();
-		return relative[0] <= size[0] && relative[1] <= size[1];
+		return relative[0] >= 0.0f && relative[0] <= size[0] && relative[1] >= 0.0f && relative[1] <= size[1];
+	}
+
+
+	uint32_t Node::GetDepth() const
+	{
+		uint32_t depth = 0;
+		auto node = GetReflexivePointer();
+		while (node) {
+			node = node->GetParent();
+			++depth;
+		}
+		return depth;
 	}
 
 

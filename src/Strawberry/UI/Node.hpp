@@ -95,6 +95,9 @@ namespace Strawberry::UI
 		virtual bool ContainsPoint(Core::Math::Vec2f screenPosition);
 
 
+		uint32_t GetDepth() const;
+
+
 	private:
 		Core::ReflexivePointer<Node> mParent;
 		std::vector<std::shared_ptr<Node>> mChildren;
