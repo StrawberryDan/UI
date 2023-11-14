@@ -9,6 +9,7 @@
 #include "Strawberry/UI/Frame.hpp"
 #include "Strawberry/UI/CallbackEventListener.hpp"
 #include "Strawberry/Core/IO/Logging.hpp"
+#include "Strawberry/Graphics/2D/SpriteSheet.hpp"
 
 
 using namespace Strawberry;
@@ -54,6 +55,23 @@ int main()
 			[](const auto& event) {
 				Core::Logging::Info("Cassius!!"); return false;
 			}));
+
+	// Load Estelle Image
+	auto donImg = Graphics::SpriteSheet(queue, Graphics::Vulkan::Image::FromFile(queue, "data/don_capua.png").Unwrap(), Core::Math::Vec2u(2, 1));
+	auto don = imagepane->AppendChild<UI::Sprite>(donImg);
+	don->SetLocalPosition({200, 200});
+	don->AddEventListener(UI::CallbackEventListener(
+		[](const Graphics::Window::Event& x) {
+			if (auto button = x.Value<Graphics::Window::Events::MouseButton>())
+			{
+				return button->button == Graphics::Input::MouseButton::Left
+					&& button->action == Graphics::Input::KeyAction::Press;
+			}
+
+			return false;
+		},
+		[&](const auto& event) { don->GetSprite().SetSpriteIndex(don->GetSprite().GetSpriteIndex() + 1); return false; }));
+
 
 	UI::Frame frame(std::move(pane));
 
