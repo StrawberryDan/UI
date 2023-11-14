@@ -20,6 +20,7 @@ namespace Strawberry::UI
 
 
 		EventListener(Predicate predicate);
+		virtual ~EventListener() = default;
 
 
 		virtual bool Process(const Graphics::Window::Event&) = 0;
