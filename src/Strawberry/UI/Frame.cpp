@@ -48,10 +48,11 @@ namespace Strawberry::UI
 	}
 
 
-	void Frame::AddRoot(std::unique_ptr<Node> node)
+	Node* Frame::AddRoot(std::unique_ptr<Node> node)
 	{
 		mEventDispatchers.emplace_back(*this, *node);
 		mRoots.emplace_back(std::move(node));
+		return mRoots.back().get();
 	}
 
 

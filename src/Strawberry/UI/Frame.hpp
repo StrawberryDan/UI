@@ -35,11 +35,11 @@ namespace Strawberry::UI
 
 		uint32_t GetRootCount() const;
 		Node& GetRoot(uint32_t index);
-		void AddRoot(std::unique_ptr<Node> node);
-		void AddRoot(std::derived_from<Node> auto node)
+		Node* AddRoot(std::unique_ptr<Node> node);
+		auto AddRoot(std::derived_from<Node> auto node)
 		{
 			using NodeType = std::decay_t<decltype(node)>;
-			AddRoot(std::make_unique<NodeType>(std::move(node)));
+			return static_cast<decltype(node)*>(AddRoot(std::make_unique<NodeType>(std::move(node))));
 		}
 
 
