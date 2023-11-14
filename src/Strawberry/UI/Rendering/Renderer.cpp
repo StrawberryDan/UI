@@ -28,6 +28,7 @@ namespace Strawberry::UI
 	{
 		if (FramebufferAvailable())
 			mTextRenderer.SetFramebuffer(TakeFramebuffer());
+		text.GetFontFace().SetPixelSize(text.GetFontSize());
 		mTextRenderer.Draw(text.GetFontFace(), text.GetString(), text.GetPosition(), text.GetFontColor());
 		SetFramebuffer(mTextRenderer.TakeFramebuffer());
 	}
