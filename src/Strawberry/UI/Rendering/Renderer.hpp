@@ -9,6 +9,7 @@
 #include "Strawberry/UI/Image.hpp"
 #include "Strawberry/Graphics/2D/SpriteRenderer.hpp"
 #include "Strawberry/UI/Sprite.hpp"
+#include "Strawberry/UI/Button.hpp"
 
 
 namespace Strawberry::UI
@@ -27,6 +28,7 @@ namespace Strawberry::UI
 		void Render(const Text& text);
 		void Render(const Image& image);
 		void Render(const Sprite& sprite);
+		void Render(const Button& button);
 
 
 	private:

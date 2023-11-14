@@ -55,4 +55,13 @@ namespace Strawberry::UI
 		mSpriteRenderer.Draw(sprite.GetSprite(), transform);
 		SetFramebuffer(mSpriteRenderer.TakeFramebuffer());
 	}
+
+
+	void Renderer::Render(const Button& button)
+	{
+		if (FramebufferAvailable())
+			mImageRenderer.SetFramebuffer(TakeFramebuffer());
+		mImageRenderer.Draw(*button.GetImage(), button.GetPosition(), button.GetSize());
+		SetFramebuffer(mImageRenderer.TakeFramebuffer());
+	}
 }

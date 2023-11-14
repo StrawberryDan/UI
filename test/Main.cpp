@@ -56,7 +56,7 @@ int main()
 				Core::Logging::Info("Cassius!!"); return false;
 			}));
 
-	// Load Estelle Image
+	// Load Don Sprite
 	auto donImg = Graphics::SpriteSheet(queue, Graphics::Vulkan::Image::FromFile(queue, "data/don_capua.png").Unwrap(), Core::Math::Vec2u(2, 1));
 	auto don = imagepane->AppendChild<UI::Sprite>(donImg);
 	don->SetLocalPosition({200, 200});
@@ -71,6 +71,12 @@ int main()
 			return false;
 		},
 		[&](const auto& event) { don->GetSprite().SetSpriteIndex(don->GetSprite().GetSpriteIndex() + 1); return false; }));
+
+
+	// Load Estelle Button
+	auto estelleImg = Graphics::Vulkan::Image::FromFile(queue, "data/estelle.png").Unwrap();
+	auto estelle = pane.AppendChild<UI::Button>(estelleImg, [](){ Core::Logging::Info("Estelle"); });
+	estelle->SetLocalPosition({400, 400});
 
 
 	UI::Frame frame(std::move(pane));

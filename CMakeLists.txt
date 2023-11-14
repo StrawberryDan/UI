@@ -25,6 +25,7 @@ if (NOT TARGET StrawberryUI)
     add_library(StrawberryUI STATIC
 			src/Strawberry/UI/Text.cpp
 			src/Strawberry/UI/Text.hpp
+            src/Strawberry/UI/Button.cpp
             src/Strawberry/UI/Button.hpp
             src/Strawberry/UI/CallbackEventListener.cpp
             src/Strawberry/UI/CallbackEventListener.hpp
