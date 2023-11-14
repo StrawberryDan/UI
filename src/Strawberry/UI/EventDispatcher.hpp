@@ -19,14 +19,14 @@ namespace Strawberry::UI
 		EventDispatcher(Frame& frame, Node& node);
 
 
-		void Dispatch(const Graphics::Window::Event& event);
+		bool Dispatch(const Graphics::Window::Event& event);
 
 
 	protected:
-		void Dispatch(const Graphics::Window::Events::Key& event);
-		void Dispatch(const Graphics::Window::Events::Text& event);
-		void Dispatch(const Graphics::Window::Events::MouseButton& event);
-		void Dispatch(const Graphics::Window::Events::MouseMove& event);
+		bool Dispatch(const Graphics::Window::Events::Key& event);
+		bool Dispatch(const Graphics::Window::Events::Text& event);
+		bool Dispatch(const Graphics::Window::Events::MouseButton& event);
+		bool Dispatch(const Graphics::Window::Events::MouseMove& event);
 
 
 		Core::Optional<Node*> FindNodeAtPoint(Core::Math::Vec2f screenPosition);

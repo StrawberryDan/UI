@@ -12,7 +12,9 @@ namespace Strawberry::UI
 {
 	Image::Image(Graphics::Vulkan::Image& image)
 		: mImage(image.GetReflexivePointer())
-	{}
+	{
+		SetLocalSize(image.GetSize().AsType<float>().AsSize<2>());
+	}
 
 
 	void Image::Render(Renderer& renderer)

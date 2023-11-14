@@ -20,7 +20,7 @@ namespace Strawberry::UI
 		function(*this);
 		for (auto& child : mChildren)
 		{
-			child->Visit(function);
+			child->PreVisit(function);
 		}
 	}
 
@@ -29,7 +29,7 @@ namespace Strawberry::UI
 	{
 		for (auto& child : mChildren)
 		{
-			child->Visit(function);
+			child->PostVisit(function);
 		}
 		function(*this);
 	}

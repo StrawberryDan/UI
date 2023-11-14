@@ -43,6 +43,9 @@ namespace Strawberry::UI
 		}
 
 
+		bool Dispatch(const Graphics::Window::Event& event);
+
+
 	protected:
 		Core::ReflexivePointer<Node> GetFocus();
 		void SetFocus(Node& node);

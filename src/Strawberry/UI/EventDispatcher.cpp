@@ -16,31 +16,33 @@ namespace Strawberry::UI
 	{}
 
 
-	void EventDispatcher::Dispatch(const Graphics::Window::Event& event)
+	bool EventDispatcher::Dispatch(const Graphics::Window::Event& event)
 	{
 		if (auto key = event.Value<Graphics::Window::Events::Key>())
 		{
-			Dispatch(key.Value());
+			return Dispatch(key.Value());
 		}
 
 		if (auto text = event.Value<Graphics::Window::Events::Text>())
 		{
-			Dispatch(text.Value());
+			return Dispatch(text.Value());
 		}
 
 		if (auto mouseButton = event.Value<Graphics::Window::Events::MouseButton>())
 		{
-			Dispatch(mouseButton.Value());
+			return Dispatch(mouseButton.Value());
 		}
 
 		if (auto mouseMoveEvent = event.Value<Graphics::Window::Events::MouseMove>())
 		{
-			Dispatch(mouseMoveEvent.Value());
+			return Dispatch(mouseMoveEvent.Value());
 		}
+
+		return true;
 	}
 
 
-	void EventDispatcher::Dispatch(const Graphics::Window::Events::Key& event)
+	bool EventDispatcher::Dispatch(const Graphics::Window::Events::Key& event)
 	{
 		if (auto focus = mFrame->GetFocus())
 		{
@@ -51,16 +53,18 @@ namespace Strawberry::UI
 				for (auto listener : listeners)
 				{
 					bool continuePropagation = (*listener).Process(event);
-					if (!continuePropagation) return;
+					if (!continuePropagation) return false;
 				}
 
 				focus = focus->GetParent();
 			}
 		}
+
+		return true;
 	}
 
 
-	void EventDispatcher::Dispatch(const Graphics::Window::Events::Text& event)
+	bool EventDispatcher::Dispatch(const Graphics::Window::Events::Text& event)
 	{
 		if (auto focus = mFrame->GetFocus())
 		{
@@ -71,16 +75,18 @@ namespace Strawberry::UI
 				for (auto listener : listeners)
 				{
 					bool continuePropagation = (*listener).Process(event);
-					if (!continuePropagation) return;
+					if (!continuePropagation) return false;
 				}
 
 				focus = focus->GetParent();
 			}
 		}
+
+		return true;
 	}
 
 
-	void EventDispatcher::Dispatch(const Graphics::Window::Events::MouseButton& event)
+	bool EventDispatcher::Dispatch(const Graphics::Window::Events::MouseButton& event)
 	{
 		if (auto target = FindNodeAtPoint(event.position))
 		{
@@ -91,16 +97,18 @@ namespace Strawberry::UI
 				for (auto listener : listeners)
 				{
 					bool continuePropagation = (*listener).Process(event);
-					if (!continuePropagation) return;
+					if (!continuePropagation) return false;
 				}
 
 				target = target->GetParent();
 			}
 		}
+
+		return true;
 	}
 
 
-	void EventDispatcher::Dispatch(const Graphics::Window::Events::MouseMove& event)
+	bool EventDispatcher::Dispatch(const Graphics::Window::Events::MouseMove& event)
 	{
 		if (auto target = FindNodeAtPoint(event.position))
 		{
@@ -111,12 +119,14 @@ namespace Strawberry::UI
 				for (auto listener : listeners)
 				{
 					bool continuePropagation = (*listener).Process(event);
-					if (!continuePropagation) return;
+					if (!continuePropagation) return false;
 				}
 
 				target = target->GetParent();
 			}
 		}
+
+		return true;
 	}
 
 
@@ -125,7 +135,10 @@ namespace Strawberry::UI
 		Core::Optional<Node*> result;
 
 		mNode->PostVisit([&](Node& node) {
-			if (!result && node.ContainsPoint(screenPosition)) result = &node;
+			if (!result && node.ContainsPoint(screenPosition))
+			{
+				result = &node;
+			}
 		});
 
 		return result;

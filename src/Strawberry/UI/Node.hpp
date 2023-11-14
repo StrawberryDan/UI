@@ -38,7 +38,7 @@ namespace Strawberry::UI
 		virtual void Render(Renderer& renderer) {}
 
 
-		void Visit(const std::function<void(Node&)> function);
+		void Visit(const std::function<void(Node&)>& function);
 		void PreVisit(const std::function<void(Node&)>& function);
 		void PostVisit(const std::function<void(Node&)>& function);
 

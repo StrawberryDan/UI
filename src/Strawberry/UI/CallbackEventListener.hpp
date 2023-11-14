@@ -21,7 +21,7 @@ namespace Strawberry::UI
 		CallbackEventListener(EventListener::Predicate predicate, Callback callback);
 
 
-		virtual void Process(const Graphics::Window::Event& event) override;
+		virtual bool Process(const Graphics::Window::Event& event) override;
 
 
 	private:

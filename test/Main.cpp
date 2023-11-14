@@ -7,6 +7,8 @@
 #include "Strawberry/Graphics/Vulkan/Swapchain.hpp"
 #include "Strawberry/UI/Pane.hpp"
 #include "Strawberry/UI/Frame.hpp"
+#include "Strawberry/UI/CallbackEventListener.hpp"
+#include "Strawberry/Core/IO/Logging.hpp"
 
 
 using namespace Strawberry;
@@ -31,7 +33,12 @@ int main()
 
 	UI::Pane pane;
 	pane.SetLocalPosition({40, 40});
-	pane.SetLocalSize({167, 184});
+	pane.SetLocalSize({167 + 20, 184 + 20});
+	pane.AddEventListener(UI::CallbackEventListener(
+			[](const Graphics::Window::Event& x){ return x.IsType<Graphics::Window::Events::MouseButton>(); },
+			[](const auto& event) {
+				Core::Logging::Info("Square!"); return true;
+			}));
 
 	auto subpane = pane.AppendChild<UI::Text>(font);
 	subpane->SetLocalPosition({170, 0});
@@ -41,6 +48,12 @@ int main()
 	subpane->SetFontSize(75);
 
 	auto imagepane = pane.AppendChild<UI::Image>(cassius);
+	imagepane->SetLocalPosition({10, 10});
+	imagepane->AddEventListener(UI::CallbackEventListener(
+			[](const Graphics::Window::Event& x){ return x.IsType<Graphics::Window::Events::MouseButton>(); },
+			[](const auto& event) {
+				Core::Logging::Info("Cassius!!"); return true;
+			}));
 
 	UI::Frame frame(std::move(pane));
 
@@ -49,13 +62,7 @@ int main()
 		Graphics::Window::PollInput();
 		while (auto event = window.NextEvent())
 		{
-			if (auto keyEvent = event->Value<Graphics::Window::Events::Key>())
-			{
-				if (keyEvent->keyCode == Strawberry::Graphics::Input::KeyCode::LEFT)
-				{
-
-				}
-			}
+			frame.Dispatch(event.Value());
 		}
 
 		frame.Render(uiRenderer);
