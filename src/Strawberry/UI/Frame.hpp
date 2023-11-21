@@ -29,8 +29,9 @@ namespace Strawberry::UI
 		}
 
 
-		void Update(Core::Seconds deltaTime);
-		void Render(Renderer& renderer);
+		virtual bool Dispatch(const Graphics::Window::Event& event);
+		virtual void Update(Core::Seconds deltaTime);
+		virtual void Render(Renderer& renderer);
 
 
 		uint32_t GetRootCount() const;
@@ -41,9 +42,6 @@ namespace Strawberry::UI
 			using NodeType = std::decay_t<decltype(node)>;
 			return static_cast<decltype(node)*>(AddRoot(std::make_unique<NodeType>(std::move(node))));
 		}
-
-
-		bool Dispatch(const Graphics::Window::Event& event);
 
 
 		bool IsVisible() const;
