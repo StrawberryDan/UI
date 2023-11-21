@@ -66,7 +66,7 @@ namespace Strawberry::UI
 		if (mId == id) return this;
 
 		// Do depth first search
-		for (auto child : mChildren)
+		for (const auto& child : mChildren)
 		{
 			if (auto result = child->FindById(id))
 			{
