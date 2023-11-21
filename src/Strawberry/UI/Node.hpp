@@ -43,6 +43,14 @@ namespace Strawberry::UI
 		void PostVisit(const std::function<void(Node&)>& function);
 
 
+		[[nodiscard]] Core::Optional<std::string> GetId() const;
+		void SetId(const std::string& id);
+		void RemoveId();
+
+
+		Core::Optional<Node*> FindById(std::string id);
+
+
 		[[nodiscard]] Core::ReflexivePointer<Node> GetParent() const;
 
 
@@ -99,6 +107,9 @@ namespace Strawberry::UI
 
 
 	private:
+		Core::Optional<std::string> mId;
+
+
 		Core::ReflexivePointer<Node> mParent;
 		std::vector<std::shared_ptr<Node>> mChildren;
 

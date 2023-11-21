@@ -42,6 +42,43 @@ namespace Strawberry::UI
 	}
 
 
+	Core::Optional<std::string> Node::GetId() const
+	{
+		return mId;
+	}
+
+
+	void Node::SetId(const std::string& id)
+	{
+		mId = id;
+	}
+
+
+	void Node::RemoveId()
+	{
+		mId.Reset();
+	}
+
+
+	Core::Optional<Node*> Node::FindById(std::string id)
+	{
+		// Check ourselves
+		if (mId == id) return this;
+
+		// Do depth first search
+		for (auto child : mChildren)
+		{
+			if (auto result = child->FindById(id))
+			{
+				return result;
+			}
+		}
+
+		// Nothing found
+		return Core::NullOpt;
+	}
+
+
 	Core::ReflexivePointer<Node> Node::GetParent() const
 	{
 		return mParent;
