@@ -136,7 +136,8 @@ namespace Strawberry::UI
 		Core::Optional<Node*> result;
 
 		mNode->PostVisit([&](Node& node) {
-			if ((!result || result->GetDepth() < node.GetDepth()) && node.IsVisible() && node.ContainsPoint(screenPosition))
+			const bool isAncestor = result && result->HasAncestor(node);
+			if (!isAncestor && node.IsVisible() && node.ContainsPoint(screenPosition))
 			{
 				result = &node;
 			}
