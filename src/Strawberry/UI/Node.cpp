@@ -141,7 +141,8 @@ namespace Strawberry::UI
 	Core::Math::Vec2f Node::GetPosition() const
 	{
 		auto parentPosition = mParent ? mParent->GetPosition() : Core::Math::Vec2f();
-		return parentPosition + GetLocalPosition();
+		auto parentScale = mParent ? mParent->GetLocalScale() : Core::Math::Vec2f(1.0f, 1.0f);
+		return parentPosition + parentScale * GetLocalPosition();
 	}
 
 
