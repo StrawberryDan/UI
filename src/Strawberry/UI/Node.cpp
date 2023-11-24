@@ -79,6 +79,19 @@ namespace Strawberry::UI
 	}
 
 
+	bool Node::HasAncestor(Node& node)
+	{
+		bool hasAncestor = false;
+
+		node.Visit([&, this](Node& child)
+		{
+			if (static_cast<Node*>(this) == &child) hasAncestor = true;
+		});
+
+		return hasAncestor;
+	}
+
+
 	Core::ReflexivePointer<Node> Node::GetParent() const
 	{
 		return mParent;

@@ -51,6 +51,9 @@ namespace Strawberry::UI
 		Core::Optional<Node*> FindById(std::string id);
 
 
+		[[nodiscard]] bool HasAncestor(Node& node);
+
+
 		[[nodiscard]] Core::ReflexivePointer<Node> GetParent() const;
 
 
