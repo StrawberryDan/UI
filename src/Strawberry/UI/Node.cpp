@@ -138,6 +138,12 @@ namespace Strawberry::UI
 	}
 
 
+	void Node::ClearChildren()
+	{
+		mChildren.clear();
+	}
+
+
 	Core::Math::Vec2f Node::GetPosition() const
 	{
 		auto parentPosition = mParent ? mParent->GetPosition() : Core::Math::Vec2f();

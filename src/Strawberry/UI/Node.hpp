@@ -75,6 +75,9 @@ namespace Strawberry::UI
 		std::shared_ptr<Node> InsertChild(size_t index, std::shared_ptr<Node> node);
 
 
+		void ClearChildren();
+
+
 		void AddEventListener(std::unique_ptr<EventListener> eventListener);
 		void AddEventListener(std::derived_from<EventListener> auto eventListener)
 		{
