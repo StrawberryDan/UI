@@ -14,7 +14,10 @@ namespace Strawberry::UI
         : public CallbackEventListener
     {
     public:
-        MouseButtonEventListener(Graphics::Input::MouseButton button, Graphics::Input::KeyAction action, UI::CallbackEventListener::Callback callback);
-        MouseButtonEventListener(UI::CallbackEventListener::Callback callback);
+        using Callback = std::function<void()>;
+
+
+        MouseButtonEventListener(Graphics::Input::MouseButton button, Graphics::Input::KeyAction action, Callback callback);
+        MouseButtonEventListener(Callback callback);
     };
 }
