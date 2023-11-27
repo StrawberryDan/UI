@@ -19,6 +19,22 @@ namespace Strawberry::UI
 	}
 
 
+	Text::Text(const Graphics::FontFace& fontFace, unsigned fontSize, const std::string& string)
+		: Text(fontFace)
+	{
+		SetFontSize(fontSize);
+		SetString(string);
+	}
+
+
+	Text::Text(const Graphics::FontFace& fontFace, unsigned fontSize, const std::u32string& string)
+		: Text(fontFace)
+	{
+		SetFontSize(fontSize);
+		SetString(string);
+	}
+
+
 	void Text::Render(Strawberry::UI::Renderer& renderer)
 	{
 		if (IsVisible())
