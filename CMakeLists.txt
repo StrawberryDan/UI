@@ -48,6 +48,8 @@ if (NOT TARGET StrawberryUI)
             src/Strawberry/UI/Rendering/Renderer.hpp
             src/Strawberry/UI/Sprite.hpp
             src/Strawberry/UI/Sprite.cpp
+            src/Strawberry/UI/MouseButtonEventListener.hpp
+            src/Strawberry/UI/MouseButtonEventListener.cpp
     )
     target_link_libraries(StrawberryUI PUBLIC StrawberryCore StrawberryGraphics StrawberryAudio)
     target_include_directories(StrawberryUI PUBLIC src)
