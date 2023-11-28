@@ -3,7 +3,7 @@
 //----------------------------------------------------------------------------------------------------------------------
 #include "EventDispatcher.hpp"
 #include "Frame.hpp"
-#include "SizedNode.hpp"
+#include "RectangularNode.hpp"
 
 
 //======================================================================================================================
@@ -137,7 +137,7 @@ namespace Strawberry::UI
 		Core::Optional<Node*> result;
 
 		mNode->PostVisit([&](Node& node) {
-			auto asSized = dynamic_cast<UI::SizedNode*>(&node);
+			auto asSized = dynamic_cast<UI::RectangularNode*>(&node);
 			if (!asSized) return;
 
 			const bool isAncestor = result && result->HasAncestor(node);

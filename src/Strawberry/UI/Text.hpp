@@ -4,7 +4,7 @@
 //======================================================================================================================
 //  Includes
 //----------------------------------------------------------------------------------------------------------------------
-#include "SizedNode.hpp"
+#include "RectangularNode.hpp"
 // Strawberry Graphics
 #include "Strawberry/Graphics/2D/FontFace.hpp"
 // Standard Library
@@ -18,7 +18,7 @@
 namespace Strawberry::UI
 {
 	class Text
-		: public SizedNode
+		: public RectangularNode
 	{
 	public:
 		Text(const Graphics::FontFace& fontFace);

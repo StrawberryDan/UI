@@ -2,7 +2,7 @@
 //======================================================================================================================
 //  Includes
 //----------------------------------------------------------------------------------------------------------------------
-#include "SizedNode.hpp"
+#include "RectangularNode.hpp"
 // Strawberry Graphics
 #include "Strawberry/Graphics/Vulkan/Image.hpp"
 
@@ -13,7 +13,7 @@
 namespace Strawberry::UI
 {
 	class Button
-		: public SizedNode
+		: public RectangularNode
 	{
 	public:
 		using Callback = std::function<void()>;

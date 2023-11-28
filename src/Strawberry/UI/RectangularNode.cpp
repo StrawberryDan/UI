@@ -1,7 +1,7 @@
 //======================================================================================================================
 //  Includes
 //----------------------------------------------------------------------------------------------------------------------
-#include "SizedNode.hpp"
+#include "RectangularNode.hpp"
 
 
 //======================================================================================================================
@@ -9,25 +9,25 @@
 //----------------------------------------------------------------------------------------------------------------------
 namespace Strawberry::UI
 {
-	Core::Math::Vec2f SizedNode::GetSize() const
+	Core::Math::Vec2f RectangularNode::GetSize() const
 	{
 		return GetScale() * GetLocalSize();
 	}
 
 
-	Core::Math::Vec2f SizedNode::GetLocalSize() const
+	Core::Math::Vec2f RectangularNode::GetLocalSize() const
 	{
 		return mLocalSize;
 	}
 
 
-	void SizedNode::SetLocalSize(Core::Math::Vec2f size)
+	void RectangularNode::SetLocalSize(Core::Math::Vec2f size)
 	{
 		mLocalSize = size;
 	}
 
 
-	bool SizedNode::ContainsPoint(Core::Math::Vec2f screenPosition)
+	bool RectangularNode::ContainsPoint(Core::Math::Vec2f screenPosition)
 	{
 		auto relative = screenPosition - GetPosition();
 		const Core::Math::Vec2f size = GetSize();

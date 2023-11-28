@@ -10,7 +10,7 @@
 //----------------------------------------------------------------------------------------------------------------------
 namespace Strawberry::UI
 {
-    class SizedNode
+    class RectangularNode
         : public Node
     {
     public:

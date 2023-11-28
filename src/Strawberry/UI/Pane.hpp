@@ -1,13 +1,13 @@
 #pragma once
 
 
-#include "SizedNode.hpp"
+#include "RectangularNode.hpp"
 
 
 namespace Strawberry::UI
 {
 	class Pane
-		: public SizedNode
+		: public RectangularNode
 	{
 	public:
 		void Render(Renderer& renderer) override;

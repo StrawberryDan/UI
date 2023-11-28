@@ -2,7 +2,7 @@
 //======================================================================================================================
 //  Includes
 //----------------------------------------------------------------------------------------------------------------------
-#include "SizedNode.hpp"
+#include "RectangularNode.hpp"
 // Strawberry Graphics
 #include "Strawberry/Graphics/2D/Sprite.hpp"
 
@@ -13,7 +13,7 @@
 namespace Strawberry::UI
 {
 	class Sprite
-		: public SizedNode
+		: public RectangularNode
 	{
 	public:
 		Sprite(Graphics::Sprite sprite);
