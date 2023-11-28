@@ -22,8 +22,9 @@ namespace Strawberry::UI
 	{
 	public:
 		Text(const Graphics::FontFace& fontFace);
-		Text(const Graphics::FontFace& fontFace, unsigned int fontSize, const std::string& string = "");
-		Text(const Graphics::FontFace& fontFace, unsigned int fontSize, const std::u32string& string = U"");
+		Text(const Graphics::FontFace& fontFace, unsigned int fontSize);
+		Text(const Graphics::FontFace& fontFace, unsigned int fontSize, const std::string& string);
+		Text(const Graphics::FontFace& fontFace, unsigned int fontSize, const std::u32string& string);
 
 
 		void Render(Renderer& renderer) override;

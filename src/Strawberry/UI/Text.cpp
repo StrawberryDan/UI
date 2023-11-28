@@ -14,23 +14,26 @@ namespace Strawberry::UI
 {
 	Text::Text(const Graphics::FontFace& fontFace)
 		: mFontFace(fontFace)
+	{}
+
+
+	Text::Text(const Graphics::FontFace& fontFace, unsigned fontSize)
+		: Text(fontFace)
 	{
-		SetFontSize(GetFontSize());
+		SetFontSize(fontSize);
 	}
 
 
 	Text::Text(const Graphics::FontFace& fontFace, unsigned fontSize, const std::string& string)
-		: Text(fontFace)
+		: Text(fontFace, fontSize)
 	{
-		SetFontSize(fontSize);
 		SetString(string);
 	}
 
 
 	Text::Text(const Graphics::FontFace& fontFace, unsigned fontSize, const std::u32string& string)
-		: Text(fontFace)
+		: Text(fontFace, fontSize)
 	{
-		SetFontSize(fontSize);
 		SetString(string);
 	}
 
