@@ -19,7 +19,7 @@ namespace Strawberry::UI
 			return event.IsType<Graphics::Window::Events::MouseButton>()
 			       && event.Value<Graphics::Window::Events::MouseButton>()->button == button
 			       && event.Value<Graphics::Window::Events::MouseButton>()->action == action;
-		}, [=](const Graphics::Window::Event&){ callback(); return false; })
+		}, [=](const Graphics::Window::Event& e){ callback(*e.Value<Graphics::Window::Events::MouseButton>()); return false; })
 	{}
 
 
