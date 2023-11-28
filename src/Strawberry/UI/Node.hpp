@@ -58,7 +58,7 @@ namespace Strawberry::UI
 
 
 		template <std::derived_from<Node> T>
-		[[nodiscard]] T* GetParent() const
+		[[nodiscard]] Core::Optional<T*> GetParent() const
 		{
 			return dynamic_cast<T*>(GetParent().Get());
 		}
