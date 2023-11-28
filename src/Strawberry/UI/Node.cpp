@@ -173,7 +173,7 @@ namespace Strawberry::UI
 
 	void Node::SetLocalPosition(Core::Math::Vec2f position)
 	{
-		mLocalPosition = position;
+		mLocalPosition = position.Map([](auto x) { return std::roundf(x); });
 	}
 
 
