@@ -158,18 +158,6 @@ namespace Strawberry::UI
 	}
 
 
-	Core::Math::Vec2f Node::GetSize() const
-	{
-		return GetScale() * GetLocalSize();
-	}
-
-
-	Core::Math::Vec2f Node::GetLocalSize() const
-	{
-		return mLocalSize;
-	}
-
-
 	Core::Math::Vec2f Node::GetScale() const
 	{
 		auto parentScale = mParent ? mParent->GetScale() : Core::Math::Vec2f(1.0f, 1.0f);
@@ -189,12 +177,6 @@ namespace Strawberry::UI
 	}
 
 
-	void Node::SetLocalSize(Core::Math::Vec2f size)
-	{
-		mLocalSize = size;
-	}
-
-
 	void Node::SetLocalScale(Core::Math::Vec2f scale)
 	{
 		mLocalScale = scale;
@@ -210,14 +192,6 @@ namespace Strawberry::UI
 	void Node::SetVisible(bool visible)
 	{
 		mVisible = visible;
-	}
-
-
-	bool Node::ContainsPoint(Core::Math::Vec2f screenPosition)
-	{
-		auto relative = screenPosition - GetPosition();
-		const Core::Math::Vec2f size = GetSize();
-		return relative[0] >= 0.0f && relative[0] <= size[0] && relative[1] >= 0.0f && relative[1] <= size[1];
 	}
 
 

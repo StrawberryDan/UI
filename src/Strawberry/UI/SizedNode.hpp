@@ -2,9 +2,7 @@
 //======================================================================================================================
 //  Includes
 //----------------------------------------------------------------------------------------------------------------------
-#include "SizedNode.hpp"
-// Strawberry Graphics
-#include "Strawberry/Graphics/Vulkan/Image.hpp"
+#include "Node.hpp"
 
 
 //======================================================================================================================
@@ -12,28 +10,21 @@
 //----------------------------------------------------------------------------------------------------------------------
 namespace Strawberry::UI
 {
-	class Button
-		: public SizedNode
-	{
-	public:
-		using Callback = std::function<void()>;
+    class SizedNode
+        : public Node
+    {
+    public:
+        [[nodiscard]] Core::Math::Vec2f GetSize() const;
+        [[nodiscard]] Core::Math::Vec2f GetLocalSize() const;
 
 
-		Button(Graphics::Vulkan::Image& image);
-		Button(Graphics::Vulkan::Image& image, Callback callback);
+        void SetLocalSize(Core::Math::Vec2f size);
 
 
-		void Render(Renderer& renderer) override;
+        virtual bool ContainsPoint(Core::Math::Vec2f screenPosition);
 
 
-		Core::ReflexivePointer<Graphics::Vulkan::Image> GetImage() const { return mImage; }
-
-
-		void SetCallback(Callback callback);
-
-
-	private:
-		Core::ReflexivePointer<Graphics::Vulkan::Image> mImage;
-		Callback mCallback;
-	};
+    private:
+        Core::Math::Vec2f mLocalSize = Core::Math::Vec2f(0.0f, 0.0f);
+    };
 }

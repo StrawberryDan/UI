@@ -43,7 +43,7 @@ namespace Strawberry::UI
 
 	bool Image::ContainsPoint(Core::Math::Vec2f screenPosition)
 	{
-		if (!Node::ContainsPoint(screenPosition)) return false;
+		if (!SizedNode::ContainsPoint(screenPosition)) return false;
 
 		Core::AssertEQ(mImage->GetFormat(), VK_FORMAT_R8G8B8A8_SRGB);
 		Core::Math::Vec2i pixel = (screenPosition - GetPosition())

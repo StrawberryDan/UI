@@ -3,7 +3,7 @@
 //  Includes
 //----------------------------------------------------------------------------------------------------------------------
 #include "Image.hpp"
-#include "Node.hpp"
+#include "SizedNode.hpp"
 // Strawberry Graphics
 #include "Strawberry/Graphics/Vulkan/Image.hpp"
 // Strawberry Core
@@ -18,7 +18,7 @@ namespace Strawberry::UI
 
 
 	class Image
-		: public Node
+		: public SizedNode
 	{
 	public:
 		Image(Graphics::Vulkan::Image& image);

@@ -58,7 +58,7 @@ namespace Strawberry::UI
 
 	bool Sprite::ContainsPoint(Core::Math::Vec2f screenPosition)
 	{
-		if (!Node::ContainsPoint(screenPosition)) return false;
+		if (!SizedNode::ContainsPoint(screenPosition)) return false;
 
 
 		Core::Math::Vec2f relative = screenPosition - GetPosition();

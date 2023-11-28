@@ -1,37 +1,36 @@
-#pragma once
 //======================================================================================================================
 //  Includes
 //----------------------------------------------------------------------------------------------------------------------
 #include "SizedNode.hpp"
-// Strawberry Graphics
-#include "Strawberry/Graphics/2D/Sprite.hpp"
 
 
 //======================================================================================================================
-//  Class Declaration
+//  Method Definitions
 //----------------------------------------------------------------------------------------------------------------------
 namespace Strawberry::UI
 {
-	class Sprite
-		: public SizedNode
+	Core::Math::Vec2f SizedNode::GetSize() const
 	{
-	public:
-		Sprite(Graphics::Sprite sprite);
-		Sprite(Graphics::SpriteSheet& spriteSheet);
+		return GetScale() * GetLocalSize();
+	}
 
 
-		void Render(Renderer& renderer) override;
+	Core::Math::Vec2f SizedNode::GetLocalSize() const
+	{
+		return mLocalSize;
+	}
 
 
-		bool ContainsPoint(Core::Math::Vec2f screenPosition) override;
+	void SizedNode::SetLocalSize(Core::Math::Vec2f size)
+	{
+		mLocalSize = size;
+	}
 
 
-		Graphics::Sprite& GetSprite();
-		const Graphics::Sprite& GetSprite() const;
-		void SetSprite(Graphics::Sprite sprite);
-
-
-	private:
-		Graphics::Sprite mSprite;
-	};
+	bool SizedNode::ContainsPoint(Core::Math::Vec2f screenPosition)
+	{
+		auto relative = screenPosition - GetPosition();
+		const Core::Math::Vec2f size = GetSize();
+		return relative[0] >= 0.0f && relative[0] <= size[0] && relative[1] >= 0.0f && relative[1] <= size[1];
+	}
 }

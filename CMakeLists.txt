@@ -50,6 +50,8 @@ if (NOT TARGET StrawberryUI)
             src/Strawberry/UI/Sprite.cpp
             src/Strawberry/UI/MouseButtonEventListener.hpp
             src/Strawberry/UI/MouseButtonEventListener.cpp
+            src/Strawberry/UI/SizedNode.hpp
+            src/Strawberry/UI/SizedNode.cpp
     )
     target_link_libraries(StrawberryUI PUBLIC StrawberryCore StrawberryGraphics StrawberryAudio)
     target_include_directories(StrawberryUI PUBLIC src)

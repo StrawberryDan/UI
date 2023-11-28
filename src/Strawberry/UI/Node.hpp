@@ -57,6 +57,13 @@ namespace Strawberry::UI
 		[[nodiscard]] Core::ReflexivePointer<Node> GetParent() const;
 
 
+		template <std::derived_from<Node> T>
+		[[nodiscard]] T* GetParent() const
+		{
+			return dynamic_cast<T*>(GetParent().Get());
+		}
+
+
 		[[nodiscard]] size_t GetChildCount() const;
 
 		[[nodiscard]] std::shared_ptr<Node> GetChild(size_t index);
@@ -90,23 +97,16 @@ namespace Strawberry::UI
 		[[nodiscard]] Core::Math::Vec2f GetPosition() const;
 		[[nodiscard]] Core::Math::Vec2f GetLocalPosition() const;
 
-		[[nodiscard]] Core::Math::Vec2f GetSize() const;
-		[[nodiscard]] Core::Math::Vec2f GetLocalSize() const;
-
 		[[nodiscard]] Core::Math::Vec2f GetScale() const;
 		[[nodiscard]] Core::Math::Vec2f GetLocalScale() const;
 
 
 		void SetLocalPosition(Core::Math::Vec2f position);
-		void SetLocalSize(Core::Math::Vec2f size);
 		void SetLocalScale(Core::Math::Vec2f scale);
 
 
 		bool IsVisible() const;
 		void SetVisible(bool visible);
-
-
-		virtual bool ContainsPoint(Core::Math::Vec2f screenPosition);
 
 
 		uint32_t GetDepth() const;
@@ -122,7 +122,6 @@ namespace Strawberry::UI
 		std::vector<std::unique_ptr<EventListener>> mEventListeners;
 
 		Core::Math::Vec2f mLocalPosition = Core::Math::Vec2f(0.0f, 0.0f);
-		Core::Math::Vec2f mLocalSize     = Core::Math::Vec2f(0.0f, 0.0f);
 		Core::Math::Vec2f mLocalScale    = Core::Math::Vec2f(1.0f, 1.0f);
 
 		bool mVisible = true;

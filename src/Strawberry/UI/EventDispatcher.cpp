@@ -3,6 +3,7 @@
 //----------------------------------------------------------------------------------------------------------------------
 #include "EventDispatcher.hpp"
 #include "Frame.hpp"
+#include "SizedNode.hpp"
 
 
 //======================================================================================================================
@@ -136,8 +137,11 @@ namespace Strawberry::UI
 		Core::Optional<Node*> result;
 
 		mNode->PostVisit([&](Node& node) {
+			auto asSized = dynamic_cast<UI::SizedNode*>(&node);
+			if (!asSized) return;
+
 			const bool isAncestor = result && result->HasAncestor(node);
-			if (!isAncestor && node.IsVisible() && node.ContainsPoint(screenPosition))
+			if (!isAncestor && asSized->IsVisible() && asSized->ContainsPoint(screenPosition))
 			{
 				result = &node;
 			}
