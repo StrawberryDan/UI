@@ -33,4 +33,11 @@ namespace Strawberry::UI
 		const Core::Math::Vec2f size = GetSize();
 		return relative[0] >= 0.0f && relative[0] <= size[0] && relative[1] >= 0.0f && relative[1] <= size[1];
 	}
+
+
+	void RectangularNode::CenterInParent()
+	{
+		Core::Assert(GetParent<RectangularNode>().HasValue());
+		SetLocalPosition(GetParent<RectangularNode>()->GetSize() / 2.0f - GetSize() / 2.0f);
+	}
 }

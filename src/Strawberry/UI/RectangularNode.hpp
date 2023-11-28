@@ -24,6 +24,9 @@ namespace Strawberry::UI
         virtual bool ContainsPoint(Core::Math::Vec2f screenPosition);
 
 
+        void CenterInParent();
+
+
     private:
         Core::Math::Vec2f mLocalSize = Core::Math::Vec2f(0.0f, 0.0f);
     };
