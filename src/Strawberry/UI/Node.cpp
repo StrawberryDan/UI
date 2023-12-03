@@ -9,6 +9,15 @@ namespace Strawberry::UI
 	{}
 
 
+	void Node::Update(Core::Seconds deltaTime)
+	{
+		for (auto& animation : mActiveAnimations)
+		{
+			animation->Update(deltaTime, *this);
+		}
+	}
+
+
 	void Node::Render(Renderer& renderer)
 	{
 		for (int i = 0; i < GetChildCount(); i++)

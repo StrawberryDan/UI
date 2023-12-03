@@ -2,6 +2,7 @@
 
 
 #include "EventListener.hpp"
+#include "Animation.hpp"
 // Strawberry Graphics
 #include "Strawberry/Graphics/Event.hpp"
 // Strawberry Core
@@ -32,7 +33,7 @@ namespace Strawberry::UI
 		virtual ~Node() = default;
 
 
-		virtual void Update(Core::Seconds deltaTime) {}
+		virtual void Update(Core::Seconds deltaTime);
 
 
 		virtual void Render(Renderer& renderer);
@@ -112,6 +113,9 @@ namespace Strawberry::UI
 		uint32_t GetDepth() const;
 
 
+		void AddAnimation(Animation&& animation);
+
+
 	private:
 		Core::Optional<std::string> mId;
 
@@ -125,5 +129,7 @@ namespace Strawberry::UI
 		Core::Math::Vec2f mLocalScale    = Core::Math::Vec2f(1.0f, 1.0f);
 
 		bool mVisible = true;
+
+		std::vector<std::unique_ptr<Animation>> mActiveAnimations;
 	};
 }

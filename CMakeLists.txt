@@ -52,6 +52,7 @@ if (NOT TARGET StrawberryUI)
             src/Strawberry/UI/MouseButtonEventListener.cpp
             src/Strawberry/UI/RectangularNode.hpp
             src/Strawberry/UI/RectangularNode.cpp
+            src/Strawberry/UI/Animation.hpp
     )
     target_link_libraries(StrawberryUI PUBLIC StrawberryCore StrawberryGraphics StrawberryAudio)
     target_include_directories(StrawberryUI PUBLIC src)
