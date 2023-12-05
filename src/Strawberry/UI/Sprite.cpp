@@ -26,6 +26,12 @@ namespace Strawberry::UI
 	}
 
 
+	void Sprite::Update(Core::Seconds deltaTime)
+	{
+		RectangularNode::Update(deltaTime);
+	}
+
+
 	void Sprite::Render(Renderer& renderer)
 	{
 		if (IsVisible())

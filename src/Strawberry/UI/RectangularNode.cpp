@@ -9,6 +9,12 @@
 //----------------------------------------------------------------------------------------------------------------------
 namespace Strawberry::UI
 {
+	void RectangularNode::Update(Core::Seconds deltaTime)
+	{
+		Node::Update(deltaTime);
+	}
+
+
 	Core::Math::Vec2f RectangularNode::GetSize() const
 	{
 		return GetScale() * GetLocalSize();

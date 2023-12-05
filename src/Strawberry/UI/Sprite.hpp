@@ -20,6 +20,7 @@ namespace Strawberry::UI
 		Sprite(Graphics::SpriteSheet& spriteSheet);
 
 
+		void Update(Core::Seconds deltaTime) override;
 		void Render(Renderer& renderer) override;
 
 

@@ -2,7 +2,7 @@
 
 
 #include "EventListener.hpp"
-#include "Animation.hpp"
+#include "Animation/Animation.hpp"
 // Strawberry Graphics
 #include "Strawberry/Graphics/Event.hpp"
 // Strawberry Core

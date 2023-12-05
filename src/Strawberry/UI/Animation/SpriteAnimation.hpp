@@ -2,9 +2,10 @@
 
 
 //======================================================================================================================
-//  Includes
+//  Include
 //----------------------------------------------------------------------------------------------------------------------
-#include <memory>
+#include "Animation.hpp"
+#include "Strawberry/Core/Timing/Clock.hpp"
 
 
 //======================================================================================================================
@@ -12,31 +13,22 @@
 //----------------------------------------------------------------------------------------------------------------------
 namespace Strawberry::UI
 {
-	class Node;
-
-
-	class Animation
+	class SpriteAnimation
+		: public Animation
 	{
 	public:
-		virtual ~Animation() = default;
+		SpriteAnimation(const std::vector<unsigned int>& frames, float frameRate);
+		SpriteAnimation(unsigned int startIndex, unsigned int frameCount, float frameRate);
 
 
-		virtual void Update(float deltaTime, Node& node) = 0;
-		virtual bool IsFinished() = 0;
-
-
-		std::unique_ptr<Animation> GetNextAnimation();
-
-
-	protected:
-		template <std::derived_from<Animation> T>
-		void SetNextAnimation(T&& animation)
-		{
-			mNextAnimation = std::make_unique<T>(std::forward<T>(animation));
-		}
+		void Update(float deltaTime, Node& node) override;
+		bool IsFinished() override;
 
 
 	private:
-		std::unique_ptr<Animation> mNextAnimation;
+		unsigned int              mFrameIndex = 0;
+		float                     mFrameTime;
+		std::vector<unsigned int> mFrames;
+		Core::Clock               mFrameClock;
 	};
 }

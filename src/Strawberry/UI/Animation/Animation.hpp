@@ -1,8 +1,11 @@
 #pragma once
+
+
 //======================================================================================================================
 //  Includes
 //----------------------------------------------------------------------------------------------------------------------
-#include "Node.hpp"
+#include <functional>
+#include <memory>
 
 
 //======================================================================================================================
@@ -10,27 +13,35 @@
 //----------------------------------------------------------------------------------------------------------------------
 namespace Strawberry::UI
 {
-    class RectangularNode
-        : public Node
-    {
-    public:
-        void Update(Core::Seconds deltaTime) override;
+	class Node;
 
 
-        [[nodiscard]] Core::Math::Vec2f GetSize() const;
-        [[nodiscard]] Core::Math::Vec2f GetLocalSize() const;
+	class Animation
+	{
+	public:
+		virtual ~Animation() = default;
 
 
-        void SetLocalSize(Core::Math::Vec2f size);
+		virtual void Update(float deltaTime, Node& node) = 0;
+		virtual bool IsFinished() = 0;
 
 
-        virtual bool ContainsPoint(Core::Math::Vec2f screenPosition);
+		std::unique_ptr<Animation> GetNextAnimation();
 
 
-        void CenterInParent();
+		void DoCallback();
 
 
-    private:
-        Core::Math::Vec2f mLocalSize = Core::Math::Vec2f(0.0f, 0.0f);
-    };
+	protected:
+		template <std::derived_from<Animation> T>
+		void SetNextAnimation(T&& animation)
+		{
+			mNextAnimation = std::make_unique<T>(std::forward<T>(animation));
+		}
+
+
+	private:
+		std::unique_ptr<Animation> mNextAnimation;
+		std::function<void()>      mFinishCallback;
+	};
 }
