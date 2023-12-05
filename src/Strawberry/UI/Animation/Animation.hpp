@@ -29,6 +29,7 @@ namespace Strawberry::UI
 		std::unique_ptr<Animation> GetNextAnimation();
 
 
+		void SetCallback(std::function<void()> function);
 		void DoCallback();
 
 

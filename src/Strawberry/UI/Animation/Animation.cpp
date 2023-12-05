@@ -12,6 +12,12 @@ namespace Strawberry::UI
 	}
 
 
+	void Animation::SetCallback(std::function<void()> function)
+	{
+		mFinishCallback = std::move(function);
+	}
+
+
 	void Animation::DoCallback()
 	{
 		if (mFinishCallback) mFinishCallback();
