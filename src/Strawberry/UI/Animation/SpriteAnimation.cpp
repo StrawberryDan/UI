@@ -19,7 +19,8 @@ namespace Strawberry::UI
 
 
 	SpriteAnimation::SpriteAnimation(const std::vector<unsigned>& frames, float frameRate)
-		: mFrameTime(1.0f / frameRate)
+		: mFrameIndex(0)
+		, mFrameTime(1.0f / frameRate)
 		, mFrames(frames)
 	{
 		mFrames.shrink_to_fit();
@@ -38,16 +39,17 @@ namespace Strawberry::UI
 		auto time = mFrameClock.Restart();
 		while (time > mFrameTime)
 		{
-			mFrameIndex += 1;
+			mFrameIndex = std::min<unsigned int>(mFrames.size() - 1, mFrameIndex + 1);
 			time -= mFrameTime;
 		}
 
+		Core::Assert(mFrameIndex < mFrames.size());
 		dynamic_cast<Sprite*>(&node)->GetSprite().SetSpriteIndex(mFrames[mFrameIndex]);
 	}
 
 
 	bool SpriteAnimation::IsFinished()
 	{
-		return mFrameIndex >= mFrames.size();
+		return mFrameIndex >= mFrames.size() - 1;
 	}
 }

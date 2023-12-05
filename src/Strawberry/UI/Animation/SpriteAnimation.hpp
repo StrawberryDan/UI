@@ -26,7 +26,7 @@ namespace Strawberry::UI
 
 
 	private:
-		unsigned int              mFrameIndex = 0;
+		unsigned int              mFrameIndex;
 		float                     mFrameTime;
 		std::vector<unsigned int> mFrames;
 		Core::Clock               mFrameClock;
