@@ -1,6 +1,6 @@
 #include "SpriteAnimation.hpp"
-
 #include "Strawberry/UI/Sprite.hpp"
+#include <numeric>
 
 
 //======================================================================================================================
@@ -10,12 +10,9 @@ namespace Strawberry::UI
 {
 	static std::vector<unsigned int> FrameRangeToVector(unsigned int startIndex, unsigned int frameCount)
 	{
-		std::vector<unsigned int> frames;
-		frames.reserve(frameCount);
-		for (int i = startIndex; i < startIndex + frameCount; i++)
-		{
-			frames.emplace_back(i);
-		}
+
+		std::vector<unsigned int> frames(frameCount, 0);
+		std::iota(frames.begin(), frames.end(), startIndex);
 		Core::AssertEQ(frames.size(), frameCount);
 		return frames;
 	}
