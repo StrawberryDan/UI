@@ -46,7 +46,7 @@ namespace Strawberry::UI
 		commandBuffer.Draw(4);
 		commandBuffer.EndRenderPass();
 		commandBuffer.End();
-		GetQueue()->Submit(commandBuffer);
+		GetQueue()->Submit(std::move(commandBuffer));
 	}
 
 
