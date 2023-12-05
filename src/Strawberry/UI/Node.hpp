@@ -114,6 +114,7 @@ namespace Strawberry::UI
 
 
 		void AddAnimation(std::unique_ptr<Animation> animation);
+		bool IsAnimating() const;
 
 
 	private:

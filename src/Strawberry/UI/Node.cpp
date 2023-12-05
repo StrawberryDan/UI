@@ -242,6 +242,12 @@ namespace Strawberry::UI
 	}
 
 
+	bool Node::IsAnimating() const
+	{
+		return !mActiveAnimations.empty();
+	}
+
+
 	void Node::AddEventListener(std::unique_ptr<EventListener> eventListener)
 	{
 		mEventListeners.emplace_back(std::move(eventListener));
