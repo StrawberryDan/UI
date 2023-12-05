@@ -14,7 +14,20 @@ namespace Strawberry::UI
 		for (auto& animation : mActiveAnimations)
 		{
 			animation->Update(deltaTime, *this);
+
+			if (animation->IsFinished())
+			{
+				animation->DoCallback();
+
+				if (auto nextAnimation = animation->GetNextAnimation())
+				{
+					animation = std::move(nextAnimation);
+				}
+			}
 		}
+
+
+		erase_if(mActiveAnimations, [](auto& x) { return x->IsFinished(); });
 	}
 
 
