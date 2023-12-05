@@ -113,7 +113,7 @@ namespace Strawberry::UI
 		uint32_t GetDepth() const;
 
 
-		void AddAnimation(Animation&& animation);
+		void AddAnimation(std::unique_ptr<Animation> animation);
 
 
 	private:

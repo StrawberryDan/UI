@@ -2,6 +2,7 @@
 #include "EventListener.hpp"
 #include <Strawberry/Core/Assert.hpp>
 
+
 namespace Strawberry::UI
 {
 	Node::Node()
@@ -28,6 +29,12 @@ namespace Strawberry::UI
 
 
 		erase_if(mActiveAnimations, [](auto& x) { return x->IsFinished(); });
+
+
+		for (auto& child : mChildren)
+		{
+			child->Update(deltaTime);
+		}
 	}
 
 
@@ -226,6 +233,12 @@ namespace Strawberry::UI
 			++depth;
 		}
 		return depth;
+	}
+
+
+	void Node::AddAnimation(std::unique_ptr<Animation> animation)
+	{
+		mActiveAnimations.emplace_back(std::move(animation));
 	}
 
 
