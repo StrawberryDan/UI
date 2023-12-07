@@ -10,39 +10,62 @@
 //----------------------------------------------------------------------------------------------------------------------
 namespace Strawberry::UI
 {
-    enum class RelativePosition
-    {
-        Above,
-        Left,
-        Right,
-        Below,
-    };
+	enum class HorizontalAlignment
+	{
+		Left,
+		Center,
+		Right,
+	};
 
 
-    class RectangularNode
-        : public Node
-    {
-    public:
-        void Update(Core::Seconds deltaTime) override;
+	enum class VerticalAlignment
+	{
+		Top,
+		Center,
+		Bottom,
+	};
 
 
-        [[nodiscard]] Core::Math::Vec2f GetSize() const;
-        [[nodiscard]] Core::Math::Vec2f GetLocalSize() const;
+	enum class Anchor
+	{
+		North,
+		NorthEast,
+		East,
+		SouthEast,
+		South,
+		SouthWest,
+		West,
+		NorthWest,
+	};
 
 
-        void SetLocalSize(Core::Math::Vec2f size);
+	class RectangularNode
+			: public Node
+	{
+	public:
+		void Update(Core::Seconds deltaTime) override;
 
 
-        virtual bool ContainsPoint(Core::Math::Vec2f screenPosition);
+		[[nodiscard]] Core::Math::Vec2f GetSize() const;
+		[[nodiscard]] Core::Math::Vec2f GetLocalSize() const;
 
 
-        void Center();
-        void CenterHorizontally();
-        void CenterVertically();
-        void PositionRelative(RectangularNode& node, RelativePosition position, float padding = 0.0f);
+		void SetLocalSize(Core::Math::Vec2f size);
 
 
-    private:
-        Core::Math::Vec2f mLocalSize = Core::Math::Vec2f(0.0f, 0.0f);
-    };
+		virtual bool ContainsPoint(Core::Math::Vec2f screenPosition);
+
+
+		void Center();
+		void Align(HorizontalAlignment alignment, float padding = 0.0f);
+		void Align(VerticalAlignment alignment, float padding = 0.0f);
+		void Align(Anchor anchor, float padding = 0.0f);
+
+
+		void PositionRelative(RectangularNode& node, Anchor anchor, float padding = 0.0f);
+
+
+	private:
+		Core::Math::Vec2f mLocalSize = Core::Math::Vec2f(0.0f, 0.0f);
+	};
 }

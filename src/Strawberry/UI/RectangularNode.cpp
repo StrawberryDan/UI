@@ -43,43 +43,124 @@ namespace Strawberry::UI
 
 	void RectangularNode::Center()
 	{
-		Core::Assert(GetParent<RectangularNode>().HasValue());
-		SetLocalPosition(GetParent<RectangularNode>()->GetSize() / 2.0f - GetSize() / 2.0f);
+		Align(VerticalAlignment::Center);
+		Align(HorizontalAlignment::Center);
 	}
 
 
-	void RectangularNode::CenterHorizontally()
+	void RectangularNode::Align(HorizontalAlignment alignment, float padding)
 	{
 		Core::Assert(GetParent<RectangularNode>().HasValue());
-		SetLocalPosition({GetParent<RectangularNode>()->GetSize()[0] / 2.0f - GetSize()[0] / 2.0f, GetLocalPosition()[1]});
-	}
 
-
-	void RectangularNode::CenterVertically()
-	{
-		Core::Assert(GetParent<RectangularNode>().HasValue());
-		SetLocalPosition({GetLocalPosition()[0], GetParent<RectangularNode>()->GetSize()[1] / 2.0f - GetSize()[1] / 2.0f});
-	}
-
-
-	void RectangularNode::PositionRelative(RectangularNode& node, RelativePosition position, float padding)
-	{
-		Core::Assert(GetParent() == node.GetParent());
-
-		switch (position)
+		switch (alignment)
 		{
-			case RelativePosition::Above:
-				SetLocalPosition({node.GetLocalPosition()[0], node.GetLocalPosition()[1] - GetSize()[1] - padding});
+			case HorizontalAlignment::Left:
+				SetLocalPosition({padding, GetLocalPosition()[1]});
 				break;
-			case RelativePosition::Left:
-				SetLocalPosition({node.GetLocalPosition()[0] - GetSize()[0] - padding, node.GetLocalPosition()[1]});
+			case HorizontalAlignment::Center:
+				SetLocalPosition({GetParent<RectangularNode>()->GetLocalSize()[0] / 2.0f - GetLocalSize()[0] / 2.0f + padding, GetLocalPosition()[1]});
 				break;
-			case RelativePosition::Right:
-				SetLocalPosition({node.GetLocalPosition()[0] + node.GetSize()[0] + padding, node.GetLocalPosition()[1]});
-				break;
-			case RelativePosition::Below:
-				SetLocalPosition({node.GetLocalPosition()[0], node.GetLocalPosition()[1] + node.GetSize()[1] + padding});
+			case HorizontalAlignment::Right:
+				SetLocalPosition({GetParent<RectangularNode>()->GetLocalSize()[0] - GetLocalSize()[0] - padding, GetLocalPosition()[1]});
 				break;
 		}
+	}
+
+
+	void RectangularNode::Align(VerticalAlignment alignment, float padding)
+	{
+		Core::Assert(GetParent<RectangularNode>().HasValue());
+
+		switch (alignment)
+		{
+			case VerticalAlignment::Top:
+				SetLocalPosition({GetLocalPosition()[0], padding});
+				break;
+			case VerticalAlignment::Center:
+				SetLocalPosition({GetLocalPosition()[0], GetParent<RectangularNode>()->GetLocalSize()[1] / 2.0f - GetLocalSize()[1] / 2.0f + padding});
+				break;
+			case VerticalAlignment::Bottom:
+				SetLocalPosition({GetLocalPosition()[0], GetParent<RectangularNode>()->GetLocalSize()[1] - GetLocalSize()[1] - padding});
+				break;
+		}
+	}
+
+
+	void RectangularNode::Align(Anchor anchor, float padding)
+	{
+		switch (anchor)
+		{
+			case Anchor::North:
+				Align(VerticalAlignment::Top, padding);
+				Align(HorizontalAlignment::Center);
+				break;
+			case Anchor::NorthEast:
+				Align(VerticalAlignment::Top, padding);
+				Align(HorizontalAlignment::Right, padding);
+				break;
+			case Anchor::East:
+				Align(VerticalAlignment::Center);
+				Align(HorizontalAlignment::Right, padding);
+				break;
+			case Anchor::SouthEast:
+				Align(VerticalAlignment::Bottom, padding);
+				Align(HorizontalAlignment::Right, padding);
+				break;
+			case Anchor::South:
+				Align(VerticalAlignment::Bottom, padding);
+				Align(HorizontalAlignment::Center);
+				break;
+			case Anchor::SouthWest:
+				Align(VerticalAlignment::Bottom, padding);
+				Align(HorizontalAlignment::Left, padding);
+				break;
+			case Anchor::West:
+				Align(VerticalAlignment::Center);
+				Align(HorizontalAlignment::Left, padding);
+				break;
+			case Anchor::NorthWest:
+				Align(VerticalAlignment::Top, padding);
+				Align(HorizontalAlignment::Left, padding);
+				break;
+		}
+	}
+
+
+	void RectangularNode::PositionRelative(RectangularNode& node, Anchor anchor, float padding)
+	{
+		Core::Assert(node.GetParent() == GetParent());
+
+
+		Core::Math::Vec2f offset;
+		switch (anchor)
+		{
+			case Anchor::North:
+				offset = {node.GetLocalSize()[0] / 2.0f - GetLocalSize()[0] / 2.0f, -GetLocalSize()[1] - padding};
+				break;
+			case Anchor::NorthEast:
+				offset = {node.GetLocalSize()[0] + padding, -GetLocalSize()[1] - padding};
+				break;
+			case Anchor::East:
+				offset = {node.GetLocalSize()[0] + padding, node.GetLocalSize()[1] / 2.0f - GetLocalSize()[1] / 2.0f};
+				break;
+			case Anchor::SouthEast:
+				offset = {node.GetLocalSize()[0] + padding, node.GetLocalSize()[1] + padding};
+				break;
+			case Anchor::South:
+				offset = {node.GetLocalSize()[0] / 2.0f - GetLocalSize()[0] / 2.0f, node.GetLocalSize()[1] + padding};
+				break;
+			case Anchor::SouthWest:
+				offset = {-GetLocalSize()[0] - padding, node.GetLocalSize()[1] + padding};
+				break;
+			case Anchor::West:
+				offset = {-GetLocalSize()[0] - padding, node.GetLocalSize()[1] / 2.0f - GetLocalSize()[1] / 2.0f};
+				break;
+			case Anchor::NorthWest:
+				offset = {-GetLocalSize()[0] - padding, -GetLocalSize()[1] - padding};
+				break;
+		}
+
+
+		SetLocalPosition(node.GetLocalPosition() + offset);
 	}
 }
