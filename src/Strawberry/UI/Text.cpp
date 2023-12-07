@@ -117,10 +117,20 @@ namespace Strawberry::UI
 		mFontFace->SetPixelSize(mFontSize);
 
 		Core::Math::Vec2f newSize;
-		for (auto c : GetString())
+		for (int i = 0; i < GetString().length(); i++)
 		{
-			newSize[0] += mFontFace->GetGlyphAdvance(c)[0];
-			newSize[1] = std::max(newSize[1], mFontFace->GetGlyphBoundingBox(c)[1]);
+			auto& c = GetString()[i];
+
+			if (i == GetString().length() - 1)
+			{
+				newSize[0] += mFontFace->GetGlyphBoundingBox(c)[0];
+				newSize[1] = std::max(newSize[1], mFontFace->GetGlyphBoundingBox(c)[1]);
+			}
+			else
+			{
+				newSize[0] += mFontFace->GetGlyphAdvance(c)[0];
+				newSize[1] = std::max(newSize[1], mFontFace->GetGlyphBoundingBox(c)[1]);
+			}
 		}
 
 		SetLocalSize(newSize);
