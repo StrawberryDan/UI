@@ -10,6 +10,15 @@
 //----------------------------------------------------------------------------------------------------------------------
 namespace Strawberry::UI
 {
+    enum class RelativePosition
+    {
+        Above,
+        Left,
+        Right,
+        Below,
+    };
+
+
     class RectangularNode
         : public Node
     {
@@ -27,7 +36,10 @@ namespace Strawberry::UI
         virtual bool ContainsPoint(Core::Math::Vec2f screenPosition);
 
 
-        void CenterInParent();
+        void Center();
+        void CenterHorizontally();
+        void CenterVertically();
+        void PositionRelative(RectangularNode& node, RelativePosition position, float padding = 0.0f);
 
 
     private:

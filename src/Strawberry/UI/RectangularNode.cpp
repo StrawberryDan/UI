@@ -41,9 +41,45 @@ namespace Strawberry::UI
 	}
 
 
-	void RectangularNode::CenterInParent()
+	void RectangularNode::Center()
 	{
 		Core::Assert(GetParent<RectangularNode>().HasValue());
 		SetLocalPosition(GetParent<RectangularNode>()->GetSize() / 2.0f - GetSize() / 2.0f);
+	}
+
+
+	void RectangularNode::CenterHorizontally()
+	{
+		Core::Assert(GetParent<RectangularNode>().HasValue());
+		SetLocalPosition({GetParent<RectangularNode>()->GetSize()[0] / 2.0f - GetSize()[0] / 2.0f, GetLocalPosition()[1]});
+	}
+
+
+	void RectangularNode::CenterVertically()
+	{
+		Core::Assert(GetParent<RectangularNode>().HasValue());
+		SetLocalPosition({GetLocalPosition()[0], GetParent<RectangularNode>()->GetSize()[1] / 2.0f - GetSize()[1] / 2.0f});
+	}
+
+
+	void RectangularNode::PositionRelative(RectangularNode& node, RelativePosition position, float padding)
+	{
+		Core::Assert(GetParent() == node.GetParent());
+
+		switch (position)
+		{
+			case RelativePosition::Above:
+				SetLocalPosition({node.GetLocalPosition()[0], node.GetLocalPosition()[1] - GetSize()[1] - padding});
+				break;
+			case RelativePosition::Left:
+				SetLocalPosition({node.GetLocalPosition()[0] - GetSize()[0] - padding, node.GetLocalPosition()[1]});
+				break;
+			case RelativePosition::Right:
+				SetLocalPosition({node.GetLocalPosition()[0] + node.GetSize()[0] + padding, node.GetLocalPosition()[1]});
+				break;
+			case RelativePosition::Below:
+				SetLocalPosition({node.GetLocalPosition()[0], node.GetLocalPosition()[1] + node.GetSize()[1] + padding});
+				break;
+		}
 	}
 }
