@@ -70,6 +70,13 @@ namespace Strawberry::UI
 		[[nodiscard]] std::shared_ptr<Node> GetChild(size_t index);
 
 
+		template<std::derived_from<Node> T>
+		std::shared_ptr<T> AppendChild(T&& node)
+		{
+			return AppendChild(std::forward<T&&>(node));
+		}
+
+
 		template <std::derived_from<Node> T, typename... Args>
 		std::shared_ptr<T> AppendChild(Args&&... args)
 		{
