@@ -73,7 +73,8 @@ namespace Strawberry::UI
 		template<std::derived_from<Node> T>
 		std::shared_ptr<T> AppendChild(T&& node)
 		{
-			return AppendChild(std::forward<T&&>(node));
+			auto ptr = AppendChild(std::make_shared<T>(std::forward<T&&>(node)));
+			return std::static_pointer_cast<T>(ptr);
 		}
 
 
