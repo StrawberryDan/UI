@@ -126,6 +126,74 @@ namespace Strawberry::UI
 	}
 
 
+	void RectangularNode::PositionRelative(RectangularNode& node, VerticalAlignment position, HorizontalAlignment alignment, float padding)
+	{
+		Core::Assert(GetParent() == node.GetParent());
+		Core::Math::Vec2f newPosition = node.GetLocalPosition();
+
+		switch (position)
+		{
+			case VerticalAlignment::Top:
+				newPosition[1] -= GetLocalSize()[1] - padding;
+				break;
+			case VerticalAlignment::Center:
+				newPosition[1] += padding;
+				break;
+			case VerticalAlignment::Bottom:
+				newPosition[1] += node.GetLocalSize()[1] + padding;
+				break;
+		}
+
+		switch (alignment)
+		{
+			case HorizontalAlignment::Left:
+				break;
+			case HorizontalAlignment::Center:
+				newPosition[0] += node.GetLocalSize()[0] / 2.0 - GetLocalSize()[0] / 2.0;
+				break;
+			case HorizontalAlignment::Right:
+				newPosition[0] += node.GetLocalPosition()[0] - GetLocalSize()[0];
+				break;
+		}
+
+		SetLocalPosition(newPosition);
+	}
+
+
+	void RectangularNode::PositionRelative(RectangularNode& node, HorizontalAlignment position, VerticalAlignment alignment, float padding)
+	{
+		Core::Assert(GetParent() == node.GetParent());
+		Core::Math::Vec2f newPosition = node.GetLocalPosition();
+
+		switch (position)
+		{
+			case HorizontalAlignment::Left:
+				newPosition[0] -= GetLocalSize()[0] - padding;
+			break;
+			case HorizontalAlignment::Center:
+				newPosition[0] += padding;
+			break;
+			case HorizontalAlignment::Right:
+				newPosition[0] += node.GetLocalSize()[0] + padding;
+			break;
+		}
+
+		switch (alignment)
+		{
+			case VerticalAlignment::Top:
+				break;
+			case VerticalAlignment::Center:
+				newPosition[1] += node.GetLocalSize()[1] / 2.0 - GetLocalSize()[1] / 2.0;
+			break;
+			case VerticalAlignment::Bottom:
+				newPosition[1] += node.GetLocalPosition()[1] - GetLocalSize()[1];
+			break;
+		}
+
+		SetLocalPosition(newPosition);
+	}
+
+
 	void RectangularNode::PositionRelative(RectangularNode& node, Anchor anchor, float padding)
 	{
 		Core::Assert(node.GetParent() == GetParent());
