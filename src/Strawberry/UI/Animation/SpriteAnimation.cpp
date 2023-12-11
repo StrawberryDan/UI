@@ -10,7 +10,6 @@ namespace Strawberry::UI
 {
 	static std::vector<unsigned int> FrameRangeToVector(unsigned int startIndex, unsigned int frameCount)
 	{
-
 		std::vector<unsigned int> frames(frameCount, 0);
 		std::iota(frames.begin(), frames.end(), startIndex);
 		Core::AssertEQ(frames.size(), frameCount);
@@ -35,21 +34,13 @@ namespace Strawberry::UI
 	void SpriteAnimation::Update(float deltaTime, Node& node)
 	{
 		Core::AssertNEQ(dynamic_cast<Sprite*>(&node), nullptr);
-
-		auto time = mFrameClock.Restart();
-		while (time > mFrameTime)
-		{
-			mFrameIndex = std::min<unsigned int>(mFrames.size() - 1, mFrameIndex + 1);
-			time -= mFrameTime;
-		}
-
-		Core::Assert(mFrameIndex < mFrames.size());
-		dynamic_cast<Sprite*>(&node)->GetSprite().SetSpriteIndex(mFrames[mFrameIndex]);
+		mFrameIndex = mFrameClock.Read() / mFrameTime;
+		dynamic_cast<Sprite*>(&node)->GetSprite().SetSpriteIndex(mFrames[std::min<unsigned>(mFrameIndex, mFrames.size() - 1)]);
 	}
 
 
 	bool SpriteAnimation::IsFinished()
 	{
-		return mFrameIndex >= mFrames.size() - 1;
+		return mFrameClock.Read() > (mFrames.size() - 1) * mFrameTime;
 	}
 }
