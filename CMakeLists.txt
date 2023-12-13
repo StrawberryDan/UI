@@ -3,7 +3,6 @@ project(StrawberryUI)
 
 
 if (NOT TARGET StrawberryUI)
-
     if (NOT TARGET StrawberryCore AND EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/../Core)
         add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/../Core ${CMAKE_CURRENT_BINARY_DIR}/Core)
     elseif(NOT TARGET StrawberryCore)
