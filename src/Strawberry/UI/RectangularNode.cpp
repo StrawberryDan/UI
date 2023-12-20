@@ -58,10 +58,10 @@ namespace Strawberry::UI
 				SetLocalPosition({padding, GetLocalPosition()[1]});
 				break;
 			case HorizontalAlignment::Center:
-				SetLocalPosition({GetParent<RectangularNode>()->GetLocalSize()[0] / 2.0f - GetLocalSize()[0] / 2.0f + padding, GetLocalPosition()[1]});
+				SetLocalPosition({GetParent<RectangularNode>()->GetLocalSize()[0] / 2.0f - GetSize()[0] / 2.0f + padding, GetLocalPosition()[1]});
 				break;
 			case HorizontalAlignment::Right:
-				SetLocalPosition({GetParent<RectangularNode>()->GetLocalSize()[0] - GetLocalSize()[0] - padding, GetLocalPosition()[1]});
+				SetLocalPosition({GetParent<RectangularNode>()->GetLocalSize()[0] - GetSize()[0] - padding, GetLocalPosition()[1]});
 				break;
 		}
 	}
@@ -77,10 +77,10 @@ namespace Strawberry::UI
 				SetLocalPosition({GetLocalPosition()[0], padding});
 				break;
 			case VerticalAlignment::Center:
-				SetLocalPosition({GetLocalPosition()[0], GetParent<RectangularNode>()->GetLocalSize()[1] / 2.0f - GetLocalSize()[1] / 2.0f + padding});
+				SetLocalPosition({GetLocalPosition()[0], GetParent<RectangularNode>()->GetLocalSize()[1] / 2.0f - GetSize()[1] / 2.0f + padding});
 				break;
 			case VerticalAlignment::Bottom:
-				SetLocalPosition({GetLocalPosition()[0], GetParent<RectangularNode>()->GetLocalSize()[1] - GetLocalSize()[1] - padding});
+				SetLocalPosition({GetLocalPosition()[0], GetParent<RectangularNode>()->GetLocalSize()[1] - GetSize()[1] - padding});
 				break;
 		}
 	}
