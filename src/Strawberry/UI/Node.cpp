@@ -206,6 +206,12 @@ namespace Strawberry::UI
 	}
 
 
+	void Node::Move(Core::Math::Vec2f offset)
+	{
+		SetLocalPosition(GetLocalPosition() + offset);
+	}
+
+
 	void Node::SetLocalScale(Core::Math::Vec2f scale)
 	{
 		mLocalScale = scale;

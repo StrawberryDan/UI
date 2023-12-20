@@ -111,6 +111,7 @@ namespace Strawberry::UI
 
 
 		void SetLocalPosition(Core::Math::Vec2f position);
+		void Move(Core::Math::Vec2f offset);
 		void SetLocalScale(Core::Math::Vec2f scale);
 
 
