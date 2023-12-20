@@ -231,4 +231,11 @@ namespace Strawberry::UI
 
 		SetLocalPosition(node.GetLocalPosition() + offset);
 	}
+
+
+	void RectangularNode::Inset(float amount)
+	{
+		SetLocalSize(GetParent<RectangularNode>()->GetLocalSize() - Core::Math::Vec2f(amount, amount));
+		Center();
+	}
 }

@@ -67,6 +67,10 @@ namespace Strawberry::UI
 		void PositionRelative(RectangularNode& node, HorizontalAlignment position, VerticalAlignment alignment = VerticalAlignment::Center, float padding = 0.0f);
 
 
+		void Inset(float amount);
+
+
+
 	private:
 		Core::Math::Vec2f mLocalSize = Core::Math::Vec2f(0.0f, 0.0f);
 	};
