@@ -62,6 +62,10 @@ namespace Strawberry::UI
 		void Align(Anchor anchor, float padding = 0.0f);
 
 
+		void AlignRelative(RectangularNode& node, VerticalAlignment alignment, float padding = 0.0f);
+		void AlignRelative(RectangularNode& node, HorizontalAlignment alignment, float padding = 0.0f);
+
+
 		void PositionRelative(RectangularNode& node, Anchor anchor, float padding = 0.0f);
 		void PositionRelative(RectangularNode& node, VerticalAlignment position, HorizontalAlignment alignment = HorizontalAlignment::Center, float padding = 0.0f);
 		void PositionRelative(RectangularNode& node, HorizontalAlignment position, VerticalAlignment alignment = VerticalAlignment::Center, float padding = 0.0f);
