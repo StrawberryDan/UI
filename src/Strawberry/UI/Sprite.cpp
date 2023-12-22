@@ -73,7 +73,7 @@ namespace Strawberry::UI
 
 		Core::AssertEQ(mSprite.GetSpriteSheet()->GetImage().GetFormat(), VK_FORMAT_R8G8B8A8_SRGB);
 		Core::Math::Vec2u pixel = relative
-				.Map([](float x) { return std::round(x); }).AsType<unsigned int>();
+				.Map([](float x) { return std::floor(x); }).AsType<unsigned int>();
 		auto imageCoords  = pixel + mSprite.GetSpriteCoords() * mSprite.GetSpriteSheet()->GetSpriteSize();
 		auto pixelBytes = mSprite.GetSpriteSheet()->GetImage().ReadPixel(imageCoords);
 
