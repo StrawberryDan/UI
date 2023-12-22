@@ -196,7 +196,7 @@ namespace Strawberry::UI
 				newPosition[0] += node.GetLocalSize()[0] / 2.0 - GetLocalSize()[0] / 2.0;
 				break;
 			case HorizontalAlignment::Right:
-				newPosition[0] += node.GetLocalPosition()[0] - GetLocalSize()[0];
+				newPosition[0] += node.GetLocalSize()[0] - GetLocalSize()[0];
 				break;
 		}
 
