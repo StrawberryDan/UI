@@ -34,13 +34,17 @@ namespace Strawberry::UI
 	void SpriteAnimation::Update(float deltaTime, Node& node)
 	{
 		Core::AssertNEQ(dynamic_cast<Sprite*>(&node), nullptr);
-		mFrameIndex = mFrameClock.Read() / mFrameTime;
+
+		mTimeElapsed += deltaTime;
+		mFrameIndex = static_cast<unsigned int>(mTimeElapsed / mFrameTime);
 		dynamic_cast<Sprite*>(&node)->GetSprite().SetSpriteIndex(mFrames[std::min<unsigned>(mFrameIndex, mFrames.size() - 1)]);
+
+		if (mTimeElapsed > mFrames.size() * mFrameTime) mIsFinished = true;
 	}
 
 
 	bool SpriteAnimation::IsFinished()
 	{
-		return mFrameClock.Read() > (mFrames.size() - 1) * mFrameTime;
+		return mIsFinished;
 	}
 }

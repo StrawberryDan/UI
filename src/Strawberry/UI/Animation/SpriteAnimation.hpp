@@ -29,6 +29,7 @@ namespace Strawberry::UI
 		unsigned int              mFrameIndex;
 		float                     mFrameTime;
 		std::vector<unsigned int> mFrames;
-		Core::Clock               mFrameClock;
+		float                     mTimeElapsed = 0.0f;
+		bool                      mIsFinished = false;
 	};
 }
