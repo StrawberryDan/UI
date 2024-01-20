@@ -25,7 +25,8 @@ namespace Strawberry::UI::Events
 		Dispatcher(Frame& frame);
 
 
-		bool Dispatch(const Window::Event& event);
+		/// Dispatches an event and returns whether the event should continue to propagate
+		bool Dispatch(const Event& event);
 
 
 	protected:

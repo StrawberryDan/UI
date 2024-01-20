@@ -23,6 +23,7 @@ namespace Strawberry::UI::Events
 		virtual ~Listener() = default;
 
 
+		/// Processes an event and returns whether it should propagate further.
 		virtual bool Process(const Event&) = 0;
 
 
