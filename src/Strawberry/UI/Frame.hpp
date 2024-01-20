@@ -29,7 +29,7 @@ namespace Strawberry::UI
 		}
 
 
-		virtual bool Dispatch(const Event& event);
+		virtual bool Dispatch(const Events::Event& event);
 		virtual void Update(Core::Seconds deltaTime);
 		virtual void Render(Renderer& renderer);
 

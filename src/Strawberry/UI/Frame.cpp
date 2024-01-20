@@ -50,7 +50,7 @@ namespace Strawberry::UI
 	}
 
 
-	bool Frame::Dispatch(const Event& event)
+	bool Frame::Dispatch(const Events::Event& event)
 	{
 		if (mEventDispatcher.Dispatch(event)) return false;
 

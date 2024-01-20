@@ -3,7 +3,7 @@
 //  Includes
 //----------------------------------------------------------------------------------------------------------------------
 #include "Listener.hpp"
-#include "../Event.hpp"
+#include "Event.hpp"
 // Standard Library
 #include <functional>
 

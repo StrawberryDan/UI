@@ -102,7 +102,7 @@ namespace Strawberry::UI
 			AddEventListener(std::make_unique<std::decay_t<decltype(eventListener)>>(std::forward<decltype(eventListener)>(eventListener)));
 		}
 
-		std::vector<Events::Listener*> GatherEventListeners(const Event& event);
+		std::vector<Events::Listener*> GatherEventListeners(const Events::Event& event);
 
 
 		[[nodiscard]] Core::Math::Vec2f GetPosition() const;

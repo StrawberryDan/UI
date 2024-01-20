@@ -3,7 +3,7 @@
 //  Includes
 //----------------------------------------------------------------------------------------------------------------------
 // Strawberry Graphics
-#include "Strawberry/UI/Event.hpp"
+#include "Event.hpp"
 // Standard Library
 #include <functional>
 
