@@ -17,7 +17,7 @@ namespace Strawberry::UI::Events
 	{}
 
 
-	bool Dispatcher::Dispatch(const Event& event)
+	bool Dispatcher::Dispatch(const Window::Event& event)
 	{
 		bool shouldPropagate = true;
 
@@ -144,6 +144,13 @@ namespace Strawberry::UI::Events
 
 		return true;
 	}
+
+
+	bool Dispatcher::Dispatch(const Event& event)
+	{
+		return true;
+	}
+
 
 
 	Core::Optional<Node*> Dispatcher::FindNodeAtPoint(Core::Math::Vec2f screenPosition)

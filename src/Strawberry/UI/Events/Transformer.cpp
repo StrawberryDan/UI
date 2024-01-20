@@ -9,7 +9,7 @@
 //----------------------------------------------------------------------------------------------------------------------
 namespace Strawberry::UI::Events
 {
-	std::vector<Event> Transformer::Transform(const Event& events)
+	std::vector<Event> Transformer::Transform(const Window::Event& events)
 	{
 		return {};
 	}

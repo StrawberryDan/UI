@@ -27,7 +27,7 @@ namespace Strawberry::UI::Events
 
 
 		/// Dispatches an event and returns whether the event should continue to propagate
-		bool Dispatch(const Event& event);
+		bool Dispatch(const Window::Event& event);
 
 
 	protected:
@@ -35,6 +35,8 @@ namespace Strawberry::UI::Events
 		bool Dispatch(const Window::Events::Text& event);
 		bool Dispatch(const Window::Events::MouseButton& event);
 		bool Dispatch(const Window::Events::MouseMove& event);
+
+		bool Dispatch(const Event& event);
 
 
 		Core::Optional<Node*> FindNodeAtPoint(Core::Math::Vec2f screenPosition);

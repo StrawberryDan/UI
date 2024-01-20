@@ -15,7 +15,7 @@ namespace Strawberry::UI::Events
     class Transformer
     {
     public:
-        std::vector<Event> Transform(const Event& events);
+        std::vector<Event> Transform(const Window::Event& events);
 
 
     private:
