@@ -105,7 +105,14 @@ namespace Strawberry::UI::Events
 	{
 		if (auto target = FindNodeAtPoint(event.position))
 		{
+			// Send an unfocus event if required.
+			// Send an unfocus event if there is a current focus and that focus is not the target
+			if (auto focus = mFrame->GetFocus(); focus && focus != target->GetReflexivePointer()) Dispatch(Unfocus());
+			// Update focus and send event to notify receiving node
 			mFrame->SetFocus(*target.Value());
+			Dispatch(Focus());
+
+
 			while(target)
 			{
 				auto listeners = target->GatherEventListeners(event);
