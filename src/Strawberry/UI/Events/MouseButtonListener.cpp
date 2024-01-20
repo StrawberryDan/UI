@@ -14,12 +14,12 @@ namespace Strawberry::UI::Events
 	MouseButtonListener::MouseButtonListener(Window::Input::MouseButton button,
 	                                                   Window::Input::KeyAction action,
 	                                                   Callback callback)
-		: CallbackListener([=](const Window::Event& event)
+		: CallbackListener([=](const Event& event)
 		{
 			return event.IsType<Window::Events::MouseButton>()
 			       && event.Value<Window::Events::MouseButton>()->button == button
 			       && event.Value<Window::Events::MouseButton>()->action == action;
-		}, [=](const Window::Event& e){ callback(*e.Value<Window::Events::MouseButton>()); return false; })
+		}, [=](const Event& e){ callback(*e.Value<Window::Events::MouseButton>()); return false; })
 	{}
 
 

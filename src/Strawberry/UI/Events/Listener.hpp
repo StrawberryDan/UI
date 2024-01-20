@@ -3,7 +3,7 @@
 //  Includes
 //----------------------------------------------------------------------------------------------------------------------
 // Strawberry Graphics
-#include "Strawberry/Window/Event.hpp"
+#include "Strawberry/UI/Event.hpp"
 // Standard Library
 #include <functional>
 
@@ -16,17 +16,17 @@ namespace Strawberry::UI::Events
 	class Listener
 	{
 	public:
-		using Predicate = std::function<bool(const Window::Event&)>;
+		using Predicate = std::function<bool(const Event&)>;
 
 
 		Listener(Predicate predicate);
 		virtual ~Listener() = default;
 
 
-		virtual bool Process(const Window::Event&) = 0;
+		virtual bool Process(const Event&) = 0;
 
 
-		bool InterestedIn(const Window::Event& event) const;
+		bool InterestedIn(const Event& event) const;
 
 
 	protected:

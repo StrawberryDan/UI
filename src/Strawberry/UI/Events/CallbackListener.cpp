@@ -15,7 +15,7 @@ namespace Strawberry::UI::Events
 	{}
 
 
-	bool CallbackListener::Process(const Window::Event& event)
+	bool CallbackListener::Process(const Event& event)
 	{
 		Core::Assert(mPredicate(event));
 		return mCallback(event);

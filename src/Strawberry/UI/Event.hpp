@@ -2,30 +2,23 @@
 //======================================================================================================================
 //  Includes
 //----------------------------------------------------------------------------------------------------------------------
-#include "Listener.hpp"
-#include "../Event.hpp"
-// Standard Library
-#include <functional>
+// Window
+#include <Strawberry/Window/Event.hpp>
+
 
 //======================================================================================================================
 //  Class Declaration
 //----------------------------------------------------------------------------------------------------------------------
-namespace Strawberry::UI::Events
+namespace Strawberry::UI
 {
-	class CallbackListener
-		: public Listener
-	{
-	public:
-		using Callback = std::function<bool(const Event&)>;
+    class Click
+    {
+    public:
+
+    private:
+   
+    };
 
 
-		CallbackListener(Listener::Predicate predicate, Callback callback);
-
-
-		virtual bool Process(const Event& event) override;
-
-
-	private:
-		Callback mCallback;
-	};
+    using Event = Window::Event::AddTypes<Click>;
 }

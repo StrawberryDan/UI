@@ -48,6 +48,8 @@ if (NOT TARGET StrawberryUI)
             src/Strawberry/UI/Nodes/RectangularNode.cpp
 			src/Strawberry/UI/Animation/Animation.hpp
 			src/Strawberry/UI/Animation/Animation.cpp
+            src/Strawberry/UI/Event.hpp
+            src/Strawberry/UI/Event.hpp
     )
     target_link_libraries(StrawberryUI PUBLIC StrawberryCore StrawberryVulkan StrawberryAudio)
     target_include_directories(StrawberryUI PUBLIC src)

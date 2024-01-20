@@ -260,7 +260,7 @@ namespace Strawberry::UI
 	}
 
 
-	std::vector<Events::Listener*> Node::GatherEventListeners(const Window::Event& event)
+	std::vector<Events::Listener*> Node::GatherEventListeners(const Event& event)
 	{
 		std::vector<Events::Listener*> listeners;
 		listeners.reserve(mEventListeners.size());

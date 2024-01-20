@@ -14,7 +14,7 @@ namespace Strawberry::UI::Events
 	{}
 
 
-	bool Listener::InterestedIn(const Window::Event& event) const
+	bool Listener::InterestedIn(const Event& event) const
 	{
 		return mPredicate(event);
 	}
