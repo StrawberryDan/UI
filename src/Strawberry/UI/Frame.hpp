@@ -3,7 +3,7 @@
 //  Includes
 //----------------------------------------------------------------------------------------------------------------------
 #include "Nodes/Node.hpp"
-#include "Events/EventDispatcher.hpp"
+#include "Events/Dispatcher.hpp"
 // Standard Library
 #include <concepts>
 #include <memory>
@@ -17,7 +17,7 @@ namespace Strawberry::UI
 	class Frame
 		: public Core::EnableReflexivePointer<Frame>
 	{
-		friend class EventDispatcher;
+		friend class Dispatcher;
 
 
 	public:
@@ -55,7 +55,7 @@ namespace Strawberry::UI
 
 	private:
 		std::vector<std::unique_ptr<Node>> mRoots;
-		std::vector<EventDispatcher> mEventDispatchers;
+		std::vector<Dispatcher> mEventDispatchers;
 		Core::ReflexivePointer<Node> mFocus;
 
 		bool mVisible = true;

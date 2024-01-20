@@ -1,7 +1,7 @@
 #pragma once
 
 
-#include "Strawberry/UI/Events/EventListener.hpp"
+#include "..\Events\Listener.hpp"
 #include "Strawberry/UI/Animation/Animation.hpp"
 // Strawberry Graphics
 #include "Strawberry/Window/Event.hpp"
@@ -18,7 +18,7 @@
 namespace Strawberry::UI
 {
 	class Renderer;
-	class EventListener;
+	namespace Events { class Listener; }
 
 
 	class Node
@@ -96,13 +96,13 @@ namespace Strawberry::UI
 		void ClearChildren();
 
 
-		void AddEventListener(std::unique_ptr<EventListener> eventListener);
-		void AddEventListener(std::derived_from<EventListener> auto eventListener)
+		void AddEventListener(std::unique_ptr<Events::Listener> eventListener);
+		void AddEventListener(std::derived_from<Events::Listener> auto eventListener)
 		{
 			AddEventListener(std::make_unique<std::decay_t<decltype(eventListener)>>(std::forward<decltype(eventListener)>(eventListener)));
 		}
 
-		std::vector<EventListener*> GatherEventListeners(const Window::Event& event);
+		std::vector<Events::Listener*> GatherEventListeners(const Window::Event& event);
 
 
 		[[nodiscard]] Core::Math::Vec2f GetPosition() const;
@@ -135,7 +135,7 @@ namespace Strawberry::UI
 		Core::ReflexivePointer<Node> mParent;
 		std::vector<std::shared_ptr<Node>> mChildren;
 
-		std::vector<std::unique_ptr<EventListener>> mEventListeners;
+		std::vector<std::unique_ptr<Events::Listener>> mEventListeners;
 
 		Core::Math::Vec2f mLocalPosition = Core::Math::Vec2f(0.0f, 0.0f);
 		Core::Math::Vec2f mLocalScale    = Core::Math::Vec2f(1.0f, 1.0f);

@@ -2,22 +2,34 @@
 //======================================================================================================================
 //  Includes
 //----------------------------------------------------------------------------------------------------------------------
-#include "CallbackEventListener.hpp"
+// Strawberry Graphics
+#include "Strawberry/Window/Event.hpp"
+// Standard Library
+#include <functional>
 
 
 //======================================================================================================================
 //  Class Declaration
 //----------------------------------------------------------------------------------------------------------------------
-namespace Strawberry::UI
+namespace Strawberry::UI::Events
 {
-    class MouseButtonEventListener
-        : public CallbackEventListener
-    {
-    public:
-        using Callback = std::function<void(const Window::Events::MouseButton&)>;
+	class Listener
+	{
+	public:
+		using Predicate = std::function<bool(const Window::Event&)>;
 
 
-        MouseButtonEventListener(Window::Input::MouseButton button, Window::Input::KeyAction action, Callback callback);
-        MouseButtonEventListener(Callback callback);
-    };
+		Listener(Predicate predicate);
+		virtual ~Listener() = default;
+
+
+		virtual bool Process(const Window::Event&) = 0;
+
+
+		bool InterestedIn(const Window::Event& event) const;
+
+
+	protected:
+		Predicate mPredicate;
+	};
 }

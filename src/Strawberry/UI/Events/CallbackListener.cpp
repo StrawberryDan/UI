@@ -1,21 +1,21 @@
 //======================================================================================================================
 //  Includes
 //----------------------------------------------------------------------------------------------------------------------
-#include "CallbackEventListener.hpp"
+#include "CallbackListener.hpp"
 
 
 //======================================================================================================================
 //  Method Definitions
 //----------------------------------------------------------------------------------------------------------------------
-namespace Strawberry::UI
+namespace Strawberry::UI::Events
 {
-	CallbackEventListener::CallbackEventListener(EventListener::Predicate predicate, CallbackEventListener::Callback callback)
-		: EventListener(std::move(predicate))
+	CallbackListener::CallbackListener(Listener::Predicate predicate, CallbackListener::Callback callback)
+		: Listener(std::move(predicate))
 		, mCallback(std::move(callback))
 	{}
 
 
-	bool CallbackEventListener::Process(const Window::Event& event)
+	bool CallbackListener::Process(const Window::Event& event)
 	{
 		Core::Assert(mPredicate(event));
 		return mCallback(event);

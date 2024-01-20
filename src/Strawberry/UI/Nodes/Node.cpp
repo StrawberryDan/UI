@@ -1,5 +1,5 @@
 #include "Node.hpp"
-#include "Strawberry/UI/Events/EventListener.hpp"
+#include "..\Events\Listener.hpp"
 #include <Strawberry/Core/Assert.hpp>
 
 
@@ -254,15 +254,15 @@ namespace Strawberry::UI
 	}
 
 
-	void Node::AddEventListener(std::unique_ptr<EventListener> eventListener)
+	void Node::AddEventListener(std::unique_ptr<Events::Listener> eventListener)
 	{
 		mEventListeners.emplace_back(std::move(eventListener));
 	}
 
 
-	std::vector<EventListener*> Node::GatherEventListeners(const Window::Event& event)
+	std::vector<Events::Listener*> Node::GatherEventListeners(const Window::Event& event)
 	{
-		std::vector<EventListener*> listeners;
+		std::vector<Events::Listener*> listeners;
 		listeners.reserve(mEventListeners.size());
 
 		for (auto& listener : mEventListeners)

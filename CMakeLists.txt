@@ -32,18 +32,18 @@ if (NOT TARGET StrawberryUI)
     endif()
 
     add_library(StrawberryUI STATIC
-            src/Strawberry/UI/Events/CallbackEventListener.cpp
-            src/Strawberry/UI/Events/CallbackEventListener.hpp
-            src/Strawberry/UI/Events/EventDispatcher.cpp
-            src/Strawberry/UI/Events/EventDispatcher.hpp
-            src/Strawberry/UI/Events/EventListener.cpp
-            src/Strawberry/UI/Events/EventListener.hpp
+            src/Strawberry/UI/Events/CallbackListener.cpp
+            src/Strawberry/UI/Events/CallbackListener.hpp
+            src/Strawberry/UI/Events/Dispatcher.cpp
+            src/Strawberry/UI/Events/Dispatcher.hpp
+            src/Strawberry/UI/Events/Listener.cpp
+            src/Strawberry/UI/Events/Listener.hpp
             src/Strawberry/UI/Frame.cpp
             src/Strawberry/UI/Frame.hpp
             src/Strawberry/UI/Nodes/Node.cpp
             src/Strawberry/UI/Nodes/Node.hpp
-            src/Strawberry/UI/Events/MouseButtonEventListener.hpp
-            src/Strawberry/UI/Events/MouseButtonEventListener.cpp
+            src/Strawberry/UI/Events/MouseButtonListener.hpp
+            src/Strawberry/UI/Events/MouseButtonListener.cpp
             src/Strawberry/UI/Nodes/RectangularNode.hpp
             src/Strawberry/UI/Nodes/RectangularNode.cpp
 			src/Strawberry/UI/Animation/Animation.hpp

@@ -2,10 +2,7 @@
 //======================================================================================================================
 //  Includes
 //----------------------------------------------------------------------------------------------------------------------
-// Strawberry Graphics
-#include "Strawberry/Window/Event.hpp"
-// Standard Library
-#include <functional>
+#include "Strawberry/UI/Nodes/Node.hpp"
 
 
 //======================================================================================================================
@@ -13,23 +10,30 @@
 //----------------------------------------------------------------------------------------------------------------------
 namespace Strawberry::UI
 {
-	class EventListener
+	class Frame;
+
+
+	class Dispatcher
 	{
 	public:
-		using Predicate = std::function<bool(const Window::Event&)>;
+		Dispatcher(Frame& frame, Node& node);
 
 
-		EventListener(Predicate predicate);
-		virtual ~EventListener() = default;
-
-
-		virtual bool Process(const Window::Event&) = 0;
-
-
-		bool InterestedIn(const Window::Event& event) const;
+		bool Dispatch(const Window::Event& event);
 
 
 	protected:
-		Predicate mPredicate;
+		bool Dispatch(const Window::Events::Key& event);
+		bool Dispatch(const Window::Events::Text& event);
+		bool Dispatch(const Window::Events::MouseButton& event);
+		bool Dispatch(const Window::Events::MouseMove& event);
+
+
+		Core::Optional<Node*> FindNodeAtPoint(Core::Math::Vec2f screenPosition);
+
+
+	private:
+		Core::ReflexivePointer<Frame> mFrame;
+		Core::ReflexivePointer<Node> mNode;
 	};
 }

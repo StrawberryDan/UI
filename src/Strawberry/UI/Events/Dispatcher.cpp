@@ -1,7 +1,7 @@
 //======================================================================================================================
 //  Includes
 //----------------------------------------------------------------------------------------------------------------------
-#include "EventDispatcher.hpp"
+#include "Dispatcher.hpp"
 #include "Strawberry/UI/Frame.hpp"
 #include "Strawberry/UI/Nodes/RectangularNode.hpp"
 
@@ -11,13 +11,13 @@
 //----------------------------------------------------------------------------------------------------------------------
 namespace Strawberry::UI
 {
-	EventDispatcher::EventDispatcher(Frame& frame, Node& node)
+	Dispatcher::Dispatcher(Frame& frame, Node& node)
 		: mFrame(frame)
 		, mNode(node)
 	{}
 
 
-	bool EventDispatcher::Dispatch(const Window::Event& event)
+	bool Dispatcher::Dispatch(const Window::Event& event)
 	{
 		if (auto key = event.Value<Window::Events::Key>())
 		{
@@ -43,7 +43,7 @@ namespace Strawberry::UI
 	}
 
 
-	bool EventDispatcher::Dispatch(const Window::Events::Key& event)
+	bool Dispatcher::Dispatch(const Window::Events::Key& event)
 	{
 		if (auto focus = mFrame->GetFocus())
 		{
@@ -65,7 +65,7 @@ namespace Strawberry::UI
 	}
 
 
-	bool EventDispatcher::Dispatch(const Window::Events::Text& event)
+	bool Dispatcher::Dispatch(const Window::Events::Text& event)
 	{
 		if (auto focus = mFrame->GetFocus())
 		{
@@ -87,7 +87,7 @@ namespace Strawberry::UI
 	}
 
 
-	bool EventDispatcher::Dispatch(const Window::Events::MouseButton& event)
+	bool Dispatcher::Dispatch(const Window::Events::MouseButton& event)
 	{
 		if (auto target = FindNodeAtPoint(event.position))
 		{
@@ -110,7 +110,7 @@ namespace Strawberry::UI
 	}
 
 
-	bool EventDispatcher::Dispatch(const Window::Events::MouseMove& event)
+	bool Dispatcher::Dispatch(const Window::Events::MouseMove& event)
 	{
 		if (auto target = FindNodeAtPoint(event.position))
 		{
@@ -132,7 +132,7 @@ namespace Strawberry::UI
 	}
 
 
-	Core::Optional<Node*> EventDispatcher::FindNodeAtPoint(Core::Math::Vec2f screenPosition)
+	Core::Optional<Node*> Dispatcher::FindNodeAtPoint(Core::Math::Vec2f screenPosition)
 	{
 		Core::Optional<Node*> result;
 

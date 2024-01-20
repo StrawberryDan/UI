@@ -1,21 +1,30 @@
+#pragma once
 //======================================================================================================================
 //  Includes
 //----------------------------------------------------------------------------------------------------------------------
-#include "EventListener.hpp"
-
+#include "Listener.hpp"
+// Standard Library
+#include <functional>
 
 //======================================================================================================================
-//  Method Definitions
+//  Class Declaration
 //----------------------------------------------------------------------------------------------------------------------
-namespace Strawberry::UI
+namespace Strawberry::UI::Events
 {
-	EventListener::EventListener(EventListener::Predicate predicate)
-		: mPredicate(std::move(predicate))
-	{}
-
-
-	bool EventListener::InterestedIn(const Window::Event& event) const
+	class CallbackListener
+		: public Listener
 	{
-		return mPredicate(event);
-	}
+	public:
+		using Callback = std::function<bool(const Window::Event&)>;
+
+
+		CallbackListener(Listener::Predicate predicate, Callback callback);
+
+
+		virtual bool Process(const Window::Event& event) override;
+
+
+	private:
+		Callback mCallback;
+	};
 }
