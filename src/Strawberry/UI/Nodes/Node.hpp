@@ -59,11 +59,18 @@ namespace Strawberry::UI
 
 		[[nodiscard]] Core::ReflexivePointer<Node> GetParent() const;
 
-
 		template <std::derived_from<Node> T>
 		[[nodiscard]] Core::Optional<T*> GetParent() const
 		{
 			return dynamic_cast<T*>(GetParent().Get());
+		}
+
+		[[nodiscard]] Core::ReflexivePointer<Node> CommonAncestor(const Node& other) const;
+
+		template <std::derived_from<Node> T>
+		[[nodiscard]] Core::Optional<T*> CommonAncestor(const Node& other) const
+		{
+			return dynamic_cast<T*>(CommonAncestor(other).Get());
 		}
 
 

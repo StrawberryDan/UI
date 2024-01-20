@@ -127,6 +127,35 @@ namespace Strawberry::UI
 	}
 
 
+	Core::ReflexivePointer<Node> Node::CommonAncestor(const Node& other) const
+	{
+		auto generateParentChain = [](const Node& node)
+		{
+			std::vector<Core::ReflexivePointer<Node>> parentChain { node.GetReflexivePointer() };
+			while (auto parent = parentChain.back()->GetParent())
+			{
+				parentChain.emplace_back(parent);
+			}
+			return parentChain;
+		};
+
+
+		auto myParentChain = generateParentChain(*this);
+		auto theirParentChain = generateParentChain(other);
+
+
+		for (auto node : myParentChain)
+		{
+			if (auto corresponding = std::ranges::find(theirParentChain.begin(), theirParentChain.end(), node); corresponding != theirParentChain.end())
+			{
+				return *corresponding;
+			}
+		}
+
+		return {};
+	}
+
+
 	size_t Node::GetChildCount() const
 	{
 		return mChildren.size();
