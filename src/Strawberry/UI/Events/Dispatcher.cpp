@@ -152,6 +152,35 @@ namespace Strawberry::UI::Events
 	}
 
 
+	bool Dispatcher::Dispatch(const Events::Focus& event)
+	{
+		if (mFrame->GetFocus())
+		{
+			for (auto listener : mFrame->GetFocus()->GatherEventListeners(event))
+			{
+				bool continuePropagation = listener->Process(event);
+				if (!continuePropagation) return false;
+			}
+		}
+
+		return true;
+	}
+
+
+	bool Dispatcher::Dispatch(const Events::Unfocus& event)
+	{
+		if (mFrame->GetFocus())
+		{
+			for (auto listener : mFrame->GetFocus()->GatherEventListeners(event))
+			{
+				bool continuePropagation = listener->Process(event);
+				if (!continuePropagation) return false;
+			}
+		}
+
+		return true;
+	}
+
 
 	Core::Optional<Node*> Dispatcher::FindNodeAtPoint(Core::Math::Vec2f screenPosition)
 	{

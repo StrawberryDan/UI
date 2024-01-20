@@ -20,5 +20,15 @@ namespace Strawberry::UI::Events
     };
 
 
-    using Event = Window::Event::AddTypes<Click>;
+    class Focus
+    {};
+
+
+    class Unfocus
+    {};
+
+
+    using Event = Window::Event::AddTypes<Click,
+										  Focus,
+										  Unfocus>;
 }

@@ -37,6 +37,8 @@ namespace Strawberry::UI::Events
 		bool Dispatch(const Window::Events::MouseMove& event);
 
 		bool Dispatch(const Event& event);
+		bool Dispatch(const Events::Focus& event);
+		bool Dispatch(const Events::Unfocus& event);
 
 
 		Core::Optional<Node*> FindNodeAtPoint(Core::Math::Vec2f screenPosition);
