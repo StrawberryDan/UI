@@ -19,27 +19,41 @@ namespace Strawberry::UI::Events
 
 	bool Dispatcher::Dispatch(const Event& event)
 	{
+		bool shouldPropagate = true;
+
 		if (auto key = event.Value<Window::Events::Key>())
 		{
-			return Dispatch(key.Value());
+			shouldPropagate = shouldPropagate && Dispatch(key.Value());
 		}
 
 		if (auto text = event.Value<Window::Events::Text>())
 		{
-			return Dispatch(text.Value());
+			shouldPropagate = shouldPropagate && Dispatch(text.Value());
 		}
 
 		if (auto mouseButton = event.Value<Window::Events::MouseButton>())
 		{
-			return Dispatch(mouseButton.Value());
+			shouldPropagate = shouldPropagate && Dispatch(mouseButton.Value());
 		}
 
 		if (auto mouseMoveEvent = event.Value<Window::Events::MouseMove>())
 		{
-			return Dispatch(mouseMoveEvent.Value());
+			shouldPropagate = shouldPropagate && Dispatch(mouseMoveEvent.Value());
 		}
 
-		return true;
+
+		// Attempt to create and dispatch advanced events
+		if (shouldPropagate)
+		{
+			for (auto advancedEvent : mTransformer.Transform(event))
+			{
+				shouldPropagate = shouldPropagate && Dispatch(advancedEvent);
+				if (!shouldPropagate) break;
+			}
+		}
+
+
+		return shouldPropagate;
 	}
 
 

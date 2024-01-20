@@ -2,6 +2,7 @@
 //======================================================================================================================
 //  Includes
 //----------------------------------------------------------------------------------------------------------------------
+#include "Transformer.hpp"
 #include "Strawberry/UI/Nodes/Node.hpp"
 
 
@@ -41,5 +42,6 @@ namespace Strawberry::UI::Events
 
 	private:
 		Core::ReflexivePointer<Frame> mFrame;
+		Transformer mTransformer;
 	};
 }
