@@ -1,4 +1,3 @@
-#pragma once
 //======================================================================================================================
 //  Includes
 //----------------------------------------------------------------------------------------------------------------------
@@ -6,18 +5,19 @@
 
 
 //======================================================================================================================
-//  Class Declaration
+//  Method Definitions
 //----------------------------------------------------------------------------------------------------------------------
 namespace Strawberry::UI
 {
-    class MouseButtonEventListener
-        : public CallbackEventListener
-    {
-    public:
-        using Callback = std::function<void(const Graphics::Window::Events::MouseButton&)>;
+	CallbackEventListener::CallbackEventListener(EventListener::Predicate predicate, CallbackEventListener::Callback callback)
+		: EventListener(std::move(predicate))
+		, mCallback(std::move(callback))
+	{}
 
 
-        MouseButtonEventListener(Graphics::Input::MouseButton button, Graphics::Input::KeyAction action, Callback callback);
-        MouseButtonEventListener(Callback callback);
-    };
+	bool CallbackEventListener::Process(const Window::Event& event)
+	{
+		Core::Assert(mPredicate(event));
+		return mCallback(event);
+	}
 }

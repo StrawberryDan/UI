@@ -2,39 +2,34 @@
 //======================================================================================================================
 //  Includes
 //----------------------------------------------------------------------------------------------------------------------
-#include "Image.hpp"
-#include "RectangularNode.hpp"
 // Strawberry Graphics
-#include "Strawberry/Graphics/Vulkan/Image.hpp"
-// Strawberry Core
-#include "Strawberry/Core/Types/ReflexivePointer.hpp"
+#include "Strawberry/Window/Event.hpp"
+// Standard Library
+#include <functional>
+
 
 //======================================================================================================================
 //  Class Declaration
 //----------------------------------------------------------------------------------------------------------------------
 namespace Strawberry::UI
 {
-	class Renderer;
-
-
-	class Image
-		: public RectangularNode
+	class EventListener
 	{
 	public:
-		Image(Graphics::Vulkan::Image& image);
+		using Predicate = std::function<bool(const Window::Event&)>;
 
 
-		void Render(Renderer& renderer) override;
+		EventListener(Predicate predicate);
+		virtual ~EventListener() = default;
 
 
-		void SetImage(Graphics::Vulkan::Image& image);
-		Core::ReflexivePointer<Graphics::Vulkan::Image> GetImage() const;
+		virtual bool Process(const Window::Event&) = 0;
 
 
-		bool ContainsPoint(Core::Math::Vec2f screenPosition) override;
+		bool InterestedIn(const Window::Event& event) const;
 
 
-	private:
-		Core::ReflexivePointer<Graphics::Vulkan::Image> mImage;
+	protected:
+		Predicate mPredicate;
 	};
 }

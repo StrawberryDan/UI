@@ -2,29 +2,38 @@
 //======================================================================================================================
 //  Includes
 //----------------------------------------------------------------------------------------------------------------------
-#include "EventListener.hpp"
-// Standard Library
-#include <functional>
+#include "Strawberry/UI/Nodes/Node.hpp"
+
 
 //======================================================================================================================
 //  Class Declaration
 //----------------------------------------------------------------------------------------------------------------------
 namespace Strawberry::UI
 {
-	class CallbackEventListener
-		: public EventListener
+	class Frame;
+
+
+	class EventDispatcher
 	{
 	public:
-		using Callback = std::function<bool(const Graphics::Window::Event&)>;
+		EventDispatcher(Frame& frame, Node& node);
 
 
-		CallbackEventListener(EventListener::Predicate predicate, Callback callback);
+		bool Dispatch(const Window::Event& event);
 
 
-		virtual bool Process(const Graphics::Window::Event& event) override;
+	protected:
+		bool Dispatch(const Window::Events::Key& event);
+		bool Dispatch(const Window::Events::Text& event);
+		bool Dispatch(const Window::Events::MouseButton& event);
+		bool Dispatch(const Window::Events::MouseMove& event);
+
+
+		Core::Optional<Node*> FindNodeAtPoint(Core::Math::Vec2f screenPosition);
 
 
 	private:
-		Callback mCallback;
+		Core::ReflexivePointer<Frame> mFrame;
+		Core::ReflexivePointer<Node> mNode;
 	};
 }

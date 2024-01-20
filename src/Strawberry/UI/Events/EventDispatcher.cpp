@@ -2,8 +2,8 @@
 //  Includes
 //----------------------------------------------------------------------------------------------------------------------
 #include "EventDispatcher.hpp"
-#include "Frame.hpp"
-#include "RectangularNode.hpp"
+#include "Strawberry/UI/Frame.hpp"
+#include "Strawberry/UI/Nodes/RectangularNode.hpp"
 
 
 //======================================================================================================================
@@ -17,24 +17,24 @@ namespace Strawberry::UI
 	{}
 
 
-	bool EventDispatcher::Dispatch(const Graphics::Window::Event& event)
+	bool EventDispatcher::Dispatch(const Window::Event& event)
 	{
-		if (auto key = event.Value<Graphics::Window::Events::Key>())
+		if (auto key = event.Value<Window::Events::Key>())
 		{
 			return Dispatch(key.Value());
 		}
 
-		if (auto text = event.Value<Graphics::Window::Events::Text>())
+		if (auto text = event.Value<Window::Events::Text>())
 		{
 			return Dispatch(text.Value());
 		}
 
-		if (auto mouseButton = event.Value<Graphics::Window::Events::MouseButton>())
+		if (auto mouseButton = event.Value<Window::Events::MouseButton>())
 		{
 			return Dispatch(mouseButton.Value());
 		}
 
-		if (auto mouseMoveEvent = event.Value<Graphics::Window::Events::MouseMove>())
+		if (auto mouseMoveEvent = event.Value<Window::Events::MouseMove>())
 		{
 			return Dispatch(mouseMoveEvent.Value());
 		}
@@ -43,7 +43,7 @@ namespace Strawberry::UI
 	}
 
 
-	bool EventDispatcher::Dispatch(const Graphics::Window::Events::Key& event)
+	bool EventDispatcher::Dispatch(const Window::Events::Key& event)
 	{
 		if (auto focus = mFrame->GetFocus())
 		{
@@ -65,7 +65,7 @@ namespace Strawberry::UI
 	}
 
 
-	bool EventDispatcher::Dispatch(const Graphics::Window::Events::Text& event)
+	bool EventDispatcher::Dispatch(const Window::Events::Text& event)
 	{
 		if (auto focus = mFrame->GetFocus())
 		{
@@ -87,7 +87,7 @@ namespace Strawberry::UI
 	}
 
 
-	bool EventDispatcher::Dispatch(const Graphics::Window::Events::MouseButton& event)
+	bool EventDispatcher::Dispatch(const Window::Events::MouseButton& event)
 	{
 		if (auto target = FindNodeAtPoint(event.position))
 		{
@@ -110,7 +110,7 @@ namespace Strawberry::UI
 	}
 
 
-	bool EventDispatcher::Dispatch(const Graphics::Window::Events::MouseMove& event)
+	bool EventDispatcher::Dispatch(const Window::Events::MouseMove& event)
 	{
 		if (auto target = FindNodeAtPoint(event.position))
 		{

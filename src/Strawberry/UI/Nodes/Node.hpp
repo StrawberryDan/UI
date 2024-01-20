@@ -1,13 +1,15 @@
 #pragma once
 
 
-#include "EventListener.hpp"
-#include "Animation/Animation.hpp"
+#include "Strawberry/UI/Events/EventListener.hpp"
+#include "Strawberry/UI/Animation/Animation.hpp"
 // Strawberry Graphics
-#include "Strawberry/Graphics/Event.hpp"
+#include "Strawberry/Window/Event.hpp"
 // Strawberry Core
 #include "Strawberry/Core/Math/Vector.hpp"
 #include "Strawberry/Core/Types/ReflexivePointer.hpp"
+#include "Strawberry/Core/Types/Optional.hpp"
+#include "Strawberry/Core/Timing/Clock.hpp"
 // Standard Library
 #include <memory>
 #include <vector>
@@ -100,7 +102,7 @@ namespace Strawberry::UI
 			AddEventListener(std::make_unique<std::decay_t<decltype(eventListener)>>(std::forward<decltype(eventListener)>(eventListener)));
 		}
 
-		std::vector<EventListener*> GatherEventListeners(const Graphics::Window::Event& event);
+		std::vector<EventListener*> GatherEventListeners(const Window::Event& event);
 
 
 		[[nodiscard]] Core::Math::Vec2f GetPosition() const;

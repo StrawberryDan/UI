@@ -2,8 +2,8 @@
 //======================================================================================================================
 //  Includes
 //----------------------------------------------------------------------------------------------------------------------
-#include "Node.hpp"
-#include "EventDispatcher.hpp"
+#include "Nodes/Node.hpp"
+#include "Events/EventDispatcher.hpp"
 // Standard Library
 #include <concepts>
 #include <memory>
@@ -29,7 +29,7 @@ namespace Strawberry::UI
 		}
 
 
-		virtual bool Dispatch(const Graphics::Window::Event& event);
+		virtual bool Dispatch(const Window::Event& event);
 		virtual void Update(Core::Seconds deltaTime);
 		virtual void Render(Renderer& renderer);
 

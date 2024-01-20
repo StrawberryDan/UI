@@ -2,9 +2,7 @@
 //======================================================================================================================
 //  Includes
 //----------------------------------------------------------------------------------------------------------------------
-#include "RectangularNode.hpp"
-// Strawberry Graphics
-#include "Strawberry/Graphics/2D/Sprite.hpp"
+#include "CallbackEventListener.hpp"
 
 
 //======================================================================================================================
@@ -12,27 +10,14 @@
 //----------------------------------------------------------------------------------------------------------------------
 namespace Strawberry::UI
 {
-	class Sprite
-		: public RectangularNode
-	{
-	public:
-		Sprite(Graphics::Sprite sprite);
-		Sprite(Graphics::SpriteSheet& spriteSheet);
+    class MouseButtonEventListener
+        : public CallbackEventListener
+    {
+    public:
+        using Callback = std::function<void(const Window::Events::MouseButton&)>;
 
 
-		void Update(Core::Seconds deltaTime) override;
-		void Render(Renderer& renderer) override;
-
-
-		bool ContainsPoint(Core::Math::Vec2f screenPosition) override;
-
-
-		Graphics::Sprite& GetSprite();
-		const Graphics::Sprite& GetSprite() const;
-		void SetSprite(Graphics::Sprite sprite);
-
-
-	private:
-		Graphics::Sprite mSprite;
-	};
+        MouseButtonEventListener(Window::Input::MouseButton button, Window::Input::KeyAction action, Callback callback);
+        MouseButtonEventListener(Callback callback);
+    };
 }

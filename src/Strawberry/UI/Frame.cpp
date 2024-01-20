@@ -59,7 +59,7 @@ namespace Strawberry::UI
 	}
 
 
-	bool Frame::Dispatch(const Graphics::Window::Event& event)
+	bool Frame::Dispatch(const Window::Event& event)
 	{
 		if (IsVisible())
 		{
