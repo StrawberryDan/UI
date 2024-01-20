@@ -6,17 +6,23 @@
 
 
 //======================================================================================================================
-//  Class Declaration
+//  Foreward Declarations
 //----------------------------------------------------------------------------------------------------------------------
 namespace Strawberry::UI
 {
 	class Frame;
+}
 
 
+//======================================================================================================================
+//  Class Declaration
+//----------------------------------------------------------------------------------------------------------------------
+namespace Strawberry::UI::Events
+{
 	class Dispatcher
 	{
 	public:
-		Dispatcher(Frame& frame, Node& node);
+		Dispatcher(Frame& frame);
 
 
 		bool Dispatch(const Window::Event& event);
@@ -34,6 +40,5 @@ namespace Strawberry::UI
 
 	private:
 		Core::ReflexivePointer<Frame> mFrame;
-		Core::ReflexivePointer<Node> mNode;
 	};
 }

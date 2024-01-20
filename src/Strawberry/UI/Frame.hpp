@@ -17,7 +17,7 @@ namespace Strawberry::UI
 	class Frame
 		: public Core::EnableReflexivePointer<Frame>
 	{
-		friend class Dispatcher;
+		friend class Events::Dispatcher;
 
 
 	public:
@@ -25,22 +25,21 @@ namespace Strawberry::UI
 		Frame(std::unique_ptr<Node>&& root);
 		Frame(std::derived_from<Node> auto node)
 		{
-			AddRoot(std::move(node));
+			SetRoot(std::move(node));
 		}
 
 
-		virtual bool Dispatch(const Window::Event& event);
+		virtual bool Dispatch(const Event& event);
 		virtual void Update(Core::Seconds deltaTime);
 		virtual void Render(Renderer& renderer);
 
 
-		uint32_t GetRootCount() const;
-		Node& GetRoot(uint32_t index);
-		Node* AddRoot(std::unique_ptr<Node> node);
-		auto AddRoot(std::derived_from<Node> auto node)
+		Core::Optional<Node*> GetRoot();
+		Node* SetRoot(std::unique_ptr<Node> node);
+		auto SetRoot(std::derived_from<Node> auto node)
 		{
 			using NodeType = std::decay_t<decltype(node)>;
-			return static_cast<decltype(node)*>(AddRoot(std::make_unique<NodeType>(std::move(node))));
+			return static_cast<decltype(node)*>(SetRoot(std::make_unique<NodeType>(std::move(node))));
 		}
 
 
@@ -54,8 +53,8 @@ namespace Strawberry::UI
 
 
 	private:
-		std::vector<std::unique_ptr<Node>> mRoots;
-		std::vector<Dispatcher> mEventDispatchers;
+		std::unique_ptr<Node> mRoot;
+		Events::Dispatcher mEventDispatcher;
 		Core::ReflexivePointer<Node> mFocus;
 
 		bool mVisible = true;

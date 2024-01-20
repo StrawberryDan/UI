@@ -9,65 +9,50 @@
 //----------------------------------------------------------------------------------------------------------------------
 namespace Strawberry::UI
 {
-	Frame::Frame() = default;
+	Frame::Frame()
+		: mEventDispatcher(*this)
+	{
+
+	}
 
 
 	Frame::Frame(std::unique_ptr<Node>&& root)
-	{
-		mRoots.emplace_back(std::move(root));
-	}
+		: mRoot(std::move(root))
+		, mEventDispatcher(*this)
+	{}
 
 
 	void Frame::Update(Core::Seconds deltaTime)
 	{
-		for (auto& root : mRoots)
-		{
-			root->Update(deltaTime);
-		}
+		if (auto root = GetRoot()) root->Update(deltaTime);
 	}
 
 
 	void Frame::Render(Renderer& renderer)
 	{
-		if (IsVisible())
+		if (auto root = GetRoot(); root && IsVisible())
 		{
-			for (auto& root: mRoots)
-			{
-				root->Render(renderer);
-			}
+			root->Render(renderer);
 		}
 	}
 
 
-	uint32_t Frame::GetRootCount() const
+	Core::Optional<Node*> Frame::GetRoot()
 	{
-		return mRoots.size();
+		return mRoot ? Core::Optional(mRoot.get()) : Core::NullOpt;
 	}
 
 
-	Node& Frame::GetRoot(uint32_t index)
+	Node* Frame::SetRoot(std::unique_ptr<Node> node)
 	{
-		return *mRoots[index];
+		mRoot = std::move(node);
+		return mRoot.get();
 	}
 
 
-	Node* Frame::AddRoot(std::unique_ptr<Node> node)
+	bool Frame::Dispatch(const Event& event)
 	{
-		mEventDispatchers.emplace_back(*this, *node);
-		mRoots.emplace_back(std::move(node));
-		return mRoots.back().get();
-	}
-
-
-	bool Frame::Dispatch(const Window::Event& event)
-	{
-		if (IsVisible())
-		{
-			for (int i = 0; i < GetRootCount(); i++)
-			{
-				if (!mEventDispatchers[i].Dispatch(event)) return false;
-			}
-		}
+		if (mEventDispatcher.Dispatch(event)) return false;
 
 		return true;
 	}

@@ -4,20 +4,20 @@
 #include "Dispatcher.hpp"
 #include "Strawberry/UI/Frame.hpp"
 #include "Strawberry/UI/Nodes/RectangularNode.hpp"
+#include "Listener.hpp"
 
 
 //======================================================================================================================
 //  Method Definitions
 //----------------------------------------------------------------------------------------------------------------------
-namespace Strawberry::UI
+namespace Strawberry::UI::Events
 {
-	Dispatcher::Dispatcher(Frame& frame, Node& node)
+	Dispatcher::Dispatcher(Frame& frame)
 		: mFrame(frame)
-		, mNode(node)
 	{}
 
 
-	bool Dispatcher::Dispatch(const Window::Event& event)
+	bool Dispatcher::Dispatch(const Event& event)
 	{
 		if (auto key = event.Value<Window::Events::Key>())
 		{
@@ -136,16 +136,17 @@ namespace Strawberry::UI
 	{
 		Core::Optional<Node*> result;
 
-		mNode->PostVisit([&](Node& node) {
-			auto asSized = dynamic_cast<UI::RectangularNode*>(&node);
-			if (!asSized) return;
+		if (auto root = mFrame->GetRoot())
+			root->PostVisit([&](Node& node) {
+				auto asSized = dynamic_cast<UI::RectangularNode*>(&node);
+				if (!asSized) return;
 
-			const bool isAncestor = result && result->HasAncestor(node);
-			if (!isAncestor && asSized->IsVisible() && asSized->ContainsPoint(screenPosition))
-			{
-				result = &node;
-			}
-		});
+				const bool isAncestor = result && result->HasAncestor(node);
+				if (!isAncestor && asSized->IsVisible() && asSized->ContainsPoint(screenPosition))
+				{
+					result = &node;
+				}
+			});
 
 		return result;
 	}
