@@ -107,10 +107,12 @@ namespace Strawberry::UI::Events
 		{
 			// Send an unfocus event if required.
 			// Send an unfocus event if there is a current focus and that focus is not the target
-			if (auto focus = mFrame->GetFocus(); focus && focus != target->GetReflexivePointer()) Dispatch(Unfocus());
+			auto focus = mFrame->GetFocus();
+			Node* commonAncestor = focus ? focus->CommonAncestor(**target) : nullptr;
+			if (focus && focus != target->GetReflexivePointer()) Dispatch(Unfocus(), commonAncestor);
 			// Update focus and send event to notify receiving node
 			mFrame->SetFocus(*target.Value());
-			Dispatch(Focus());
+			Dispatch(Focus(), commonAncestor);
 
 
 			while(target)
@@ -159,30 +161,36 @@ namespace Strawberry::UI::Events
 	}
 
 
-	bool Dispatcher::Dispatch(const Events::Focus& event)
+	bool Dispatcher::Dispatch(const Events::Focus& event, const Node* commonAncestor)
 	{
-		if (mFrame->GetFocus())
+		auto target = mFrame->GetFocus();
+		while (target && target != commonAncestor)
 		{
-			for (auto listener : mFrame->GetFocus()->GatherEventListeners(event))
+			for (auto listener : target->GatherEventListeners(event))
 			{
 				bool continuePropagation = listener->Process(event);
 				if (!continuePropagation) return false;
 			}
+
+			target = target->GetParent();
 		}
 
 		return true;
 	}
 
 
-	bool Dispatcher::Dispatch(const Events::Unfocus& event)
+	bool Dispatcher::Dispatch(const Events::Unfocus& event, const Node* commonAncestor)
 	{
-		if (mFrame->GetFocus())
+		auto target = mFrame->GetFocus();
+		while (target && target != commonAncestor)
 		{
-			for (auto listener : mFrame->GetFocus()->GatherEventListeners(event))
+			for (auto listener : target->GatherEventListeners(event))
 			{
 				bool continuePropagation = listener->Process(event);
 				if (!continuePropagation) return false;
 			}
+
+			target = target->GetParent();
 		}
 
 		return true;
