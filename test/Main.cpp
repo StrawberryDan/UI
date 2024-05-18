@@ -6,6 +6,7 @@
 #include "Strawberry/Vulkan/Swapchain.hpp"
 #include "Strawberry/Vulkan/Surface.hpp"
 #include "Strawberry/Window/Window.hpp"
+#include "Strawberry/Rendering/Text/FontFace.hpp"
 
 
 using namespace Strawberry;
@@ -23,6 +24,9 @@ int main()
 	Vulkan::Surface surface(window, device);
 	auto queue = device.GetQueue(queueFamilyIndex, 0);
 	Vulkan::Swapchain swapchain(*queue, surface, window.GetSize());
+
+
+	UI::FontFace fontFace = UI::FontFace::FromFile("data/Pixels.ttf").Unwrap();
 
 
 	while (!window.CloseRequested())

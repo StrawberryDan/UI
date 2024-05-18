@@ -13,6 +13,17 @@ endif()
 
 
 if (NOT TARGET StrawberryUI)
+    option(FT_DISABLE_BROTLI "" ON)
+    option(FT_DISABLE_BZIP2 "" ON)
+    option(FT_DISABLE_HARFBUZZ "" ON)
+    option(FT_DISABLE_PNG "" ON)
+    option(FT_DISABLE_ZLIB "" ON)
+    FetchContent_Declare(FREETYPE
+            GIT_REPOSITORY "https://gitlab.freedesktop.org/freetype/freetype.git"
+    )
+    FetchContent_MakeAvailable(FREETYPE)
+
+
     if (NOT TARGET StrawberryCore AND EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/../Core)
         add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/../Core ${CMAKE_CURRENT_BINARY_DIR}/Core)
     elseif(NOT TARGET StrawberryCore)
@@ -52,8 +63,12 @@ if (NOT TARGET StrawberryUI)
             src/Strawberry/UI/Nodes/Node.hpp
             src/Strawberry/UI/Nodes/RectangularNode.cpp
             src/Strawberry/UI/Nodes/RectangularNode.hpp
+            src/Strawberry/Rendering/Text/FontFace.cpp
+            src/Strawberry/Rendering/Text/FontFace.hpp
+            src/Strawberry/Rendering/Text/Freetype.cpp
+            src/Strawberry/Rendering/Text/Freetype.hpp
     )
-    target_link_libraries(StrawberryUI PUBLIC StrawberryCore StrawberryVulkan StrawberryAudio)
+    target_link_libraries(StrawberryUI PUBLIC StrawberryCore StrawberryVulkan StrawberryAudio freetype)
     target_include_directories(StrawberryUI PUBLIC src)
     set_target_properties(StrawberryUI PROPERTIES CXX_STANDARD 20)
 
