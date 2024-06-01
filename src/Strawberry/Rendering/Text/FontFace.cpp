@@ -19,8 +19,8 @@ namespace Strawberry::UI
 	}
 
 
-	FontFace::FontFace(FontFace&& other)
-		: mFace(std::exchange(other.mFace, nullptr))
+	FontFace::FontFace(FontFace&& other) noexcept
+			: mFace(std::exchange(other.mFace, nullptr))
 	{}
 
 
