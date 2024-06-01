@@ -67,6 +67,8 @@ if (NOT TARGET StrawberryUI)
             src/Strawberry/Rendering/Text/FontFace.hpp
             src/Strawberry/Rendering/Text/Freetype.cpp
             src/Strawberry/Rendering/Text/Freetype.hpp
+            src/Strawberry/Rendering/Text/Glyph.cpp
+            src/Strawberry/Rendering/Text/Glyph.hpp
     )
     target_link_libraries(StrawberryUI PUBLIC StrawberryCore StrawberryVulkan StrawberryAudio freetype)
     target_include_directories(StrawberryUI PUBLIC src)

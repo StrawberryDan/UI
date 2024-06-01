@@ -4,6 +4,7 @@
 //======================================================================================================================
 //	Includes
 //======================================================================================================================
+#include "Glyph.hpp"
 #include <Strawberry/Core/Types/Result.hpp>
 #include <Strawberry/Core/IO/Error.hpp>
 #include "Freetype.hpp"
@@ -21,9 +22,12 @@ namespace Strawberry::UI
 
 		FontFace(const FontFace&) = delete;
 		FontFace& operator=(const FontFace&) = delete;
-		FontFace(FontFace&& other);
+		FontFace(FontFace&& other) noexcept;
 		FontFace& operator=(FontFace&& other) noexcept;
 		~FontFace();
+
+
+		Glyph LoadGlyph(unsigned int glyphIndex);
 
 
 	protected:

@@ -23,10 +23,11 @@ int main()
 	});
 	Vulkan::Surface surface(window, device);
 	auto queue = device.GetQueue(queueFamilyIndex, 0);
-	Vulkan::Swapchain swapchain(*queue, surface, window.GetSize());
+	Vulkan::Swapchain swapchain(*queue, surface, window.GetSize(), VK_PRESENT_MODE_FIFO_KHR);
 
 
 	UI::FontFace fontFace = UI::FontFace::FromFile("data/Pixels.ttf").Unwrap();
+	auto glyph = fontFace.LoadGlyph(0);
 
 
 	while (!window.CloseRequested())
