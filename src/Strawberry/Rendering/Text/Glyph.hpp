@@ -18,11 +18,11 @@ namespace Strawberry::UI
 
             using PointList = std::vector<Point>;
 
-
             using Contours = std::vector<PointList>;
 
+
         private:
-            Glyph(Contours points);
+            explicit Glyph(Contours points);
 
 
             Contours mContours;
