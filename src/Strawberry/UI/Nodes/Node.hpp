@@ -22,7 +22,7 @@ namespace Strawberry::UI
 
 
 	class Node
-		: public Core::EnableReflexivePointer<Node>
+		: public Core::EnableReflexivePointer
 	{
 	public:
 		Node();

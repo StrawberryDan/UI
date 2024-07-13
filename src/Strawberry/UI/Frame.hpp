@@ -15,7 +15,7 @@
 namespace Strawberry::UI
 {
 	class Frame
-		: public Core::EnableReflexivePointer<Frame>
+		: public Core::EnableReflexivePointer
 	{
 		friend class Events::Dispatcher;
 
