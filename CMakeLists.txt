@@ -72,7 +72,7 @@ if (NOT TARGET StrawberryUI)
     )
     target_link_libraries(StrawberryUI PUBLIC StrawberryCore StrawberryVulkan StrawberryAudio freetype)
     target_include_directories(StrawberryUI PUBLIC src)
-    set_target_properties(StrawberryUI PROPERTIES CXX_STANDARD 20)
+    set_target_properties(StrawberryUI PROPERTIES CXX_STANDARD 23)
 
     if (NOT ${CMAKE_SYSTEM_NAME} STREQUAL "Darwin")
         target_link_options(StrawberryUI PRIVATE "-static")
@@ -82,7 +82,7 @@ if (NOT TARGET StrawberryUI)
     add_executable(StrawberryUI_Test
         test/Main.cpp)
     target_link_libraries(StrawberryUI_Test PUBLIC StrawberryUI)
-    set_target_properties(StrawberryUI_Test PROPERTIES CXX_STANDARD 20)
+    set_target_properties(StrawberryUI_Test PROPERTIES CXX_STANDARD 23)
 
     if (NOT ${CMAKE_SYSTEM_NAME} STREQUAL "Darwin")
         target_link_options(StrawberryUI_Test PRIVATE "-static")
