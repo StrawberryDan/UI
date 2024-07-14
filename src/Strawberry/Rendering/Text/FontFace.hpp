@@ -16,23 +16,24 @@ namespace Strawberry::UI
 	class FontFace
 			: public FreeTypeUser
 	{
-		public:
-			static Core::Result<FontFace, Core::IO::Error> FromFile(const std::filesystem::path& path);
+	public:
+		static Core::Result<FontFace, Core::IO::Error> FromFile(const std::filesystem::path& path);
 
 
-			FontFace(const FontFace&)            = delete;
-			FontFace& operator=(const FontFace&) = delete;
-			FontFace(FontFace&& other) noexcept;
-			FontFace& operator=(FontFace&& other) noexcept;
-			~FontFace();
+		FontFace(const FontFace&)            = delete;
+		FontFace& operator=(const FontFace&) = delete;
+		FontFace(FontFace&& other) noexcept;
+		FontFace& operator=(FontFace&& other) noexcept;
+		~FontFace();
 
 
-			Glyph LoadGlyph(unsigned int glyphIndex);
+		Glyph  LoadGlyph(unsigned int glyphIndex);
+		Bitmap LoadBitmap(unsigned int glyphIndex);
 
-		protected:
-			FontFace(FT_Face face);
+	protected:
+		FontFace(FT_Face face);
 
-		private:
-			FT_Face mFace;
+	private:
+		FT_Face mFace;
 	};
 }

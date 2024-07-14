@@ -22,28 +22,28 @@ namespace Strawberry::UI::Events
 {
 	class Dispatcher
 	{
-		public:
-			Dispatcher(Frame& frame);
+	public:
+		Dispatcher(Frame& frame);
 
 
-			/// Dispatches an event and returns whether the event should continue to propagate
-			bool Dispatch(const Window::Event& event);
+		/// Dispatches an event and returns whether the event should continue to propagate
+		bool Dispatch(const Window::Event& event);
 
-		protected:
-			bool Dispatch(const Window::Events::Key& event);
-			bool Dispatch(const Window::Events::Text& event);
-			bool Dispatch(const Window::Events::MouseButton& event);
-			bool Dispatch(const Window::Events::MouseMove& event);
+	protected:
+		bool Dispatch(const Window::Events::Key& event);
+		bool Dispatch(const Window::Events::Text& event);
+		bool Dispatch(const Window::Events::MouseButton& event);
+		bool Dispatch(const Window::Events::MouseMove& event);
 
-			bool Dispatch(const Event& event);
-			bool Dispatch(const Events::Focus& event, const Node* commonAncestor);
-			bool Dispatch(const Events::Unfocus& event, const Node* commonAncestor);
+		bool Dispatch(const Event& event);
+		bool Dispatch(const Events::Focus& event, const Node* commonAncestor);
+		bool Dispatch(const Events::Unfocus& event, const Node* commonAncestor);
 
 
-			Core::Optional<Node*> FindNodeAtPoint(Core::Math::Vec2f screenPosition);
+		Core::Optional<Node*> FindNodeAtPoint(Core::Math::Vec2f screenPosition);
 
-		private:
-			Core::ReflexivePointer<Frame> mFrame;
-			Transformer                   mTransformer;
+	private:
+		Core::ReflexivePointer<Frame> mFrame;
+		Transformer                   mTransformer;
 	};
 }

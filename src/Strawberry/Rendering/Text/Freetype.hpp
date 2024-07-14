@@ -16,24 +16,24 @@ namespace Strawberry::UI
 {
 	class FreeType
 	{
-		public:
-			static void       Initialise();
-			static void       Terminate();
-			static bool       IsInitialised();
-			static FT_Library GetLibrary();
+	public:
+		static void       Initialise();
+		static void       Terminate();
+		static bool       IsInitialised();
+		static FT_Library GetLibrary();
 
-		private:
-			static FT_Library sLibrary;
+	private:
+		static FT_Library sLibrary;
 	};
 
 
 	class FreeTypeUser
 	{
-		public:
-			FreeTypeUser();
-			~FreeTypeUser();
+	public:
+		FreeTypeUser();
+		~FreeTypeUser();
 
-		protected:
-			static std::atomic<size_t> sInstanceCount;
+	protected:
+		static std::atomic<size_t> sInstanceCount;
 	};
 }

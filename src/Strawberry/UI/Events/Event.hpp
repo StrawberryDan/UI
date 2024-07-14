@@ -13,9 +13,9 @@ namespace Strawberry::UI::Events
 {
 	class Click
 	{
-		public:
+	public:
 
-		private:
+	private:
 	};
 
 

@@ -9,21 +9,21 @@ namespace Strawberry::UI
 	{
 		friend class FontFace;
 
-		public:
-			struct Point
-			{
-				Core::Math::Vec2 position;
-			};
+	public:
+		struct Point
+		{
+			Core::Math::Vec2 position;
+		};
 
 
-			using PointList = std::vector<Point>;
+		using PointList = std::vector<Point>;
 
-			using Contours = std::vector<PointList>;
+		using Contours = std::vector<PointList>;
 
-		private:
-			explicit Glyph(Contours points);
+	private:
+		explicit Glyph(Contours points);
 
 
-			Contours mContours;
+		Contours mContours;
 	};
 }
