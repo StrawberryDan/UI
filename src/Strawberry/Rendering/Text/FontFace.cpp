@@ -1,5 +1,7 @@
 #include "FontFace.hpp"
 
+#include <ranges>
+
 
 namespace Strawberry::UI
 {
@@ -69,6 +71,38 @@ namespace Strawberry::UI
 
 
 		return Glyph(contours);
+	}
+
+
+	Core::Image<Core::PixelGreyscale> FontFace::RenderGlyph(unsigned int glyphIndex)
+	{
+		if (mFace->glyph->glyph_index != glyphIndex)
+			Core::AssertEQ(FT_Load_Glyph(mFace, glyphIndex, FT_LOAD_DEFAULT), 0);
+
+		Core::AssertEQ(FT_Render_Glyph(mFace->glyph, FT_RENDER_MODE_NORMAL), 0);
+
+		FT_Bitmap& bitmap = mFace->glyph->bitmap;
+		return {bitmap.width, bitmap.rows, Core::IO::DynamicByteBuffer(bitmap.buffer, bitmap.width * bitmap.rows)};
+	}
+
+
+	Core::Image<Core::PixelF32Greyscale> FontFace::RenderSDF(unsigned int glyphIndex, float spread)
+	{
+		if (mFace->glyph->glyph_index != glyphIndex)
+			Core::AssertEQ(FT_Load_Glyph(mFace, glyphIndex, FT_LOAD_DEFAULT), 0);
+
+		Core::AssertEQ(FT_Render_Glyph(mFace->glyph, FT_RENDER_MODE_SDF), 0);
+
+		auto normaliseSD = [spread](uint8_t x)
+		{
+			return spread * (static_cast<float>(x) - 128.0f) / 128.0f;
+		};
+
+		FT_Bitmap& bitmap = mFace->glyph->bitmap;
+		std::vector<uint8_t> values(bitmap.buffer, bitmap.buffer + bitmap.width * bitmap.rows);
+		auto converted = values | std::views::transform(normaliseSD) | std::ranges::to<std::vector>();
+
+		return {bitmap.width, bitmap.rows, Core::IO::DynamicByteBuffer(converted)};
 	}
 
 

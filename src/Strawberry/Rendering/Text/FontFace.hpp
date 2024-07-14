@@ -5,9 +5,12 @@
 //	Includes
 //======================================================================================================================
 #include "Glyph.hpp"
-#include <Strawberry/Core/Types/Result.hpp>
-#include <Strawberry/Core/IO/Error.hpp>
 #include "Freetype.hpp"
+// Strawberry Core
+#include "Strawberry/Core/Types/Result.hpp"
+#include "Strawberry/Core/Util/Image.hpp"
+#include "Strawberry/Core/IO/Error.hpp"
+// Standard Library
 #include <filesystem>
 
 
@@ -27,8 +30,11 @@ namespace Strawberry::UI
 		~FontFace();
 
 
-		Glyph  LoadGlyph(unsigned int glyphIndex);
-		Bitmap LoadBitmap(unsigned int glyphIndex);
+		Glyph LoadGlyph(unsigned int glyphIndex);
+
+
+		Core::Image<Core::PixelGreyscale>    RenderGlyph(unsigned int glyphIndex);
+		Core::Image<Core::PixelF32Greyscale> RenderSDF(unsigned int glyphIndex, float spread = 2.0f);
 
 	protected:
 		FontFace(FT_Face face);
