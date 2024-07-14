@@ -16,14 +16,18 @@ namespace Strawberry::UI
 		};
 
 
-		using PointList = std::vector<Point>;
+		using Contour = std::vector<Point>;
 
-		using Contours = std::vector<PointList>;
+		using ContourList = std::vector<Contour>;
+
+
+		auto&& operator[](this auto&& self, size_t index) { return std::forward<decltype(self)>(self).mContours[index]; }
+
 
 	private:
-		explicit Glyph(Contours points);
+		explicit Glyph(ContourList points);
 
 
-		Contours mContours;
+		ContourList mContours;
 	};
 }

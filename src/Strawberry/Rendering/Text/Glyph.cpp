@@ -3,6 +3,6 @@
 
 namespace Strawberry::UI
 {
-	Glyph::Glyph(Contours points)
+	Glyph::Glyph(ContourList points)
 		: mContours(std::move(points)) {}
 }

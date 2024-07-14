@@ -50,9 +50,9 @@ namespace Strawberry::UI
 		auto error = FT_Load_Glyph(mFace, glyphIndex, FT_LOAD_DEFAULT);
 		Core::AssertEQ(error, 0);
 
-		FT_Outline&     outline = mFace->glyph->outline;
-		Glyph::Contours contours(outline.n_contours);
-		int             contour = 0;
+		FT_Outline&        outline = mFace->glyph->outline;
+		Glyph::ContourList contours(outline.n_contours);
+		int                contour = 0;
 		for (int i = 0; i < outline.n_points; i++)
 		{
 			contours[contour].emplace_back(Glyph::Point{.position = {outline.points[i].x, outline.points[i].y}});
@@ -98,9 +98,9 @@ namespace Strawberry::UI
 			return spread * (static_cast<float>(x) - 128.0f) / 128.0f;
 		};
 
-		FT_Bitmap& bitmap = mFace->glyph->bitmap;
+		FT_Bitmap&           bitmap = mFace->glyph->bitmap;
 		std::vector<uint8_t> values(bitmap.buffer, bitmap.buffer + bitmap.width * bitmap.rows);
-		auto converted = values | std::views::transform(normaliseSD) | std::ranges::to<std::vector>();
+		auto                 converted = values | std::views::transform(normaliseSD) | std::ranges::to<std::vector>();
 
 		return {bitmap.width, bitmap.rows, Core::IO::DynamicByteBuffer(converted)};
 	}
