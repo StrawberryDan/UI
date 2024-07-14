@@ -10,8 +10,7 @@
 namespace Strawberry::UI::Events
 {
 	Listener::Listener(Listener::Predicate predicate)
-		: mPredicate(std::move(predicate))
-	{}
+		: mPredicate(std::move(predicate)) {}
 
 
 	bool Listener::InterestedIn(const Event& event) const

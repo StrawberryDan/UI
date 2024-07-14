@@ -15,49 +15,49 @@
 namespace Strawberry::UI
 {
 	class Frame
-		: public Core::EnableReflexivePointer
+			: public Core::EnableReflexivePointer
 	{
 		friend class Events::Dispatcher;
 
-
-	public:
-		Frame();
-		Frame(std::unique_ptr<Node>&& root);
-		Frame(std::derived_from<Node> auto node)
-		{
-			SetRoot(std::move(node));
-		}
+		public:
+			Frame();
+			Frame(std::unique_ptr<Node>&& root);
 
 
-		virtual bool Dispatch(const Window::Event& event);
-		virtual void Update(Core::Seconds deltaTime);
-		virtual void Render(Renderer& renderer);
+			Frame(std::derived_from<Node> auto node)
+			{
+				SetRoot(std::move(node));
+			}
 
 
-		Core::Optional<Node*> GetRoot();
-		Node* SetRoot(std::unique_ptr<Node> node);
-		auto SetRoot(std::derived_from<Node> auto node)
-		{
-			using NodeType = std::decay_t<decltype(node)>;
-			return static_cast<decltype(node)*>(SetRoot(std::make_unique<NodeType>(std::move(node))));
-		}
+			virtual bool Dispatch(const Window::Event& event);
+			virtual void Update(Core::Seconds deltaTime);
+			virtual void Render(Renderer& renderer);
 
 
-		bool IsVisible() const;
-		void SetVisible(bool visible);
+			Core::Optional<Node*> GetRoot();
+			Node*                 SetRoot(std::unique_ptr<Node> node);
 
 
-	protected:
-		Core::ReflexivePointer<Node> GetFocus();
-		void SetFocus(Node& node);
+			auto SetRoot(std::derived_from<Node> auto node)
+			{
+				using NodeType = std::decay_t<decltype(node)>;
+				return static_cast<decltype(node)*>(SetRoot(std::make_unique<NodeType>(std::move(node))));
+			}
 
 
-	private:
-		std::unique_ptr<Node> mRoot;
-		Events::Dispatcher mEventDispatcher;
-		Core::ReflexivePointer<Node> mFocus;
+			bool IsVisible() const;
+			void SetVisible(bool visible);
 
-		bool mVisible = true;
+		protected:
+			Core::ReflexivePointer<Node> GetFocus();
+			void                         SetFocus(Node& node);
+
+		private:
+			std::unique_ptr<Node>        mRoot;
+			Events::Dispatcher           mEventDispatcher;
+			Core::ReflexivePointer<Node> mFocus;
+
+			bool mVisible = true;
 	};
 }
-

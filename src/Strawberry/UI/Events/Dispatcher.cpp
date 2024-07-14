@@ -13,8 +13,7 @@
 namespace Strawberry::UI::Events
 {
 	Dispatcher::Dispatcher(Frame& frame)
-		: mFrame(frame)
-	{}
+		: mFrame(frame) {}
 
 
 	bool Dispatcher::Dispatch(const Window::Event& event)
@@ -45,7 +44,7 @@ namespace Strawberry::UI::Events
 		// Attempt to create and dispatch advanced events
 		if (shouldPropagate)
 		{
-			for (auto advancedEvent : mTransformer.Transform(event))
+			for (auto advancedEvent: mTransformer.Transform(event))
 			{
 				shouldPropagate = shouldPropagate && Dispatch(advancedEvent);
 				if (!shouldPropagate) break;
@@ -61,11 +60,11 @@ namespace Strawberry::UI::Events
 	{
 		if (auto focus = mFrame->GetFocus())
 		{
-			while(focus)
+			while (focus)
 			{
 				auto listeners = focus->GatherEventListeners(event);
 
-				for (auto listener : listeners)
+				for (auto listener: listeners)
 				{
 					bool continuePropagation = (*listener).Process(event);
 					if (!continuePropagation) return false;
@@ -83,11 +82,11 @@ namespace Strawberry::UI::Events
 	{
 		if (auto focus = mFrame->GetFocus())
 		{
-			while(focus)
+			while (focus)
 			{
 				auto listeners = focus->GatherEventListeners(event);
 
-				for (auto listener : listeners)
+				for (auto listener: listeners)
 				{
 					bool continuePropagation = (*listener).Process(event);
 					if (!continuePropagation) return false;
@@ -107,7 +106,7 @@ namespace Strawberry::UI::Events
 		{
 			// Send an unfocus event if required.
 			// Send an unfocus event if there is a current focus and that focus is not the target
-			auto focus = mFrame->GetFocus();
+			auto  focus          = mFrame->GetFocus();
 			Node* commonAncestor = focus ? focus->CommonAncestor(**target) : nullptr;
 			if (focus && focus != target->GetReflexivePointer()) Dispatch(Unfocus(), commonAncestor);
 			// Update focus and send event to notify receiving node
@@ -115,11 +114,11 @@ namespace Strawberry::UI::Events
 			Dispatch(Focus(), commonAncestor);
 
 
-			while(target)
+			while (target)
 			{
 				auto listeners = target->GatherEventListeners(event);
 
-				for (auto listener : listeners)
+				for (auto listener: listeners)
 				{
 					bool continuePropagation = (*listener).Process(event);
 					if (!continuePropagation) return false;
@@ -137,11 +136,11 @@ namespace Strawberry::UI::Events
 	{
 		if (auto target = FindNodeAtPoint(event.position))
 		{
-			while(target)
+			while (target)
 			{
 				auto listeners = target->GatherEventListeners(event);
 
-				for (auto listener : listeners)
+				for (auto listener: listeners)
 				{
 					bool continuePropagation = (*listener).Process(event);
 					if (!continuePropagation) return false;
@@ -166,7 +165,7 @@ namespace Strawberry::UI::Events
 		auto target = mFrame->GetFocus();
 		while (target && target != commonAncestor)
 		{
-			for (auto listener : target->GatherEventListeners(event))
+			for (auto listener: target->GatherEventListeners(event))
 			{
 				bool continuePropagation = listener->Process(event);
 				if (!continuePropagation) return false;
@@ -184,7 +183,7 @@ namespace Strawberry::UI::Events
 		auto target = mFrame->GetFocus();
 		while (target && target != commonAncestor)
 		{
-			for (auto listener : target->GatherEventListeners(event))
+			for (auto listener: target->GatherEventListeners(event))
 			{
 				bool continuePropagation = listener->Process(event);
 				if (!continuePropagation) return false;
@@ -202,7 +201,8 @@ namespace Strawberry::UI::Events
 		Core::Optional<Node*> result;
 
 		if (auto root = mFrame->GetRoot())
-			root->PostVisit([&](Node& node) {
+			root->PostVisit([&](Node& node)
+			{
 				auto asSized = dynamic_cast<UI::RectangularNode*>(&node);
 				if (!asSized) return;
 

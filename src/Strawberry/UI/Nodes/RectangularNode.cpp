@@ -35,8 +35,8 @@ namespace Strawberry::UI
 
 	bool RectangularNode::ContainsPoint(Core::Math::Vec2f screenPosition)
 	{
-		auto relative = screenPosition - GetPosition();
-		const Core::Math::Vec2f size = GetSize();
+		auto                    relative = screenPosition - GetPosition();
+		const Core::Math::Vec2f size     = GetSize();
 		return relative[0] >= 0.0f && relative[0] <= size[0] && relative[1] >= 0.0f && relative[1] <= size[1];
 	}
 
@@ -213,13 +213,13 @@ namespace Strawberry::UI
 		{
 			case HorizontalAlignment::Left:
 				newPosition[0] -= GetLocalSize()[0] - padding;
-			break;
+				break;
 			case HorizontalAlignment::Center:
 				newPosition[0] += padding;
-			break;
+				break;
 			case HorizontalAlignment::Right:
 				newPosition[0] += node.GetLocalSize()[0] + padding;
-			break;
+				break;
 		}
 
 		switch (alignment)
@@ -228,10 +228,10 @@ namespace Strawberry::UI
 				break;
 			case VerticalAlignment::Center:
 				newPosition[1] += node.GetLocalSize()[1] / 2.0 - GetLocalSize()[1] / 2.0;
-			break;
+				break;
 			case VerticalAlignment::Bottom:
 				newPosition[1] += node.GetLocalPosition()[1] - GetLocalSize()[1];
-			break;
+				break;
 		}
 
 		SetLocalPosition(newPosition);

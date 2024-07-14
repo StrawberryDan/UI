@@ -10,16 +10,12 @@
 namespace Strawberry::UI
 {
 	Frame::Frame()
-		: mEventDispatcher(*this)
-	{
-
-	}
+		: mEventDispatcher(*this) {}
 
 
 	Frame::Frame(std::unique_ptr<Node>&& root)
 		: mRoot(std::move(root))
-		, mEventDispatcher(*this)
-	{}
+		, mEventDispatcher(*this) {}
 
 
 	void Frame::Update(Core::Seconds deltaTime)

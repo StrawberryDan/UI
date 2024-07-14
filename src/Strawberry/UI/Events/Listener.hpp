@@ -15,22 +15,21 @@ namespace Strawberry::UI::Events
 {
 	class Listener
 	{
-	public:
-		using Predicate = std::function<bool(const Event&)>;
+		public:
+			using Predicate = std::function<bool(const Event&)>;
 
 
-		Listener(Predicate predicate);
-		virtual ~Listener() = default;
+			Listener(Predicate predicate);
+			virtual ~Listener() = default;
 
 
-		/// Processes an event and returns whether it should propagate further.
-		virtual bool Process(const Event&) = 0;
+			/// Processes an event and returns whether it should propagate further.
+			virtual bool Process(const Event&) = 0;
 
 
-		bool InterestedIn(const Event& event) const;
+			bool InterestedIn(const Event& event) const;
 
-
-	protected:
-		Predicate mPredicate;
+		protected:
+			Predicate mPredicate;
 	};
 }

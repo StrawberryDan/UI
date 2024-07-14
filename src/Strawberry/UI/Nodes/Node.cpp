@@ -6,13 +6,12 @@
 namespace Strawberry::UI
 {
 	Node::Node()
-		: mParent()
-	{}
+		: mParent() {}
 
 
 	void Node::Update(Core::Seconds deltaTime)
 	{
-		for (auto& animation : mActiveAnimations)
+		for (auto& animation: mActiveAnimations)
 		{
 			animation->Update(deltaTime, *this);
 
@@ -28,10 +27,14 @@ namespace Strawberry::UI
 		}
 
 
-		erase_if(mActiveAnimations, [](auto& x) { return x->IsFinished(); });
+		erase_if(mActiveAnimations,
+		         [](auto& x)
+		         {
+			         return x->IsFinished();
+		         });
 
 
-		for (auto& child : mChildren)
+		for (auto& child: mChildren)
 		{
 			child->Update(deltaTime);
 		}
@@ -54,7 +57,7 @@ namespace Strawberry::UI
 	void Node::PreVisit(const std::function<void(Node&)>& function)
 	{
 		function(*this);
-		for (auto& child : mChildren)
+		for (auto& child: mChildren)
 		{
 			child->PreVisit(function);
 		}
@@ -63,7 +66,7 @@ namespace Strawberry::UI
 
 	void Node::PostVisit(const std::function<void(Node&)>& function)
 	{
-		for (auto& child : mChildren)
+		for (auto& child: mChildren)
 		{
 			child->PostVisit(function);
 		}
@@ -95,7 +98,7 @@ namespace Strawberry::UI
 		if (mId == id) return this;
 
 		// Do depth first search
-		for (const auto& child : mChildren)
+		for (const auto& child: mChildren)
 		{
 			if (auto result = child->FindById(id))
 			{
@@ -131,7 +134,7 @@ namespace Strawberry::UI
 	{
 		auto generateParentChain = [](const Node& node)
 		{
-			std::vector<Core::ReflexivePointer<Node>> parentChain { node.GetReflexivePointer() };
+			std::vector<Core::ReflexivePointer<Node>> parentChain{node.GetReflexivePointer()};
 			while (auto parent = parentChain.back()->GetParent())
 			{
 				parentChain.emplace_back(parent);
@@ -140,11 +143,11 @@ namespace Strawberry::UI
 		};
 
 
-		auto myParentChain = generateParentChain(*this);
+		auto myParentChain    = generateParentChain(*this);
 		auto theirParentChain = generateParentChain(other);
 
 
-		for (auto node : myParentChain)
+		for (auto node: myParentChain)
 		{
 			if (auto corresponding = std::ranges::find(theirParentChain.begin(), theirParentChain.end(), node); corresponding != theirParentChain.end())
 			{
@@ -205,7 +208,7 @@ namespace Strawberry::UI
 	Core::Math::Vec2f Node::GetPosition() const
 	{
 		auto parentPosition = mParent ? mParent->GetPosition() : Core::Math::Vec2f();
-		auto parentScale = mParent ? mParent->GetLocalScale() : Core::Math::Vec2f(1.0f, 1.0f);
+		auto parentScale    = mParent ? mParent->GetLocalScale() : Core::Math::Vec2f(1.0f, 1.0f);
 		return parentPosition + parentScale * GetLocalPosition();
 	}
 
@@ -231,7 +234,10 @@ namespace Strawberry::UI
 
 	void Node::SetLocalPosition(Core::Math::Vec2f position)
 	{
-		mLocalPosition = position.Map([](auto x) { return std::roundf(x); });
+		mLocalPosition = position.Map([](auto x)
+		{
+			return std::roundf(x);
+		});
 	}
 
 
@@ -262,8 +268,9 @@ namespace Strawberry::UI
 	uint32_t Node::GetDepth() const
 	{
 		uint32_t depth = 0;
-		auto node = GetReflexivePointer();
-		while (node) {
+		auto     node  = GetReflexivePointer();
+		while (node)
+		{
 			node = node->GetParent();
 			++depth;
 		}
@@ -294,7 +301,7 @@ namespace Strawberry::UI
 		std::vector<Events::Listener*> listeners;
 		listeners.reserve(mEventListeners.size());
 
-		for (auto& listener : mEventListeners)
+		for (auto& listener: mEventListeners)
 		{
 			if (listener->InterestedIn(event))
 			{

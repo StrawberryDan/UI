@@ -11,8 +11,7 @@ namespace Strawberry::UI::Events
 {
 	CallbackListener::CallbackListener(Listener::Predicate predicate, CallbackListener::Callback callback)
 		: Listener(std::move(predicate))
-		, mCallback(std::move(callback))
-	{}
+		, mCallback(std::move(callback)) {}
 
 
 	bool CallbackListener::Process(const Event& event)

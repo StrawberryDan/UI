@@ -11,24 +11,21 @@
 //----------------------------------------------------------------------------------------------------------------------
 namespace Strawberry::UI::Events
 {
-    class Click
-    {
-    public:
+	class Click
+	{
+		public:
 
-    private:
-   
-    };
-
-
-    class Focus
-    {};
+		private:
+	};
 
 
-    class Unfocus
-    {};
+	class Focus {};
 
 
-    using Event = Window::Event::AddTypes<Click,
-										  Focus,
-										  Unfocus>;
+	class Unfocus {};
+
+
+	using Event = Window::Event::AddTypes<Click,
+	                                      Focus,
+	                                      Unfocus>;
 }

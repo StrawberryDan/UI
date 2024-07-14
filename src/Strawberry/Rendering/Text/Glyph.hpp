@@ -5,26 +5,25 @@
 
 namespace Strawberry::UI
 {
-    class Glyph
-    {
-        friend class FontFace;
+	class Glyph
+	{
+		friend class FontFace;
 
-        public:
-            struct Point
-            {
-                Core::Math::Vec2 position;
-            };
-
-
-            using PointList = std::vector<Point>;
-
-            using Contours = std::vector<PointList>;
+		public:
+			struct Point
+			{
+				Core::Math::Vec2 position;
+			};
 
 
-        private:
-            explicit Glyph(Contours points);
+			using PointList = std::vector<Point>;
+
+			using Contours = std::vector<PointList>;
+
+		private:
+			explicit Glyph(Contours points);
 
 
-            Contours mContours;
-    };
+			Contours mContours;
+	};
 }

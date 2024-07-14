@@ -18,31 +18,29 @@ namespace Strawberry::UI
 
 	class Animation
 	{
-	public:
-		virtual ~Animation() = default;
+		public:
+			virtual ~Animation() = default;
 
 
-		virtual void Update(float deltaTime, Node& node) = 0;
-		virtual bool IsFinished() = 0;
+			virtual void Update(float deltaTime, Node& node) = 0;
+			virtual bool IsFinished() = 0;
 
 
-		std::unique_ptr<Animation> GetNextAnimation();
+			std::unique_ptr<Animation> GetNextAnimation();
 
 
-		void SetCallback(std::function<void()> function);
-		void DoCallback();
+			void SetCallback(std::function<void()> function);
+			void DoCallback();
 
+		protected:
+			template<std::derived_from<Animation> T>
+			void SetNextAnimation(T&& animation)
+			{
+				mNextAnimation = std::make_unique<T>(std::forward<T>(animation));
+			}
 
-	protected:
-		template <std::derived_from<Animation> T>
-		void SetNextAnimation(T&& animation)
-		{
-			mNextAnimation = std::make_unique<T>(std::forward<T>(animation));
-		}
-
-
-	private:
-		std::unique_ptr<Animation> mNextAnimation;
-		std::function<void()>      mFinishCallback;
+		private:
+			std::unique_ptr<Animation> mNextAnimation;
+			std::function<void()>      mFinishCallback;
 	};
 }

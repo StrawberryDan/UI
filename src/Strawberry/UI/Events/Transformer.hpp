@@ -12,13 +12,11 @@
 //----------------------------------------------------------------------------------------------------------------------
 namespace Strawberry::UI::Events
 {
-    class Transformer
-    {
-    public:
-        std::vector<Event> Transform(const Window::Event& events);
+	class Transformer
+	{
+		public:
+			std::vector<Event> Transform(const Window::Event& events);
 
-
-    private:
-   
-    };
+		private:
+	};
 }
