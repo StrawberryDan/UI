@@ -10,6 +10,9 @@ namespace Strawberry::UI
 		friend class FontFace;
 
 	public:
+		using Index = unsigned int;
+
+
 		struct Point
 		{
 			Core::Math::Vec2 position;
@@ -25,9 +28,10 @@ namespace Strawberry::UI
 
 
 	private:
-		explicit Glyph(ContourList points);
+		explicit Glyph(Index index, ContourList points);
 
 
+		Index mIndex;
 		ContourList mContours;
 	};
 }

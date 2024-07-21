@@ -30,7 +30,7 @@ namespace Strawberry::UI
 		~FontFace();
 
 
-		Glyph LoadGlyph(unsigned int glyphIndex);
+		Glyph LoadGlyph(Glyph::Index index);
 
 
 		Core::Image<Core::PixelGreyscale>    RenderGlyph(unsigned int glyphIndex);

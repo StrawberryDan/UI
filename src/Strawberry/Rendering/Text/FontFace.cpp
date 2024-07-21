@@ -70,7 +70,7 @@ namespace Strawberry::UI
 		}
 
 
-		return Glyph(contours);
+		return Glyph(glyphIndex, contours);
 	}
 
 
