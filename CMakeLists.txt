@@ -27,7 +27,7 @@ if (NOT TARGET StrawberryUI)
 	find_strawberry_library(NAMES Core Vulkan Audio)
 
 
-	add_library(StrawberryUI STATIC
+	new_strawberry_library(NAME StrawberryUI SOURCE
 		src/Strawberry/UI/Animation/Animation.cpp
 		src/Strawberry/UI/Animation/Animation.hpp
 		src/Strawberry/UI/Events/CallbackListener.cpp
@@ -57,11 +57,9 @@ if (NOT TARGET StrawberryUI)
 	)
 	target_link_libraries(StrawberryUI PUBLIC StrawberryCore StrawberryVulkan StrawberryAudio freetype)
 	target_include_directories(StrawberryUI PUBLIC src)
-	set_target_properties(StrawberryUI PROPERTIES CXX_STANDARD 23)
 
 
-	add_executable(StrawberryUI_Test
+	new_strawberry_executable(NAME StrawberryUI_Test SOURCE
 		test/Main.cpp)
 	target_link_libraries(StrawberryUI_Test PUBLIC StrawberryUI)
-	set_target_properties(StrawberryUI_Test PROPERTIES CXX_STANDARD 23)
 endif ()
