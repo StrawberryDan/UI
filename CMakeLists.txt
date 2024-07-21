@@ -24,23 +24,8 @@ if (NOT TARGET StrawberryUI)
 	FetchContent_MakeAvailable(FREETYPE)
 
 
-	if (NOT TARGET StrawberryCore AND EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/../Core)
-		add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/../Core ${CMAKE_CURRENT_BINARY_DIR}/Core)
-	elseif (NOT TARGET StrawberryCore)
-		message(FATAL_ERROR "Failed to find Strawberry Core at ${CMAKE_CURRENT_SOURCE_DIR}/../Core")
-	endif ()
+	find_strawberry_library(NAMES Core Vulkan Audio)
 
-	if (NOT TARGET StrawberryVulkan AND EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/../Vulkan)
-		add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/../Vulkan ${CMAKE_CURRENT_BINARY_DIR}/Vulkan)
-	elseif (NOT TARGET StrawberryGraphics)
-		message(FATAL_ERROR "Failed to find Strawberry Vulkan at ${CMAKE_CURRENT_SOURCE_DIR}/../Vulkan")
-	endif ()
-
-	if (NOT TARGET StrawberryAudio AND EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/../Audio)
-		add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/../Audio ${CMAKE_CURRENT_BINARY_DIR}/Audio)
-	elseif (NOT TARGET StrawberryAudio)
-		message(FATAL_ERROR "Failed to find Strawberry Audio at ${CMAKE_CURRENT_SOURCE_DIR}/../Audio")
-	endif ()
 
 	add_library(StrawberryUI STATIC
 		src/Strawberry/UI/Animation/Animation.cpp
