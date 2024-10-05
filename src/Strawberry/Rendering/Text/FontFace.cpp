@@ -14,10 +14,13 @@ namespace Strawberry::UI
 		switch (error)
 		{
 			case FT_Err_Ok:
-				return face;
+				break;
 			default:
 				Core::Unreachable();
 		}
+
+		FT_Set_Pixel_Sizes(face.mFace, 1 * face.mFace->units_per_EM >> 6, 0);
+		return face;
 	}
 
 
