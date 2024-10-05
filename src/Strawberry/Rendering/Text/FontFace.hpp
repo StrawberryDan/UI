@@ -6,6 +6,7 @@
 //======================================================================================================================
 #include "Glyph.hpp"
 #include "Freetype.hpp"
+#include "Strawberry/Rendering/Text/GlyphBitmap.hpp"
 // Strawberry Core
 #include "Strawberry/Core/Types/Result.hpp"
 #include "Strawberry/Core/Util/Image.hpp"
@@ -33,11 +34,17 @@ namespace Strawberry::UI
 		Glyph LoadGlyph(Glyph::Index index);
 
 
-		Core::Image<Core::PixelGreyscale>    RenderGlyph(unsigned int glyphIndex);
-		Core::Image<Core::PixelF32Greyscale> RenderSDF(unsigned int glyphIndex, float spread = 2.0f);
+		Core::Math::Vec2u GetBoundingBox() const;
+
+
+		Core::Optional<GlyphBitmap> RenderGlyph(uint32_t codepoint);
+		std::vector<GlyphBitmap>    RenderAllGlyphs();
 
 	protected:
 		FontFace(FT_Face face);
+
+
+		Core::Optional<FT_UInt> GetIndexOfChar(char32_t codepoint) const;
 
 	private:
 		FT_Face mFace;

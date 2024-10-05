@@ -1,5 +1,9 @@
-#include "FontFace.hpp"
-
+//======================================================================================================================
+//  Includes
+//----------------------------------------------------------------------------------------------------------------------
+#include "Strawberry/Rendering/Text/FontFace.hpp"
+#include "Strawberry/Rendering/Text/GlyphBitmap.hpp"
+// Standard Library
 #include <ranges>
 
 
@@ -67,7 +71,7 @@ namespace Strawberry::UI
 		}
 
 
-		for (auto& contour: contours)
+		for (auto& contour : contours)
 		{
 			contour.shrink_to_fit();
 		}
@@ -77,35 +81,69 @@ namespace Strawberry::UI
 	}
 
 
-	Core::Image<Core::PixelGreyscale> FontFace::RenderGlyph(unsigned int glyphIndex)
+	Core::Math::Vec2u FontFace::GetBoundingBox() const
 	{
-		if (mFace->glyph->glyph_index != glyphIndex)
-			Core::AssertEQ(FT_Load_Glyph(mFace, glyphIndex, FT_LOAD_DEFAULT), 0);
+		return {(mFace->bbox.xMax - mFace->bbox.xMin) >> 6, (mFace->bbox.yMax - mFace->bbox.yMin) >> 6};
+	}
+
+
+	Core::Optional<GlyphBitmap> FontFace::RenderGlyph(uint32_t codepoint)
+	{
+		Core::Optional<Glyph::Index> index = GetIndexOfChar(codepoint);
+		if (!index)
+			return Core::NullOpt;
+
+		if (mFace->glyph->glyph_index != codepoint)
+			Core::AssertEQ(FT_Load_Glyph(mFace, index.Value(), FT_LOAD_DEFAULT), 0);
 
 		Core::AssertEQ(FT_Render_Glyph(mFace->glyph, FT_RENDER_MODE_NORMAL), 0);
 
 		FT_Bitmap& bitmap = mFace->glyph->bitmap;
-		return {bitmap.width, bitmap.rows, Core::IO::DynamicByteBuffer(bitmap.buffer, bitmap.width * bitmap.rows)};
+
+		Core::IO::DynamicByteBuffer bytes;
+		for (int y = 0; y < bitmap.rows; y++)
+		{
+			for (int x = 0; x < bitmap.width; x++)
+			{
+				bytes.Push<uint8_t>(bitmap.buffer[y * bitmap.pitch + x]);
+			}
+		}
+
+		Core::Image<Core::PixelGreyscale> image(bitmap.width, bitmap.rows, std::move(bytes));
+
+		return GlyphBitmap(codepoint, std::move(image));
 	}
 
 
-	Core::Image<Core::PixelF32Greyscale> FontFace::RenderSDF(unsigned int glyphIndex, float spread)
+	std::vector<GlyphBitmap> FontFace::RenderAllGlyphs()
 	{
-		if (mFace->glyph->glyph_index != glyphIndex)
-			Core::AssertEQ(FT_Load_Glyph(mFace, glyphIndex, FT_LOAD_DEFAULT), 0);
+		std::vector<GlyphBitmap> result;
+		result.reserve(mFace->num_glyphs);
 
-		Core::AssertEQ(FT_Render_Glyph(mFace->glyph, FT_RENDER_MODE_SDF), 0);
-
-		auto normaliseSD = [spread](uint8_t x)
+		FT_UInt  index;
+		FT_ULong charcode = FT_Get_First_Char(mFace, &index);
+		while (index != 0)
 		{
-			return spread * (static_cast<float>(x) - 128.0f) / 128.0f;
-		};
+			if (auto bitmap = RenderGlyph(charcode))
+			{
+				result.emplace_back(bitmap.Unwrap());
+			}
+			charcode = FT_Get_Next_Char(mFace, charcode, &index);
+		}
 
-		FT_Bitmap&           bitmap = mFace->glyph->bitmap;
-		std::vector<uint8_t> values(bitmap.buffer, bitmap.buffer + bitmap.width * bitmap.rows);
-		auto                 converted = values | std::views::transform(normaliseSD) | std::ranges::to<std::vector>();
+		return result;
+	}
 
-		return {bitmap.width, bitmap.rows, Core::IO::DynamicByteBuffer(converted)};
+
+	Core::Optional<FT_UInt> FontFace::GetIndexOfChar(char32_t codepoint) const
+	{
+		FT_UInt ret = FT_Get_Char_Index(mFace, codepoint);
+		if (ret == 0)
+		[[unlikely]]
+		{
+			return Core::NullOpt;
+		}
+		return ret;
 	}
 
 

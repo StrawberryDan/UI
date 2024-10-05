@@ -7,6 +7,7 @@
 #include "Strawberry/Vulkan/Surface.hpp"
 #include "Strawberry/Window/Window.hpp"
 #include "Strawberry/Rendering/Text/FontFace.hpp"
+#include "Strawberry/Rendering/Text/FontMap.hpp"
 
 
 using namespace Strawberry;
@@ -28,6 +29,7 @@ int main()
 
 
 	UI::FontFace fontFace = UI::FontFace::FromFile("data/Pixels.ttf").Unwrap();
+	UI::FontMap fontMap(fontFace, Core::Math::Vec2u(1024, 1024));
 	auto         glyph    = fontFace.LoadGlyph(0);
 
 
