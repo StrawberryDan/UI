@@ -17,6 +17,9 @@ namespace Strawberry::UI
 		, mMaxGlyphSize(fontFace.GetBoundingBox())
 		, mGlyphsPerPage(pageSize / MaxGlyphSize())
 	{
+		Core::Assert(std::has_single_bit(pageSize[0]));
+		Core::Assert(std::has_single_bit(pageSize[1]));
+
 		auto totalGlyphsPerPage = mGlyphsPerPage[0] * mGlyphsPerPage[1];
 
 		auto pagedGlyphs = std::views::enumerate(fontFace.RenderAllGlyphs() | std::views::chunk(totalGlyphsPerPage));
