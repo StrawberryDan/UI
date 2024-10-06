@@ -15,24 +15,51 @@ namespace Strawberry::UI
 	FontMap::FontMap(FontFace& fontFace, Core::Math::Vec2u pageSize)
 		: mPageSize(pageSize)
 		, mMaxGlyphSize(fontFace.GetBoundingBox())
-		, mGlyphsPerPage(pageSize / GetBoundingBoxSize())
+		, mGlyphsPerPage(pageSize / MaxGlyphSize())
 	{
 		auto totalGlyphsPerPage = mGlyphsPerPage[0] * mGlyphsPerPage[1];
 
-		auto allGlyphs = fontFace.RenderAllGlyphs();
-		unsigned pageIndex = 0;
-		for (const auto& chunk : allGlyphs | std::views::chunk(totalGlyphsPerPage))
+		auto pagedGlyphs = std::views::enumerate(fontFace.RenderAllGlyphs() | std::views::chunk(totalGlyphsPerPage));
+		for (const auto& [pageIndex, pageGlyphs] : pagedGlyphs)
 		{
 			Page page;
 			page.mAtlas = Core::Image<Core::PixelGreyscale>(mPageSize);
-			int i = 0;
-			for (auto glyph : chunk)
+			for (const auto& [glyphIndex, glyph] : std::views::enumerate(pageGlyphs))
 			{
-				auto offset = Core::Math::Vec2u(i % mGlyphsPerPage[0], i / mGlyphsPerPage[0]) * mMaxGlyphSize;
+				const auto offset = Core::Math::Vec2u(glyphIndex % mGlyphsPerPage[0], glyphIndex / mGlyphsPerPage[0]) * mMaxGlyphSize;
 				page.mAtlas.Blit(glyph.Bitmap(), offset);
-				i++;
+				mGlyphs.emplace(glyph.UnicodeCodepoint(),
+				                GlyphAddress{
+					                .pageIndex = static_cast<unsigned>(pageIndex),
+					                .offset = offset,
+					                .extent = glyph.Bitmap().Size()
+				                });
 			}
-			page.mAtlas.Save(fmt::format("Thing{}.png", pageIndex++));
 		}
+	}
+
+
+	Core::Optional<FontMap::GlyphAddress> FontMap::GetGlyphAddress(uint32_t codepoint) const noexcept
+	{
+		auto search = mGlyphs.find(codepoint);
+		return search == mGlyphs.end() ? Core::NullOpt : Core::Optional(search->second);
+	}
+
+
+	Core::Optional<const FontMap::Page*> FontMap::GetPage(PageIndex pageIndex) const noexcept
+	{
+		if (pageIndex < mPages.size())
+		[[likely]]
+		{
+			return &mPages[pageIndex];
+		}
+
+		return Core::NullOpt;
+	}
+
+
+	FontMap::PageIndex FontMap::GetPageCount() const noexcept
+	{
+		return mPages.size();
 	}
 }

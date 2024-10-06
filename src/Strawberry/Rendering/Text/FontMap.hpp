@@ -14,17 +14,19 @@ namespace Strawberry::UI
 	class FontMap
 	{
 	public:
-		FontMap(FontFace& fontFace, Core::Math::Vec2u pageSize);
+		using PageIndex = unsigned;
 
 
-		Core::Math::Vec2u GetBoundingBoxSize() const noexcept
+		struct Page
 		{
-			return mMaxGlyphSize;
-		}
+			Core::Image<Core::PixelGreyscale> mAtlas;
+		};
 
-	private:
-		struct GlyphView
+
+		struct GlyphAddress
 		{
+			// Index of the page this glyph is on.
+			unsigned pageIndex = 0;
 			// In multiples of mMaxGlyphSize.
 			Core::Math::Vec2u offset;
 			// In pixels.
@@ -32,17 +34,24 @@ namespace Strawberry::UI
 		};
 
 
-		struct Page
+		FontMap(FontFace& fontFace, Core::Math::Vec2u pageSize);
+
+
+		[[nodiscard]] Core::Math::Vec2u MaxGlyphSize() const noexcept
 		{
-			std::map<char32_t, GlyphView> mGlyphs;
-			Core::Image<Core::PixelGreyscale> mAtlas;
-		};
+			return mMaxGlyphSize;
+		}
 
 
-		Core::Math::Vec2u mPageSize;
-		Core::Math::Vec2u mMaxGlyphSize;
-		Core::Math::Vec2u mGlyphsPerPage;
+		[[nodiscard]] Core::Optional<FontMap::GlyphAddress> GetGlyphAddress(uint32_t codepoint) const noexcept;
+		[[nodiscard]] Core::Optional<const Page*>           GetPage(PageIndex pageIndex) const noexcept;
+		[[nodiscard]] PageIndex                             GetPageCount() const noexcept;
 
-		std::vector<Page> mPages;
+	private:
+		Core::Math::Vec2u                mPageSize;
+		Core::Math::Vec2u                mMaxGlyphSize;
+		Core::Math::Vec2u                mGlyphsPerPage;
+		std::vector<Page>                mPages;
+		std::map<char32_t, GlyphAddress> mGlyphs;
 	};
 }
