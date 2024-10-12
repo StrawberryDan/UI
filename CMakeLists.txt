@@ -28,15 +28,6 @@ if (NOT TARGET StrawberryUI)
 
 
 	new_strawberry_library(NAME StrawberryUI SOURCE
-		src/Strawberry/Rendering/Text/FontFace.cpp
-		src/Strawberry/Rendering/Text/FontFace.hpp
-		src/Strawberry/Rendering/Text/FontMap.cpp
-		src/Strawberry/Rendering/Text/FontMap.hpp
-		src/Strawberry/Rendering/Text/Freetype.cpp
-		src/Strawberry/Rendering/Text/Freetype.hpp
-		src/Strawberry/Rendering/Text/Glyph.cpp
-		src/Strawberry/Rendering/Text/Glyph.hpp
-		src/Strawberry/Rendering/Text/GlyphBitmap.hpp
 		src/Strawberry/UI/Animation/Animation.cpp
 		src/Strawberry/UI/Animation/Animation.hpp
 		src/Strawberry/UI/Events/CallbackListener.cpp
@@ -57,6 +48,15 @@ if (NOT TARGET StrawberryUI)
 		src/Strawberry/UI/Nodes/Node.hpp
 		src/Strawberry/UI/Nodes/RectangularNode.cpp
 		src/Strawberry/UI/Nodes/RectangularNode.hpp
+		src/Strawberry/UI/Rendering/Text/FontFace.cpp
+		src/Strawberry/UI/Rendering/Text/FontFace.hpp
+		src/Strawberry/UI/Rendering/Text/FontMap.cpp
+		src/Strawberry/UI/Rendering/Text/FontMap.hpp
+		src/Strawberry/UI/Rendering/Text/Freetype.cpp
+		src/Strawberry/UI/Rendering/Text/Freetype.hpp
+		src/Strawberry/UI/Rendering/Text/Glyph.cpp
+		src/Strawberry/UI/Rendering/Text/Glyph.hpp
+		src/Strawberry/UI/Rendering/Text/GlyphBitmap.hpp
 	)
 	target_link_libraries(StrawberryUI PUBLIC StrawberryCore StrawberryVulkan StrawberryAudio freetype)
 	target_include_directories(StrawberryUI PUBLIC src)
