@@ -1,8 +1,8 @@
 //======================================================================================================================
 //  Includes
 //----------------------------------------------------------------------------------------------------------------------
-#include "Strawberry/Rendering/Text/FontFace.hpp"
-#include "Strawberry/Rendering/Text/GlyphBitmap.hpp"
+#include "Strawberry/UI/Rendering/Text/FontFace.hpp"
+#include "Strawberry/UI/Rendering/Text/GlyphBitmap.hpp"
 // Standard Library
 #include <ranges>
 

@@ -6,8 +6,8 @@
 #include "Strawberry/Vulkan/Swapchain.hpp"
 #include "Strawberry/Vulkan/Surface.hpp"
 #include "Strawberry/Window/Window.hpp"
-#include "Strawberry/Rendering/Text/FontFace.hpp"
-#include "Strawberry/Rendering/Text/FontMap.hpp"
+#include "Strawberry/UI/Rendering/Text/FontFace.hpp"
+#include "Strawberry/UI/Rendering/Text/FontMap.hpp"
 
 
 using namespace Strawberry;

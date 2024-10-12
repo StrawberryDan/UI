@@ -6,7 +6,7 @@
 //======================================================================================================================
 #include "Glyph.hpp"
 #include "Freetype.hpp"
-#include "Strawberry/Rendering/Text/GlyphBitmap.hpp"
+#include "Strawberry/UI/Rendering/Text/GlyphBitmap.hpp"
 // Strawberry Core
 #include "Strawberry/Core/Types/Result.hpp"
 #include "Strawberry/Core/Util/Image.hpp"
