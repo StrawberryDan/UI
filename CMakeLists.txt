@@ -29,8 +29,6 @@ if (NOT TARGET StrawberryUI)
 
 
 	new_strawberry_library(NAME StrawberryUI SOURCE
-		src/Strawberry/UI/Rendering/RenderPipeline.hpp
-		src/Strawberry/UI/Rendering/RenderPipeline.cpp
 		src/Strawberry/UI/Rendering/Text/FontFace.cpp
 		src/Strawberry/UI/Rendering/Text/FontFace.hpp
 		src/Strawberry/UI/Rendering/Text/FontMap.cpp

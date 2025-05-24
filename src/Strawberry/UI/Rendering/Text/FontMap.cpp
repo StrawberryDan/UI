@@ -30,12 +30,12 @@ namespace Strawberry::UI
 			for (const auto& [glyphIndex, glyph] : std::views::enumerate(pageGlyphs))
 			{
 				const auto offset = Core::Math::Vec2u(glyphIndex % mGlyphsPerPage[0], glyphIndex / mGlyphsPerPage[0]) * mMaxGlyphSize;
-				page.mAtlas.Blit(glyph.Bitmap(), offset);
-				mGlyphs.emplace(glyph.UnicodeCodepoint(),
+				page.mAtlas.Blit(glyph.bitmap, offset);
+				mGlyphs.emplace(glyph.codepoint,
 				                GlyphAddress{
 					                .pageIndex = static_cast<unsigned>(pageIndex),
 					                .offset = offset,
-					                .extent = glyph.Bitmap().Size()
+					                .extent = glyph.bitmap.Size()
 				                });
 			}
 		}
