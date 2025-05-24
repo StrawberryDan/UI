@@ -11,19 +11,19 @@
 //----------------------------------------------------------------------------------------------------------------------
 namespace Strawberry::UI
 {
-	RenderPipeline::Layout::Layout(const Vulkan::Device& device)
-		: Vulkan::PipelineLayout([&]()
+	RenderPipeline::Layout::Layout(Vulkan::Device& device)
+		: PipelineLayout([&]()
 		{
-			return Vulkan::PipelineLayout::Builder(device)
+			return Builder(device)
 				.Build();
 		}()){}
-	RenderPipeline::RenderPipeline(const Vulkan::RenderPass& renderPass)
+	RenderPipeline::RenderPipeline(Vulkan::RenderPass& renderPass)
 		: RenderPipeline(Layout(*renderPass.GetDevice()), renderPass)
 	{}
 
 
-	RenderPipeline::RenderPipeline(Layout&& layout, const Vulkan::RenderPass& renderPass)
-		: Vulkan::GraphicsPipeline([&]()
+	RenderPipeline::RenderPipeline(Layout&& layout, Vulkan::RenderPass& renderPass)
+		: GraphicsPipeline([&]()
 		{
 			return GraphicsPipeline::Builder(layout, renderPass)
 					.Build();

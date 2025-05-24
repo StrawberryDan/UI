@@ -30,7 +30,7 @@ namespace Strawberry::UI
 				: public Vulkan::PipelineLayout
 		{
 		public:
-			explicit Layout(const Vulkan::Device& device);
+			explicit Layout(Vulkan::Device& device);
 		};
 
 
@@ -38,10 +38,10 @@ namespace Strawberry::UI
 		//		Constructors
 		//==============================================================================
 	public:
-		explicit RenderPipeline(const Vulkan::RenderPass& renderPass);
+		explicit RenderPipeline(Vulkan::RenderPass& renderPass);
 
 	private:
-		RenderPipeline(Layout&& layout, const Vulkan::RenderPass& renderPass);
+		RenderPipeline(Layout&& layout, Vulkan::RenderPass& renderPass);
 
 
 		//==============================================================================
