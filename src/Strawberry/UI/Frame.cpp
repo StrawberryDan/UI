@@ -18,7 +18,7 @@ namespace Strawberry::UI
 		, mEventDispatcher(*this) {}
 
 
-	void Frame::Update(Core::Seconds deltaTime)
+	void Frame::Update(double deltaTime)
 	{
 		if (auto root = GetRoot()) root->Update(deltaTime);
 	}

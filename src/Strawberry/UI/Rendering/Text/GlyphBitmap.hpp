@@ -29,6 +29,7 @@ namespace Strawberry::UI
 			return mBitmap;
 		}
 
+
 	private:
 		uint32_t                          unicode;
 		Core::Image<Core::PixelGreyscale> mBitmap;

@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 3.25)
 project(StrawberryUI)
 include(FetchContent)
 
+add_compile_options("-fdiagnostics-all-candidates")
 
 if (PROJECT_IS_TOP_LEVEL)
 	FetchContent_Declare(StrawberryConfig
@@ -28,26 +29,8 @@ if (NOT TARGET StrawberryUI)
 
 
 	new_strawberry_library(NAME StrawberryUI SOURCE
-		src/Strawberry/UI/Animation/Animation.cpp
-		src/Strawberry/UI/Animation/Animation.hpp
-		src/Strawberry/UI/Events/CallbackListener.cpp
-		src/Strawberry/UI/Events/CallbackListener.hpp
-		src/Strawberry/UI/Events/Dispatcher.cpp
-		src/Strawberry/UI/Events/Dispatcher.hpp
-		src/Strawberry/UI/Events/Event.hpp
-		src/Strawberry/UI/Events/Event.hpp
-		src/Strawberry/UI/Events/Listener.cpp
-		src/Strawberry/UI/Events/Listener.hpp
-		src/Strawberry/UI/Events/MouseButtonListener.cpp
-		src/Strawberry/UI/Events/MouseButtonListener.hpp
-		src/Strawberry/UI/Events/Transformer.cpp
-		src/Strawberry/UI/Events/Transformer.hpp
-		src/Strawberry/UI/Frame.cpp
-		src/Strawberry/UI/Frame.hpp
-		src/Strawberry/UI/Nodes/Node.cpp
-		src/Strawberry/UI/Nodes/Node.hpp
-		src/Strawberry/UI/Nodes/RectangularNode.cpp
-		src/Strawberry/UI/Nodes/RectangularNode.hpp
+		src/Strawberry/UI/Rendering/RenderPipeline.hpp
+		src/Strawberry/UI/Rendering/RenderPipeline.cpp
 		src/Strawberry/UI/Rendering/Text/FontFace.cpp
 		src/Strawberry/UI/Rendering/Text/FontFace.hpp
 		src/Strawberry/UI/Rendering/Text/FontMap.cpp
