@@ -6,6 +6,7 @@
 #include "Strawberry/Window/Window.hpp"
 #include "Strawberry/UI/Rendering/Text/FontFace.hpp"
 #include "Strawberry/UI/Rendering/Text/FontMap.hpp"
+#include "Strawberry/Window/Monitor.hpp"
 
 
 using namespace Strawberry;
@@ -26,8 +27,10 @@ int main()
 	Vulkan::Swapchain swapchain(queue, surface, window.GetSize(), VK_PRESENT_MODE_FIFO_KHR);
 
 
-	UI::FontFace fontFace = UI::FontFace::FromFile("data/Pixels.ttf").Unwrap();
-	UI::FontMap fontMap(fontFace);
+	UI::FontFace fontFace = UI::FontFace::FromFile("data/italianno.ttf").Unwrap();
+	fontFace.SetSizePoints(40, Window::GetMonitorInfo()[0].GetDPI());
+
+	UI::FontMap fontMap(fontFace, FT_RENDER_MODE_NORMAL);
 
 
 	while (!window.CloseRequested())

@@ -32,8 +32,16 @@ namespace Strawberry::UI
 		~FontFace();
 
 
+		/// Sets the nominal height of the font in pixels.
+		void SetSizePixels(unsigned int pixels);
+
+		void SetSizePoints(unsigned int points, Core::Math::Vec2f dpi);
+		void SetSizePoints(unsigned int points, unsigned dpiX, unsigned dpiY);
+
+
 		/// Loads the glyph at the given index
 		Glyph LoadGlyphAtIndex(Glyph::Index index);
+		/// Loads the glyph for the corresponding codepoint (if there is one).
 		Core::Optional<Glyph> LoadGlyphOfCodepoint(char32_t codepoint);
 
 

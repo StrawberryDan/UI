@@ -27,7 +27,6 @@ namespace Strawberry::UI
 				Core::Unreachable();
 		}
 
-		FT_Set_Pixel_Sizes(face.mFace, face.mFace->units_per_EM >> 6, 0);
 		return face;
 	}
 
@@ -53,6 +52,25 @@ namespace Strawberry::UI
 		{
 			FT_Done_Face(mFace);
 		}
+	}
+
+
+	void FontFace::SetSizePixels(unsigned int pixels)
+	{
+		FT_Set_Pixel_Sizes(mFace, 0, pixels);
+	}
+
+
+	void FontFace::SetSizePoints(unsigned int points, Core::Math::Vec2f dpi)
+	{
+		auto dpi2 = dpi.Map(&std::roundf).AsType<unsigned>();
+		SetSizePoints(points, dpi2[0], dpi2[1]);
+	}
+
+
+	void FontFace::SetSizePoints(unsigned int points, unsigned dpiX, unsigned dpiY)
+	{
+		FT_Set_Char_Size(mFace, 0, points << 6, dpiX, dpiY);
 	}
 
 

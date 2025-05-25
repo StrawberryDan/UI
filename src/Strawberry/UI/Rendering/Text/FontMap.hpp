@@ -41,13 +41,7 @@ namespace Strawberry::UI
 		/// @param fontFace The font face to render to a font map
 		/// @param pageSize The size in pixels of each page of the font map.
 		/// The default value is the largest supported texture size supported by all Vulkan implementations.
-		explicit FontMap(FontFace& fontFace, FT_Render_Mode renderMode = FT_RENDER_MODE_NORMAL, Core::Math::Vec2u pageSize = Core::Math::Vec2u(4096, 4096));
-
-		// Returns the size of the largest glyph in this font map.
-		[[nodiscard]] Core::Math::Vec2u MaxGlyphSize() const noexcept
-		{
-			return mMaxGlyphSize;
-		}
+		explicit FontMap(FontFace& fontFace, FT_Render_Mode renderMode = FT_RENDER_MODE_NORMAL, Core::Math::Vec2u pageSize = Core::Math::Vec2u(512, 512));
 
 
 		/// Get the location of the glyph of the given character code.
@@ -60,10 +54,6 @@ namespace Strawberry::UI
 	private:
 		/// The size of the pages to use.
 		Core::Math::Vec2u                mPageSize;
-		/// The maximum glyph size for this font face.
-		Core::Math::Vec2u                mMaxGlyphSize;
-		/// The dimension of the grid of glyphs on each page
-		Core::Math::Vec2u                mGlyphsPerPage;
 		/// The pages.
 		std::vector<Page>                mPages;
 		/// The addresses of all the glyphs in this font face.
