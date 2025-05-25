@@ -2,7 +2,6 @@ cmake_minimum_required(VERSION 3.25)
 project(StrawberryUI)
 include(FetchContent)
 
-add_compile_options("-fdiagnostics-all-candidates")
 
 if (PROJECT_IS_TOP_LEVEL)
 	FetchContent_Declare(StrawberryConfig
