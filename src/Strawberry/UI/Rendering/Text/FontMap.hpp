@@ -14,31 +14,34 @@ namespace Strawberry::UI
 	class FontMap
 	{
 	public:
-		// The indices of the pages.
+		/// The indices of the pages.
 		using PageIndex = unsigned;
 
 
-		// Data releating to a page in this font map.
+		/// Data releating to a page in this font map.
 		struct Page
 		{
 			Core::Image<Core::PixelGreyscale> mAtlas;
 		};
 
 
-		// Location of a glyph within this font map.
+		/// Location of a glyph within this font map.
 		struct GlyphAddress
 		{
-			// Index of the page this glyph is on.
+			/// Index of the page this glyph is on.
 			unsigned pageIndex = 0;
-			// In multiples of mMaxGlyphSize.
+			/// In multiples of mMaxGlyphSize.
 			Core::Math::Vec2u offset;
-			// In pixels.
+			/// In pixels.
 			Core::Math::Vec2u extent;
 		};
 
 
-		// Builds a font map with the given page size out of a given font.
-		FontMap(FontFace& fontFace, Core::Math::Vec2u pageSize);
+		/// Builds a font map with the given page size out of a given font.
+		/// @param fontFace The font face to render to a font map
+		/// @param pageSize The size in pixels of each page of the font map.
+		/// The default value is the largest supported texture size supported by all Vulkan implementations.
+		explicit FontMap(FontFace& fontFace, FT_Render_Mode renderMode = FT_RENDER_MODE_NORMAL, Core::Math::Vec2u pageSize = Core::Math::Vec2u(4096, 4096));
 
 		// Returns the size of the largest glyph in this font map.
 		[[nodiscard]] Core::Math::Vec2u MaxGlyphSize() const noexcept
@@ -47,18 +50,23 @@ namespace Strawberry::UI
 		}
 
 
-		// Get the location of the glyph of the given character code.
+		/// Get the location of the glyph of the given character code.
 		[[nodiscard]] Core::Optional<GlyphAddress> GetGlyphAddress(uint32_t codepoint) const noexcept;
-		// Get a pointer to the page at the given index.
+		/// Get a pointer to the page at the given index.
 		[[nodiscard]] Core::Optional<const Page*> GetPage(PageIndex pageIndex) const noexcept;
-		// Returns the number of pages in this font map.
+		/// Returns the number of pages in this font map.
 		[[nodiscard]] PageIndex GetPageCount() const noexcept;
 
 	private:
+		/// The size of the pages to use.
 		Core::Math::Vec2u                mPageSize;
+		/// The maximum glyph size for this font face.
 		Core::Math::Vec2u                mMaxGlyphSize;
+		/// The dimension of the grid of glyphs on each page
 		Core::Math::Vec2u                mGlyphsPerPage;
+		/// The pages.
 		std::vector<Page>                mPages;
+		/// The addresses of all the glyphs in this font face.
 		std::map<char32_t, GlyphAddress> mGlyphs;
 	};
 }
