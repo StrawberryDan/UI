@@ -1,4 +1,5 @@
 #include "Strawberry/Core/IO/Logging.hpp"
+#include "Strawberry/UI/Node.hpp"
 #include "Strawberry/Vulkan/Instance.hpp"
 #include "Strawberry/Vulkan/Device.hpp"
 #include "Strawberry/Vulkan/Swapchain.hpp"
@@ -31,6 +32,9 @@ int main()
 	fontFace.SetSizePoints(40, Window::GetMonitorInfo()[0].GetDPI());
 
 	UI::FontMap fontMap(fontFace, FT_RENDER_MODE_NORMAL);
+
+
+	UI::Node root({0.0f, 0.0f}, window.GetSize().AsType<float>());
 
 
 	while (!window.CloseRequested())

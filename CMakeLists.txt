@@ -28,6 +28,8 @@ if (NOT TARGET StrawberryUI)
 
 
 	new_strawberry_library(NAME StrawberryUI SOURCE
+		src/Strawberry/UI/Node.cpp
+		src/Strawberry/UI/Node.hpp
 		src/Strawberry/UI/Rendering/Text/FontFace.cpp
 		src/Strawberry/UI/Rendering/Text/FontFace.hpp
 		src/Strawberry/UI/Rendering/Text/FontMap.cpp
