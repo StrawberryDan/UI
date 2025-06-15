@@ -14,7 +14,7 @@ namespace Strawberry::UI
 	class NodeRenderer
 	{
 	public:
-		NodeRenderer(Vulkan::Framebuffer& framebuffer);
+		NodeRenderer(Vulkan::Framebuffer& framebuffer, size_t subpassIndex);
 
 
 		void Submit(const Node& node);
@@ -27,7 +27,7 @@ namespace Strawberry::UI
 	private:
 		static Core::Math::Mat4f CreateProjectionMatrix(Vulkan::Framebuffer& framebuffer);
 		static Vulkan::PipelineLayout CreatePipelineLayout(Vulkan::Device& device);
-		static Vulkan::GraphicsPipeline CreatePipeline(Vulkan::Framebuffer& renderPass, Vulkan::PipelineLayout& pipelineLayout);
+		static Vulkan::GraphicsPipeline CreatePipeline(Vulkan::Framebuffer& renderPass, Vulkan::PipelineLayout& pipelineLayout, size_t subpassIndex);
 
 
 		struct Entry

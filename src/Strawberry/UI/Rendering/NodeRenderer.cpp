@@ -20,10 +20,10 @@ static const uint8_t FRAGMENT_SHADER_CODE[] =
 
 namespace Strawberry::UI
 {
-	NodeRenderer::NodeRenderer(Vulkan::Framebuffer& framebuffer)
+	NodeRenderer::NodeRenderer(Vulkan::Framebuffer& framebuffer, size_t subpassIndex)
 		: mProjectionMatrix(CreateProjectionMatrix(framebuffer))
 		, mPipelineLayout(CreatePipelineLayout(*framebuffer.GetDevice()))
-		, mPipeline(CreatePipeline(framebuffer, mPipelineLayout))
+		, mPipeline(CreatePipeline(framebuffer, mPipelineLayout, subpassIndex))
 		, mAllocator(Vulkan::MemoryPool::Allocate(
 			*framebuffer.GetDevice(),
 			framebuffer.GetDevice()->GetPhysicalDevice().SearchMemoryTypes(Vulkan::MemoryTypeCriteria::HostVisible())[0].index,
@@ -81,11 +81,12 @@ namespace Strawberry::UI
 
 	Vulkan::GraphicsPipeline NodeRenderer::CreatePipeline(
 		Vulkan::Framebuffer& frameBuffer,
-		Vulkan::PipelineLayout& pipelineLayout)
+		Vulkan::PipelineLayout& pipelineLayout,
+		size_t subpassIndex)
 	{
 		Vulkan::Device& device = *frameBuffer.GetDevice();
 		Vulkan::RenderPass& renderPass = *frameBuffer.GetRenderPass();
-		return Vulkan::GraphicsPipeline::Builder(pipelineLayout, renderPass)
+		return Vulkan::GraphicsPipeline::Builder(pipelineLayout, renderPass, subpassIndex)
 			.WithInputAssembly(VK_PRIMITIVE_TOPOLOGY_TRIANGLE_LIST)
 			.WithInputBinding(0, sizeof(Entry), VK_VERTEX_INPUT_RATE_INSTANCE)
 			.WithInputAttribute(0, 0, offsetof(Entry, Entry::position), VK_FORMAT_R32G32_SFLOAT)
