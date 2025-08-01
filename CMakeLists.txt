@@ -31,9 +31,11 @@ if (NOT TARGET StrawberryUI)
 		src/Strawberry/UI/ColoredNode.cpp
 		src/Strawberry/UI/ColoredNode.cpp
 		src/Strawberry/UI/Node.cpp
-		src/Strawberry/UI/Node.hpp
-		src/Strawberry/UI/Rendering/NodeRenderer.cpp
-		src/Strawberry/UI/Rendering/NodeRenderer.hpp
+		src/Strawberry/UI/Node.cpp
+		src/Strawberry/UI/Rendering/ColoredNodeRenderer.cpp
+		src/Strawberry/UI/Rendering/ColoredNodeRenderer.hpp
+		src/Strawberry/UI/Rendering/Renderer.cpp
+		src/Strawberry/UI/Rendering/Renderer.hpp
 		src/Strawberry/UI/Rendering/Text/FontFace.cpp
 		src/Strawberry/UI/Rendering/Text/FontFace.hpp
 		src/Strawberry/UI/Rendering/Text/FontMap.cpp
@@ -43,14 +45,18 @@ if (NOT TARGET StrawberryUI)
 		src/Strawberry/UI/Rendering/Text/Glyph.cpp
 		src/Strawberry/UI/Rendering/Text/Glyph.hpp
 		src/Strawberry/UI/Rendering/Text/GlyphBitmap.hpp
+		src/Strawberry/UI/Rendering/TextNodeRenderer.cpp
+		src/Strawberry/UI/Rendering/TextNodeRenderer.hpp
+		src/Strawberry/UI/TextNode.cpp
+		src/Strawberry/UI/TextNode.hpp
 	)
 	target_link_libraries(StrawberryUI PUBLIC StrawberryCore StrawberryVulkan StrawberryAudio freetype)
 	target_include_directories(StrawberryUI PUBLIC src)
 
 	add_target_shaders(TARGET StrawberryUI
 		SHADERS
-			${CMAKE_CURRENT_SOURCE_DIR}/src/Strawberry/UI/Rendering/NodeRenderer.vert
-			${CMAKE_CURRENT_SOURCE_DIR}/src/Strawberry/UI/Rendering/NodeRenderer.frag)
+		${CMAKE_CURRENT_SOURCE_DIR}/src/Strawberry/UI/Rendering/ColouredNodeRenderer.vert
+		${CMAKE_CURRENT_SOURCE_DIR}/src/Strawberry/UI/Rendering/ColoredNodeRenderer.frag)
 
 
 	new_strawberry_executable(NAME StrawberryUI_Test SOURCE

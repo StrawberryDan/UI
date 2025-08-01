@@ -7,6 +7,8 @@
 #include <ranges>
 
 #include "Strawberry/Core/UTF.hpp"
+#include "Strawberry/UI/Rendering/ColoredNodeRenderer.hpp"
+#include "Strawberry/UI/Rendering/Renderer.hpp"
 
 //======================================================================================================================
 //  Method Definitions
@@ -86,5 +88,56 @@ namespace Strawberry::UI
 	FontMap::PageIndex FontMap::GetPageCount() const noexcept
 	{
 		return mPages.size();
+	}
+
+
+	GPUFontMap FontMap::CopyToGPU(Vulkan::Queue& queue, Renderer& renderer) const noexcept
+	{
+		Vulkan::CommandPool commandPool(queue);
+		Vulkan::CommandBuffer commandBuffer(commandPool);
+
+		Vulkan::Buffer stagingBuffer(renderer.GetBufferAllocator(), mPageSize.Fold(std::multiplies()), VK_BUFFER_USAGE_TRANSFER_DST_BIT | VK_BUFFER_USAGE_TRANSFER_SRC_BIT);
+
+		Vulkan::Image images = Vulkan::Image::Builder(renderer.GetTextureAllocator())
+			.WithExtent(mPageSize)
+			.WithFormat(VK_FORMAT_R8_UINT)
+			.WithUsage(VK_IMAGE_USAGE_TRANSFER_DST_BIT)
+			.WithArrayLayers(256)
+			.Build();
+
+		for (int i = 0; i < mPages.size(); i++)
+		{
+			stagingBuffer.SetData(Core::IO::DynamicByteBuffer(mPages[i].mAtlas.Data(), mPages[i].mAtlas.Size().Fold(std::multiplies())));
+
+			commandBuffer.Begin(true);
+			commandBuffer.PipelineBarrier(
+				VK_PIPELINE_STAGE_ALL_COMMANDS_BIT,
+				VK_PIPELINE_STAGE_ALL_COMMANDS_BIT,
+				0,
+				{
+					Vulkan::ImageMemoryBarrier(images, VK_IMAGE_ASPECT_COLOR_BIT)
+						.FromLayout(VK_IMAGE_LAYOUT_UNDEFINED)
+						.ToLayout(VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL)
+				});
+			commandBuffer.CopyBufferToImage(stagingBuffer, images, i);
+			commandBuffer.PipelineBarrier(
+				VK_PIPELINE_STAGE_ALL_COMMANDS_BIT,
+				VK_PIPELINE_STAGE_ALL_COMMANDS_BIT,
+				0,
+				{
+					Vulkan::ImageMemoryBarrier(images, VK_IMAGE_ASPECT_COLOR_BIT)
+						.FromLayout(VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL)
+						.ToLayout(VK_IMAGE_LAYOUT_GENERAL)
+				});
+			commandBuffer.End();
+
+
+			queue.Submit(commandBuffer);
+		}
+
+		return GPUFontMap
+		{
+			.mPages = std::move(images),
+		};
 	}
 }

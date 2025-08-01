@@ -1,6 +1,7 @@
 #include "ColoredNode.hpp"
 
-#include "Rendering/NodeRenderer.hpp"
+#include "Rendering/ColoredNodeRenderer.hpp"
+#include "Rendering/Renderer.hpp"
 
 
 namespace Strawberry::UI
@@ -10,8 +11,8 @@ namespace Strawberry::UI
 		, mColor(color)
 	{}
 
-	void ColoredNode::Render(NodeRenderer& nodeRenderer) const
+	void ColoredNode::Render(Renderer& renderer) const
 	{
-		nodeRenderer.SubmitColouredNode(*this);
+		renderer.SubmitColouredNode(*this);
 	}
 }

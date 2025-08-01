@@ -3,14 +3,25 @@
 //  Includes
 //----------------------------------------------------------------------------------------------------------------------
 #include "Strawberry/UI/Rendering/Text/FontFace.hpp"
+// Strawberry Vulkan
+#include "Strawberry/Vulkan/Image.hpp"
 // Standard Library
 #include <map>
+
 
 //======================================================================================================================
 //  Class Declaration
 //----------------------------------------------------------------------------------------------------------------------
 namespace Strawberry::UI
 {
+	class Renderer;
+
+	struct GPUFontMap
+	{
+		Vulkan::Image mPages;
+	};
+
+
 	class FontMap
 	{
 	public:
@@ -50,6 +61,9 @@ namespace Strawberry::UI
 		[[nodiscard]] Core::Optional<const Page*> GetPage(PageIndex pageIndex) const noexcept;
 		/// Returns the number of pages in this font map.
 		[[nodiscard]] PageIndex GetPageCount() const noexcept;
+
+
+		GPUFontMap CopyToGPU(Vulkan::Queue& queue, Renderer& nodeRenderer) const noexcept;
 
 	private:
 		/// The size of the pages to use.

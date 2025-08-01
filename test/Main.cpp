@@ -1,7 +1,7 @@
 #include "Strawberry/Core/IO/Logging.hpp"
 #include "Strawberry/UI/ColoredNode.hpp"
 #include "Strawberry/UI/Node.hpp"
-#include "Strawberry/UI/Rendering/NodeRenderer.hpp"
+#include "Strawberry/UI/Rendering/ColoredNodeRenderer.hpp"
 #include "Strawberry/Vulkan/Instance.hpp"
 #include "Strawberry/Vulkan/Device.hpp"
 #include "Strawberry/Vulkan/Swapchain.hpp"
@@ -56,7 +56,7 @@ int main()
 	UI::FontMap fontMap(fontFace, FT_RENDER_MODE_NORMAL);
 
 
-	UI::NodeRenderer renderer(framebuffer);
+	UI::ColoredNodeRenderer renderer(framebuffer, 0, );
 	UI::ColoredNode root;
 	root.SetExtent({400, 600});
 	root.SetColor({1.0f, 1.0f, 0.0f, 1.0f});
@@ -84,9 +84,9 @@ int main()
 																			  ToLayout(VK_IMAGE_LAYOUT_GENERAL)
 										   	});;
 		commandBuffer.BeginRenderPass(renderPass, framebuffer);
-		renderer.Submit(root);
-		renderer.Submit(root2);
-		renderer.Render(commandBuffer);
+		renderer.Submit(0, root);
+		renderer.Submit(1, root2);
+		renderer.Render(commandBuffer, );
 		commandBuffer.EndRenderPass();
 		commandBuffer.BlitToSwapchain(swapchain, framebuffer);
 		commandBuffer.End();
