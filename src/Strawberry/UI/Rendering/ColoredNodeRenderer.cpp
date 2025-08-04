@@ -8,13 +8,13 @@
 
 static const uint8_t VERTEX_SHADER_CODE[] =
 {
-#include "NodeRenderer.vert.bin"
+#include "ColouredNodeRenderer.vert.bin"
 };
 
 
 static const uint8_t FRAGMENT_SHADER_CODE[] =
 {
-#include "NodeRenderer.frag.bin"
+#include "ColoredNodeRenderer.frag.bin"
 };
 
 
@@ -59,7 +59,8 @@ namespace Strawberry::UI
 	{
 		return Vulkan::PipelineLayout::Builder(device)
 			.WithDescriptor(0, VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, VK_SHADER_STAGE_VERTEX_BIT)
-			.WithDescriptor(1, VK_DESCRIPTOR_TYPE_SAMPLED_IMAGE, VK_SHADER_STAGE_FRAGMENT_BIT, 256)
+			.WithDescriptor(1, VK_DESCRIPTOR_TYPE_SAMPLED_IMAGE, VK_SHADER_STAGE_FRAGMENT_BIT,
+				device.GetPhysicalDevice().GetLimits().maxPerStageDescriptorSampledImages)
 			.Build();
 	}
 
@@ -73,10 +74,10 @@ namespace Strawberry::UI
 		return Vulkan::GraphicsPipeline::Builder(pipelineLayout, renderPass, subpassIndex)
 			.WithInputAssembly(VK_PRIMITIVE_TOPOLOGY_TRIANGLE_LIST)
 			.WithInputBinding(0, sizeof(ColouredNodeEntry), VK_VERTEX_INPUT_RATE_INSTANCE)
-			.WithInputAttribute(0, 0, offsetof(ColouredNodeEntry, ColouredNodeEntry::drawIndex), VK_FORMAT_R32_UINT)
-			.WithInputAttribute(1, 0, offsetof(ColouredNodeEntry, ColouredNodeEntry::position), VK_FORMAT_R32G32_SFLOAT)
-			.WithInputAttribute(2, 0, offsetof(ColouredNodeEntry, ColouredNodeEntry::extent), VK_FORMAT_R32G32_SFLOAT)
-			.WithInputAttribute(3, 0, offsetof(ColouredNodeEntry, ColouredNodeEntry::color), VK_FORMAT_R32G32B32A32_SFLOAT)
+			.WithInputAttribute(0, 0, offsetof(ColouredNodeEntry, drawIndex), VK_FORMAT_R32_UINT)
+			.WithInputAttribute(1, 0, offsetof(ColouredNodeEntry, position), VK_FORMAT_R32G32_SFLOAT)
+			.WithInputAttribute(2, 0, offsetof(ColouredNodeEntry, extent), VK_FORMAT_R32G32_SFLOAT)
+			.WithInputAttribute(3, 0, offsetof(ColouredNodeEntry, color), VK_FORMAT_R32G32B32A32_SFLOAT)
 			.WithViewport(frameBuffer, false)
 			.WithRasterization(VK_POLYGON_MODE_FILL, VK_CULL_MODE_BACK_BIT, VK_FRONT_FACE_CLOCKWISE)
 			.WithAlphaColorBlending()

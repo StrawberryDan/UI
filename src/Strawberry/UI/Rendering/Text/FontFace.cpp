@@ -120,7 +120,7 @@ namespace Strawberry::UI
 
 	Core::Math::Vec2u FontFace::GetBoundingBox() const
 	{
-		auto boundingBox = Core::Math::Vec2u((mFace->bbox.xMax - mFace->bbox.xMin >> 6) + 2, (mFace->bbox.yMax - mFace->bbox.yMin >> 6) + 2);
+		auto boundingBox = Core::Math::Vec2u(((mFace->bbox.xMax - mFace->bbox.xMin) >> 6) + 2, ((mFace->bbox.yMax - mFace->bbox.yMin) >> 6) + 2);
 		boundingBox[0] = (boundingBox[0] * mFace->size->metrics.x_ppem) / 16;
 		boundingBox[1] = (boundingBox[1] * mFace->size->metrics.y_ppem) / 16;
 		return boundingBox;

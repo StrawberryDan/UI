@@ -2,6 +2,7 @@
 #include "Strawberry/UI/ColoredNode.hpp"
 #include "Strawberry/UI/Node.hpp"
 #include "Strawberry/UI/Rendering/ColoredNodeRenderer.hpp"
+#include "Strawberry/UI/Rendering/Renderer.hpp"
 #include "Strawberry/Vulkan/Instance.hpp"
 #include "Strawberry/Vulkan/Device.hpp"
 #include "Strawberry/Vulkan/Swapchain.hpp"
@@ -56,7 +57,7 @@ int main()
 	UI::FontMap fontMap(fontFace, FT_RENDER_MODE_NORMAL);
 
 
-	UI::ColoredNodeRenderer renderer(framebuffer, 0, );
+	UI::Renderer renderer(framebuffer, 0);;
 	UI::ColoredNode root;
 	root.SetExtent({400, 600});
 	root.SetColor({1.0f, 1.0f, 0.0f, 1.0f});
@@ -76,24 +77,26 @@ int main()
 
 		Vulkan::CommandBuffer commandBuffer(commandPool);
 		commandBuffer.Begin(true);
-		commandBuffer.PipelineBarrier(VK_PIPELINE_STAGE_ALL_COMMANDS_BIT, VK_PIPELINE_STAGE_ALL_COMMANDS_BIT, 0,
-										   {
-											   Vulkan::ImageMemoryBarrier(
-												   framebuffer.GetAttachment(0),
-												   VK_IMAGE_ASPECT_COLOR_BIT).FromLayout(VK_IMAGE_LAYOUT_UNDEFINED).
-																			  ToLayout(VK_IMAGE_LAYOUT_GENERAL)
+		commandBuffer.PipelineBarrier(
+			VK_PIPELINE_STAGE_ALL_COMMANDS_BIT,
+			VK_PIPELINE_STAGE_ALL_COMMANDS_BIT,
+			0,
+			{
+				Vulkan::ImageMemoryBarrier(
+					framebuffer.GetAttachment(0),
+					VK_IMAGE_ASPECT_COLOR_BIT).FromLayout(VK_IMAGE_LAYOUT_UNDEFINED)
+				.ToLayout(VK_IMAGE_LAYOUT_GENERAL)
 										   	});;
 		commandBuffer.BeginRenderPass(renderPass, framebuffer);
-		renderer.Submit(0, root);
-		renderer.Submit(1, root2);
-		renderer.Render(commandBuffer, );
+		renderer.Submit(root);
+		renderer.Submit(root2);
+		renderer.Render(commandBuffer);
 		commandBuffer.EndRenderPass();
 		commandBuffer.BlitToSwapchain(swapchain, framebuffer);
 		commandBuffer.End();
 
 		queue.Submit(commandBuffer);
 		swapchain.Present();
-		window.SwapBuffers();
 
 		queue.WaitUntilIdle();
 	}
