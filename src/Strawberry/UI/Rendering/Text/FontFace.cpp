@@ -169,14 +169,14 @@ namespace Strawberry::UI
 		result.reserve(mFace->num_glyphs);
 
 		FT_UInt  index;
-		FT_ULong charcode = FT_Get_First_Char(mFace, &index);
+		char32_t charcode = static_cast<char32_t>(FT_Get_First_Char(mFace, &index));
 		while (index != 0)
 		{
 			if (auto bitmap = RenderGlyph(charcode, renderMode))
 			{
 				result.emplace_back(bitmap.Unwrap());
 			}
-			charcode = FT_Get_Next_Char(mFace, charcode, &index);
+			charcode = static_cast<char32_t>(FT_Get_Next_Char(mFace, charcode, &index));
 		}
 
 		return result;

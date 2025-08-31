@@ -29,7 +29,7 @@ namespace Strawberry::UI
 	class ColoredNodeRenderer
 	{
 	public:
-		ColoredNodeRenderer(Vulkan::Framebuffer& framebuffer, size_t subpassIndex, Vulkan::FallbackChainAllocator<Vulkan::FreeListAllocator>& vertexBufferAllocator);
+		ColoredNodeRenderer(Vulkan::Framebuffer& framebuffer, uint32_t subpassIndex);
 
 
 		void Submit(uint32_t drawIndex, const ColoredNode& node);
@@ -38,7 +38,7 @@ namespace Strawberry::UI
 
 	private:
 		static Vulkan::PipelineLayout CreateColouredNodePipelineLayout(Vulkan::Device& device);
-		static Vulkan::GraphicsPipeline CreateColouredNodePipeline(Vulkan::Framebuffer& renderPass, Vulkan::PipelineLayout& pipelineLayout, size_t subpassIndex);
+		static Vulkan::GraphicsPipeline CreateColouredNodePipeline(Vulkan::Framebuffer& renderPass, Vulkan::PipelineLayout& pipelineLayout, uint32_t subpassIndex);
 
 
 		struct ColouredNodeEntry

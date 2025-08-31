@@ -20,13 +20,21 @@ static const uint8_t FRAGMENT_SHADER_CODE[] =
 
 namespace Strawberry::UI
 {
-	ColoredNodeRenderer::ColoredNodeRenderer(Vulkan::Framebuffer& framebuffer, size_t subpassIndex, Vulkan::FallbackChainAllocator<Vulkan::FreeListAllocator>& vertexBufferAllocator)
-		: mColouredNodePipelineLayout(CreateColouredNodePipelineLayout(*framebuffer.GetDevice()))
+	ColoredNodeRenderer::ColoredNodeRenderer(Vulkan::Framebuffer& framebuffer, uint32_t subpassIndex)
+		: mColouredNodePipelineLayout(CreateColouredNodePipelineLayout(framebuffer.GetDevice()))
 		, mColouredNodePipeline(CreateColouredNodePipeline(framebuffer, mColouredNodePipelineLayout, subpassIndex))
-		, mInputBuffer(vertexBufferAllocator, 1024 * 1024, VK_BUFFER_USAGE_VERTEX_BUFFER_BIT)
-		, mDescriptorPool(*framebuffer.GetDevice(), 0, 1, {VkDescriptorPoolSize{.type = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, .descriptorCount = 1}})
+		, mInputBuffer(
+			Vulkan::Buffer::Builder(framebuffer.GetDevice(), Vulkan::MemoryTypeCriteria::HostVisible())
+				.WithSize(1024 * 1024)
+				.WithUsage(VK_BUFFER_USAGE_VERTEX_BUFFER_BIT | VK_BUFFER_USAGE_TRANSFER_DST_BIT)
+				.Build())
+		, mDescriptorPool(framebuffer.GetDevice(), 0, 1, {VkDescriptorPoolSize{.type = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, .descriptorCount = 1}})
 		, mRenderConstantsDescriptorSet(mDescriptorPool, mColouredNodePipelineLayout.GetSetLayout(0))
-		, mRenderConstantsBuffer(vertexBufferAllocator, sizeof(Core::Math::Mat4f), VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT | VK_BUFFER_USAGE_TRANSFER_DST_BIT)
+		, mRenderConstantsBuffer(
+			Vulkan::Buffer::Builder(framebuffer.GetDevice(), Vulkan::MemoryTypeCriteria::HostVisible())
+				.WithSize(sizeof(Core::Math::Mat4f))
+				.WithUsage(VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT | VK_BUFFER_USAGE_TRANSFER_DST_BIT)
+				.Build())
 
 	{
 		mRenderConstantsDescriptorSet.SetUniformBuffer(0, 0, mRenderConstantsBuffer);
@@ -51,7 +59,7 @@ namespace Strawberry::UI
 		commandBuffer.BindPipeline(mColouredNodePipeline);
 		commandBuffer.BindVertexBuffer(0, mInputBuffer);
 		commandBuffer.BindDescriptorSet(mColouredNodePipeline, 0, mRenderConstantsDescriptorSet);
-		commandBuffer.Draw(6, mEntries.size());
+		commandBuffer.Draw(6, static_cast<uint32_t>(mEntries.size()));
 		mEntries.clear();
 	}
 
@@ -67,9 +75,9 @@ namespace Strawberry::UI
 	Vulkan::GraphicsPipeline ColoredNodeRenderer::CreateColouredNodePipeline(
 		Vulkan::Framebuffer& frameBuffer,
 		Vulkan::PipelineLayout& pipelineLayout,
-		size_t subpassIndex)
+		uint32_t subpassIndex)
 	{
-		Vulkan::Device& device = *frameBuffer.GetDevice();
+		Vulkan::Device& device = frameBuffer.GetDevice();
 		Vulkan::RenderPass& renderPass = *frameBuffer.GetRenderPass();
 		return Vulkan::GraphicsPipeline::Builder(pipelineLayout, renderPass, subpassIndex)
 			.WithInputAssembly(VK_PRIMITIVE_TOPOLOGY_TRIANGLE_LIST)

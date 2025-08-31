@@ -9,7 +9,7 @@ namespace Strawberry::UI
 	class Renderer
 	{
 	public:
-		Renderer(Vulkan::Framebuffer& framebuffer, size_t subpassIndex);
+		Renderer(Vulkan::Framebuffer& framebuffer, uint32_t subpassIndex);
 
 
 		void Submit(const Node& node);
@@ -18,10 +18,6 @@ namespace Strawberry::UI
 
 
 		void Render(Vulkan::CommandBuffer& commandBuffer);
-
-
-		Vulkan::FallbackChainAllocator<Vulkan::FreeListAllocator>& GetBufferAllocator() noexcept { return mBufferAllocator; }
-		Vulkan::FallbackChainAllocator<Vulkan::FreeListAllocator>& GetTextureAllocator() noexcept { return mTextureAllocator; }
 
 
 		ColoredNodeRenderer& GetColoredNodeRenderer() noexcept { return mColoredNodeRenderer; }
@@ -34,10 +30,6 @@ namespace Strawberry::UI
 
 		unsigned int mLastDrawIndex = 0;
 		Core::Math::Mat4f mProjectionMatrix;
-
-
-		Vulkan::FallbackChainAllocator<Vulkan::FreeListAllocator> mBufferAllocator;
-		Vulkan::FallbackChainAllocator<Vulkan::FreeListAllocator> mTextureAllocator;
 
 
 		ColoredNodeRenderer mColoredNodeRenderer;

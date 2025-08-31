@@ -6,17 +6,9 @@
 
 namespace Strawberry::UI
 {
-	Renderer::Renderer(Vulkan::Framebuffer& framebuffer, size_t subpassIndex)
+	Renderer::Renderer(Vulkan::Framebuffer& framebuffer, uint32_t subpassIndex)
 		: mProjectionMatrix(CreateProjectionMatrix(framebuffer))
-		, mBufferAllocator(Vulkan::ChainAllocator<Vulkan::FreeListAllocator>(
-			*framebuffer.GetDevice(),
-			framebuffer.GetDevice()->GetPhysicalDevice().SearchMemoryTypes(Vulkan::MemoryTypeCriteria::HostVisible())[0].index,
-			1024 * 1024 * 64))
-		, mTextureAllocator(Vulkan::ChainAllocator<Vulkan::FreeListAllocator>(
-			*framebuffer.GetDevice(),
-			framebuffer.GetDevice()->GetPhysicalDevice().SearchMemoryTypes(Vulkan::MemoryTypeCriteria::DeviceLocal())[0].index,
-			1024 * 1024 * 64))
-		, mColoredNodeRenderer(framebuffer, subpassIndex, mBufferAllocator)
+		, mColoredNodeRenderer(framebuffer, subpassIndex)
 		, mTextNodeRenderer()
 	{
 	}

@@ -87,7 +87,7 @@ namespace Strawberry::UI
 
 	FontMap::PageIndex FontMap::GetPageCount() const noexcept
 	{
-		return mPages.size();
+		return static_cast<PageIndex>(mPages.size());
 	}
 
 
@@ -96,9 +96,12 @@ namespace Strawberry::UI
 		Vulkan::CommandPool commandPool(queue);
 		Vulkan::CommandBuffer commandBuffer(commandPool);
 
-		Vulkan::Buffer stagingBuffer(renderer.GetBufferAllocator(), mPageSize.Fold(std::multiplies()), VK_BUFFER_USAGE_TRANSFER_DST_BIT | VK_BUFFER_USAGE_TRANSFER_SRC_BIT);
+		Vulkan::Buffer stagingBuffer = Vulkan::Buffer::Builder(queue.GetDevice(), Vulkan::MemoryTypeCriteria::HostVisible())
+			.WithSize(mPageSize.Fold(std::multiplies()))
+			.WithUsage(VK_BUFFER_USAGE_TRANSFER_DST_BIT | VK_BUFFER_USAGE_TRANSFER_SRC_BIT)
+			.Build();
 
-		Vulkan::Image images = Vulkan::Image::Builder(renderer.GetTextureAllocator())
+		Vulkan::Image images = Vulkan::Image::Builder(queue.GetDevice(), Vulkan::MemoryTypeCriteria::DeviceLocal())
 			.WithExtent(mPageSize)
 			.WithFormat(VK_FORMAT_R8_UINT)
 			.WithUsage(VK_IMAGE_USAGE_TRANSFER_DST_BIT)
