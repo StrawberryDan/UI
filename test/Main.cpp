@@ -11,7 +11,7 @@
 #include "Strawberry/UI/Rendering/Text/FontFace.hpp"
 #include "Strawberry/UI/Rendering/Text/FontMap.hpp"
 #include "Strawberry/Vulkan/RenderPass.hpp"
-#include "Strawberry/Vulkan/Memory/NaiveAllocator.hpp"
+#include "../../Vulkan/src/Strawberry/Vulkan/Memory/Allocator/NaiveAllocator.hpp"
 #include "Strawberry/Window/Monitor.hpp"
 
 

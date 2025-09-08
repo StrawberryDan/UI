@@ -2,10 +2,7 @@
 #include "Strawberry/Core/Math/Matrix.hpp"
 #include "Strawberry/Vulkan/GraphicsPipeline.hpp"
 #include "Strawberry/Vulkan/PipelineLayout.hpp"
-#include "Strawberry/Vulkan/Framebuffer.hpp"
-#include "Strawberry/Vulkan/Memory/ChainAllocator.hpp"
-#include "Strawberry/Vulkan/Memory/FallbackAllocator.hpp"
-#include "Strawberry/Vulkan/Memory/FreelistAllocator.hpp"
+#include "Strawberry/Vulkan/Memory/Allocator/FallbackAllocator.hpp"
 #include "Text/FontMap.hpp"
 
 
@@ -20,7 +17,7 @@ namespace Strawberry::UI
 	{
 		Core::Math::Vec2f position;
 		Core::Math::Vec2f extent;
-		unsigned int glyphPageIndex;
+		unsigned int      glyphPageIndex;
 		Core::Math::Vec2f glyphPosition;
 		Core::Math::Vec2f glyphExtent;
 	};
@@ -33,17 +30,20 @@ namespace Strawberry::UI
 
 
 		void Submit(uint32_t drawIndex, const ColoredNode& node);
-		void Render(Vulkan::CommandBuffer& commandBuffer, Core::Math::Mat4f projectionMatrix);
 
+		void Render(Vulkan::CommandBuffer& commandBuffer, Core::Math::Mat4f projectionMatrix);
 
 	private:
 		static Vulkan::PipelineLayout CreateColouredNodePipelineLayout(Vulkan::Device& device);
-		static Vulkan::GraphicsPipeline CreateColouredNodePipeline(Vulkan::Framebuffer& renderPass, Vulkan::PipelineLayout& pipelineLayout, uint32_t subpassIndex);
+
+		static Vulkan::GraphicsPipeline CreateColouredNodePipeline(Vulkan::Framebuffer&    renderPass,
+																   Vulkan::PipelineLayout& pipelineLayout,
+																   uint32_t                subpassIndex);
 
 
 		struct ColouredNodeEntry
 		{
-			unsigned int drawIndex;
+			unsigned int      drawIndex;
 			Core::Math::Vec2f position;
 			Core::Math::Vec2f extent;
 			Core::Math::Vec4f color;
@@ -53,14 +53,14 @@ namespace Strawberry::UI
 		std::vector<ColouredNodeEntry> mEntries;
 
 
-		Vulkan::PipelineLayout mColouredNodePipelineLayout;
+		Vulkan::PipelineLayout   mColouredNodePipelineLayout;
 		Vulkan::GraphicsPipeline mColouredNodePipeline;
 
 
 		Vulkan::Buffer mInputBuffer;
 
 		Vulkan::DescriptorPool mDescriptorPool;
-		Vulkan::DescriptorSet mRenderConstantsDescriptorSet;
-		Vulkan::Buffer mRenderConstantsBuffer;
+		Vulkan::DescriptorSet  mRenderConstantsDescriptorSet;
+		Vulkan::Buffer         mRenderConstantsBuffer;
 	};
 }
