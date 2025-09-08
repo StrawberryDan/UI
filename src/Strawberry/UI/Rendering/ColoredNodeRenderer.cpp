@@ -1,9 +1,10 @@
-#include "ColoredNodeRenderer.hpp"
-#include "Strawberry/Vulkan/Framebuffer.hpp"
+#include "Strawberry/UI/Rendering/ColoredNodeRenderer.hpp"
 #include "Strawberry/Core/Math/Matrix.hpp"
 #include "Strawberry/Core/Math/Transformations.hpp"
 #include "Strawberry/UI/ColoredNode.hpp"
-#include "Strawberry/Vulkan/RenderPass.hpp"
+#include "Strawberry/Vulkan/Pipeline/RenderPass.hpp"
+#include "Strawberry/Vulkan/Resource/Framebuffer.hpp"
+#include "Strawberry/Vulkan/Queue/CommandBuffer.hpp"
 
 
 static const uint8_t VERTEX_SHADER_CODE[] =

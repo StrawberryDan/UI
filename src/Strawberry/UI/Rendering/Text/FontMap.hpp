@@ -4,7 +4,7 @@
 //----------------------------------------------------------------------------------------------------------------------
 #include "Strawberry/UI/Rendering/Text/FontFace.hpp"
 // Strawberry Vulkan
-#include "Strawberry/Vulkan/Image.hpp"
+#include "../../../../../../Vulkan/src/Strawberry/Vulkan/Resource/Image.hpp"
 // Standard Library
 #include <map>
 
