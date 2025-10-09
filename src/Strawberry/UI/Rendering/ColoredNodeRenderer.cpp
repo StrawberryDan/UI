@@ -86,7 +86,7 @@ namespace Strawberry::UI
 		uint32_t                subpassIndex)
 	{
 		Vulkan::Device&     device     = frameBuffer.GetDevice();
-		Vulkan::RenderPass& renderPass = *frameBuffer.GetRenderPass();
+		Vulkan::RenderPass& renderPass = frameBuffer.GetRenderPass();
 		return Vulkan::GraphicsPipeline::Builder(pipelineLayout, renderPass, subpassIndex)
 			   .WithInputAssembly(VK_PRIMITIVE_TOPOLOGY_TRIANGLE_LIST)
 			   .WithInputBinding(0, sizeof(ColouredNodeEntry), VK_VERTEX_INPUT_RATE_INSTANCE)

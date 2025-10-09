@@ -8,6 +8,9 @@
 // Standard Library
 #include <map>
 
+#include "Strawberry/Vulkan/Descriptor/Sampler.hpp"
+#include "Strawberry/Vulkan/Resource/ImageView.hpp"
+
 
 //======================================================================================================================
 //  Class Declaration
@@ -18,7 +21,9 @@ namespace Strawberry::UI
 
 	struct GPUFontMap
 	{
-		Vulkan::Image mPages;
+		Vulkan::Sampler   sampler;
+		Vulkan::Image     mPages;
+		Vulkan::ImageView mView;
 	};
 
 
@@ -29,7 +34,7 @@ namespace Strawberry::UI
 		using PageIndex = unsigned;
 
 
-		/// Data releating to a page in this font map.
+		/// Data relating to a page in this font map.
 		struct Page
 		{
 			Core::Image<Core::PixelGreyscale> mAtlas;
@@ -52,24 +57,30 @@ namespace Strawberry::UI
 		/// @param fontFace The font face to render to a font map
 		/// @param pageSize The size in pixels of each page of the font map.
 		/// The default value is the largest supported texture size supported by all Vulkan implementations.
-		explicit FontMap(FontFace& fontFace, FT_Render_Mode renderMode = FT_RENDER_MODE_NORMAL, Core::Math::Vec2u pageSize = Core::Math::Vec2u(512, 512));
+		explicit FontMap(FontFace&         fontFace, FT_Render_Mode renderMode = FT_RENDER_MODE_NORMAL,
+						 Core::Math::Vec2u pageSize                            = Core::Math::Vec2u(512, 512));
 
 
-		/// Get the location of the glyph of the given character code.
+		/// Get the size of each page
+		[[nodiscard]] Core::Math::Vec2u GetPageSize() const { return mPageSize; }
+
+		/// Get the location of the glyph for the given character code.
 		[[nodiscard]] Core::Optional<GlyphAddress> GetGlyphAddress(uint32_t codepoint) const noexcept;
+
 		/// Get a pointer to the page at the given index.
 		[[nodiscard]] Core::Optional<const Page*> GetPage(PageIndex pageIndex) const noexcept;
+
 		/// Returns the number of pages in this font map.
 		[[nodiscard]] PageIndex GetPageCount() const noexcept;
 
 
-		GPUFontMap CopyToGPU(Vulkan::Queue& queue, Renderer& nodeRenderer) const noexcept;
+		GPUFontMap CopyToGPU(Vulkan::Queue& queue) const noexcept;
 
 	private:
 		/// The size of the pages to use.
-		Core::Math::Vec2u                mPageSize;
+		Core::Math::Vec2u mPageSize;
 		/// The pages.
-		std::vector<Page>                mPages;
+		std::vector<Page> mPages;
 		/// The addresses of all the glyphs in this font face.
 		std::map<char32_t, GlyphAddress> mGlyphs;
 	};

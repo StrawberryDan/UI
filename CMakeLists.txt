@@ -56,7 +56,11 @@ if (NOT TARGET StrawberryUI)
 	add_target_shaders(TARGET StrawberryUI
 		SHADERS
 		${CMAKE_CURRENT_SOURCE_DIR}/src/Strawberry/UI/Rendering/ColouredNodeRenderer.vert
-		${CMAKE_CURRENT_SOURCE_DIR}/src/Strawberry/UI/Rendering/ColoredNodeRenderer.frag)
+		${CMAKE_CURRENT_SOURCE_DIR}/src/Strawberry/UI/Rendering/ColoredNodeRenderer.frag
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/Strawberry/UI/Rendering/TextNodeRenderer.vert
+		${CMAKE_CURRENT_SOURCE_DIR}/src/Strawberry/UI/Rendering/TextNodeRenderer.frag
+        LIBRARIES
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/Strawberry/UI/Rendering/TextNodeRenderer.glsl)
 
 
 	new_strawberry_executable(NAME StrawberryUI_Test SOURCE

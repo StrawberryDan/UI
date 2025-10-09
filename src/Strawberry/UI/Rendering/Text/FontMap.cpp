@@ -19,19 +19,21 @@ namespace Strawberry::UI
 		: mPageSize(pageSize)
 	{
 		// Assert that the page size is a power of 2 for both dimensions.
-		Core::Logging::WarningIf(!std::has_single_bit(pageSize[0]), "FontFace page width not set to a power of 2!");
-		Core::Logging::WarningIf(!std::has_single_bit(pageSize[1]), "FontFace page height not set to a power of 2!");
+		Core::Logging::WarningIf(!std::has_single_bit(pageSize[0]),
+								 "FontFace page width not set to a power of 2!");
+		Core::Logging::WarningIf(!std::has_single_bit(pageSize[1]),
+								 "FontFace page height not set to a power of 2!");
 
 		Core::Math::Vec2u offset;
-		unsigned rowMaxHeight = 0;
+		unsigned          rowMaxHeight = 0;
 
 		auto glyphs = fontFace.RenderAllGlyphs(renderMode);
-		std::ranges::sort(glyphs, std::less(), [] (auto&& x) { return x.bitmap.Height(); });
+		std::ranges::sort(glyphs, std::less(), [](auto&& x) { return x.bitmap.Height(); });
 
 
 		mPages.emplace_back();
 		mPages.back().mAtlas = Core::Image<Core::PixelGreyscale>(mPageSize);
-		for (auto&& glyph : glyphs)
+		for (auto&& glyph: glyphs)
 		{
 			Core::Assert(glyph.bitmap.Width() < mPageSize[0]);
 			Core::Assert(glyph.bitmap.Height() < mPageSize[1]);
@@ -46,8 +48,8 @@ namespace Strawberry::UI
 			{
 				mPages.emplace_back();
 				mPages.back().mAtlas = Core::Image<Core::PixelGreyscale>(mPageSize);
-				offset = Core::Math::Vec2u(0, 0);
-				rowMaxHeight = 0;
+				offset               = Core::Math::Vec2u(0, 0);
+				rowMaxHeight         = 0;
 			}
 
 			mPages.back().mAtlas.Blit(glyph.bitmap, offset);
@@ -55,13 +57,13 @@ namespace Strawberry::UI
 			rowMaxHeight = std::max(rowMaxHeight, glyph.bitmap.Height());
 
 			mGlyphs.emplace(
-				glyph.codepoint,
-				GlyphAddress
-				{
-					.pageIndex = static_cast<unsigned>(mPages.size() - 1),
-					.offset = offset,
-					.extent = glyph.bitmap.Size()
-				});
+							glyph.codepoint,
+							GlyphAddress
+							{
+								.pageIndex = static_cast<unsigned>(mPages.size() - 1),
+								.offset = offset,
+								.extent = glyph.bitmap.Size()
+							});
 		}
 	}
 
@@ -91,56 +93,73 @@ namespace Strawberry::UI
 	}
 
 
-	GPUFontMap FontMap::CopyToGPU(Vulkan::Queue& queue, Renderer& renderer) const noexcept
+	GPUFontMap FontMap::CopyToGPU(Vulkan::Queue& queue) const noexcept
 	{
-		Vulkan::CommandPool commandPool(queue);
+		Vulkan::CommandPool   commandPool(queue);
 		Vulkan::CommandBuffer commandBuffer(commandPool);
 
-		Vulkan::Buffer stagingBuffer = Vulkan::Buffer::Builder(queue.GetDevice(), Vulkan::MemoryTypeCriteria::HostVisible())
-			.WithSize(mPageSize.Fold(std::multiplies()))
-			.WithUsage(VK_BUFFER_USAGE_TRANSFER_DST_BIT | VK_BUFFER_USAGE_TRANSFER_SRC_BIT)
-			.Build();
+		Vulkan::Buffer stagingBuffer = Vulkan::Buffer::Builder(queue.GetDevice(),
+															   Vulkan::MemoryTypeCriteria::HostVisible())
+									   .WithSize(mPageSize.Fold(std::multiplies()))
+									   .WithUsage(VK_BUFFER_USAGE_TRANSFER_DST_BIT | VK_BUFFER_USAGE_TRANSFER_SRC_BIT)
+									   .Build();
 
 		Vulkan::Image images = Vulkan::Image::Builder(queue.GetDevice(), Vulkan::MemoryTypeCriteria::DeviceLocal())
-			.WithExtent(mPageSize)
-			.WithFormat(VK_FORMAT_R8_UINT)
-			.WithUsage(VK_IMAGE_USAGE_TRANSFER_DST_BIT)
-			.WithArrayLayers(256)
-			.Build();
+							   .WithExtent(mPageSize)
+							   .WithFormat(VK_FORMAT_R8_UINT)
+							   .WithUsage(VK_IMAGE_USAGE_TRANSFER_DST_BIT | VK_IMAGE_USAGE_SAMPLED_BIT)
+							   .WithArrayLayers(queue.GetDevice().GetPhysicalDevice().GetLimits().
+													  maxPerStageDescriptorSamplers)
+							   .Build();
 
 		for (int i = 0; i < mPages.size(); i++)
 		{
-			stagingBuffer.SetData(Core::IO::DynamicByteBuffer(mPages[i].mAtlas.Data(), mPages[i].mAtlas.Size().Fold(std::multiplies())));
+			stagingBuffer.SetData(Core::IO::DynamicByteBuffer(mPages[i].mAtlas.Data(),
+															  mPages[i].mAtlas.Size().Fold(std::multiplies())));
 
 			commandBuffer.Begin(true);
 			commandBuffer.PipelineBarrier(
-				VK_PIPELINE_STAGE_ALL_COMMANDS_BIT,
-				VK_PIPELINE_STAGE_ALL_COMMANDS_BIT,
-				0,
-				{
-					Vulkan::ImageMemoryBarrier(images, VK_IMAGE_ASPECT_COLOR_BIT)
-						.FromLayout(VK_IMAGE_LAYOUT_UNDEFINED)
-						.ToLayout(VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL)
-				});
+										  VK_PIPELINE_STAGE_ALL_COMMANDS_BIT,
+										  VK_PIPELINE_STAGE_ALL_COMMANDS_BIT,
+										  0,
+										  {
+											  Vulkan::ImageMemoryBarrier(images, VK_IMAGE_ASPECT_COLOR_BIT)
+											  .FromLayout(VK_IMAGE_LAYOUT_UNDEFINED)
+											  .ToLayout(VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL)
+										  });
 			commandBuffer.CopyBufferToImage(stagingBuffer, images, i);
 			commandBuffer.PipelineBarrier(
-				VK_PIPELINE_STAGE_ALL_COMMANDS_BIT,
-				VK_PIPELINE_STAGE_ALL_COMMANDS_BIT,
-				0,
-				{
-					Vulkan::ImageMemoryBarrier(images, VK_IMAGE_ASPECT_COLOR_BIT)
-						.FromLayout(VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL)
-						.ToLayout(VK_IMAGE_LAYOUT_GENERAL)
-				});
+										  VK_PIPELINE_STAGE_ALL_COMMANDS_BIT,
+										  VK_PIPELINE_STAGE_ALL_COMMANDS_BIT,
+										  0,
+										  {
+											  Vulkan::ImageMemoryBarrier(images, VK_IMAGE_ASPECT_COLOR_BIT)
+											  .FromLayout(VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL)
+											  .ToLayout(VK_IMAGE_LAYOUT_GENERAL)
+										  });
 			commandBuffer.End();
 
 
 			queue.Submit(commandBuffer);
 		}
 
+		Vulkan::ImageView view = Vulkan::ImageView::Builder(images, VK_IMAGE_ASPECT_COLOR_BIT)
+								 .WithType(VK_IMAGE_VIEW_TYPE_2D_ARRAY)
+								 .WithFormat(VK_FORMAT_R8_UINT)
+								 .WithSubresourceRange(VkImageSubresourceRange{
+														   .aspectMask = VK_IMAGE_ASPECT_COLOR_BIT,
+														   .baseMipLevel = 0,
+														   .levelCount = 1,
+														   .baseArrayLayer = 0,
+														   .layerCount = images.GetArrayLayerCount(),
+													   })
+								 .Build();
+
 		return GPUFontMap
 		{
+			.sampler = Vulkan::Sampler(queue.GetDevice(), VK_FILTER_NEAREST, VK_FILTER_NEAREST),
 			.mPages = std::move(images),
+			.mView = std::move(view),
 		};
 	}
 }
