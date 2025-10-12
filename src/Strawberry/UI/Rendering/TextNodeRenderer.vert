@@ -13,6 +13,7 @@ layout (location=4) out vec2 glyphCoordinates;
 void main()
 {
     glyph = GLYPHS[gl_InstanceIndex];
+    gl_Position = vec4(0.0, 0.0, 0.0, 1.0);
     gl_Position.xy = glyph.position;
     switch (gl_VertexIndex)
     {
@@ -39,9 +40,6 @@ void main()
         glyphCoordinates = vec2(0, 1);
         break;
     };
-
-    gl_Position = gl_Position * 4.0;
-    gl_Position.w = 1.0;
 
     gl_Position = PROJECTION_MATRIX * gl_Position;
 }

@@ -11,8 +11,17 @@ layout (location=0) out vec4 fragColor;
 
 void main()
 {
-    fragColor = textureLod(
+    vec2 textureCoordinate = glyph.glyphAddressCoordinate + glyphCoordinates * glyph.size;
+
+    textureCoordinate.x = textureCoordinate.x / PAGE_SIZE.x;
+    textureCoordinate.y = textureCoordinate.y / PAGE_SIZE.y;
+
+    vec4 fontSample = texture(
         usampler2DArray(FONT_ATLAS, _sampler),
-        uvec3(glyph.glyphAddressCoordinate + glyphCoordinates * glyph.size, glyph.glyphAddressPageIndex),
-        0);
+        vec3(textureCoordinate, glyph.glyphAddressPageIndex));
+
+    fragColor.r = fontSample.r;
+    fragColor.g = fontSample.r;
+    fragColor.b = fontSample.r;
+    fragColor.a = fontSample.r;
 }
