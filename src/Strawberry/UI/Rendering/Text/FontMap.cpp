@@ -53,7 +53,6 @@ namespace Strawberry::UI
 			}
 
 			mPages.back().mAtlas.Blit(glyph.bitmap, offset);
-			offset[0] += glyph.bitmap.Width();
 			rowMaxHeight = std::max(rowMaxHeight, glyph.bitmap.Height());
 
 			mGlyphs.emplace(
@@ -64,6 +63,8 @@ namespace Strawberry::UI
 								.offset = offset,
 								.extent = glyph.bitmap.Size()
 							});
+
+			offset[0] += glyph.bitmap.Width();
 		}
 	}
 
