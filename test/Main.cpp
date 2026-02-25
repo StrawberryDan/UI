@@ -3,9 +3,9 @@
 #include "Strawberry/UI/Node.hpp"
 #include "Strawberry/UI/Rendering/ColoredNodeRenderer.hpp"
 #include "Strawberry/UI/Rendering/Renderer.hpp"
-#include "Strawberry/Vulkan/Instance.hpp"
+#include "Strawberry/Vulkan/Device/Instance.hpp"
 #include "../../Vulkan/src/Strawberry/Vulkan/Device/Device.hpp"
-#include "Strawberry/Vulkan/Swapchain.hpp"
+#include "Strawberry/Vulkan/Device/Swapchain.hpp"
 #include "../../Vulkan/src/Strawberry/Vulkan/Device/Surface.hpp"
 #include "Strawberry/Window/Window.hpp"
 #include "Strawberry/UI/Rendering/Text/FontFace.hpp"
@@ -45,10 +45,7 @@ int main()
 				.WithColorAttachment(0, VK_IMAGE_LAYOUT_GENERAL))
 		.Build();
 
-	Vulkan::NaiveAllocator frameBufferAllocator(
-	device, physicalDevice.SearchMemoryTypes(Vulkan::MemoryTypeCriteria::DeviceLocal()).front().index);
-
-	Vulkan::Framebuffer framebuffer(renderPass, frameBufferAllocator, window.GetSize().AsType<unsigned>());
+	Vulkan::Framebuffer framebuffer(renderPass, window.GetSize().AsType<unsigned>());
 
 
 	UI::FontFace fontFace = UI::FontFace::FromFile("data/italianno.ttf").Unwrap();

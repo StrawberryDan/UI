@@ -60,7 +60,7 @@ namespace Strawberry::UI
 
 	void ColoredNodeRenderer::Render(Vulkan::CommandBuffer& commandBuffer, Core::Math::Mat4f projectionMatrix)
 	{
-		mRenderConstantsBuffer.SetData(Core::IO::DynamicByteBuffer(projectionMatrix));
+		mRenderConstantsBuffer.SetData(Core::IO::DynamicByteBuffer::FromObjects(projectionMatrix));
 		mInputBuffer.SetData({ mEntries.data(), mEntries.size() * sizeof(ColouredNodeEntry) });
 		commandBuffer.BindPipeline(mColouredNodePipeline);
 		commandBuffer.BindVertexBuffer(0, mInputBuffer);
