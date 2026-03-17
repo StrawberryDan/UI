@@ -66,23 +66,24 @@ namespace Strawberry::UI
 
 	void TextNodeRenderer::Submit(uint32_t drawIndex, const TextNode& node)
 	{
-		const LoadedFont& font = mFontMaps.at(node.GetFont());
+		LoadedFont& font = mFontMaps.at(node.GetFont());
 
-		Core::Math::Vec2u glyphCursor;
+		Core::Math::Vec2i glyphCursor;
 		for (char32_t codepoint: node.GetString())
 		{
+			auto glyph = font.fontFace.LoadGlyphOfCodepoint(codepoint).Unwrap();
 			FontMap::GlyphAddress glyphAddress = font.cpuFontMap.GetGlyphAddress(codepoint).Unwrap();
 			mGlyphBuffer.emplace_back(
 									  Glyph{
 										  .font = node.GetFont(),
-										  .position = node.GetPosition().AsType<unsigned>() + glyphCursor,
+										  .position = node.GetPosition().AsType<int>() + glyphCursor + glyph.Bearing(),
 										  .size = glyphAddress.extent,
 										  .glyphAddressPageIndex = glyphAddress.pageIndex,
 										  .glyphAddressCoordinate = glyphAddress.offset
 									  }
 									 );
 
-			glyphCursor[0] += glyphAddress.extent[0];
+			glyphCursor += glyph.Advance();
 		}
 	}
 

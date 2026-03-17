@@ -31,6 +31,10 @@ namespace Strawberry::UI
 		auto operator[](this auto self, size_t index) { return self.mContours[index]; }
 
 
+		const auto& Advance() const { return mAdvance;}
+
+		const auto& Bearing() { return mHorizontalBearing; }
+
 	private:
 		explicit Glyph(Index index, ContourList points);
 
@@ -39,5 +43,8 @@ namespace Strawberry::UI
 		Index mIndex;
 		/// This glyph's contours.
 		ContourList mContours;
+
+		Core::Math::Vec2i mAdvance;
+		Core::Math::Vec2i mHorizontalBearing;
 	};
 }

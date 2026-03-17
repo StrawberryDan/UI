@@ -103,7 +103,15 @@ namespace Strawberry::UI
 			contour.shrink_to_fit();
 		}
 
-		return Glyph(glyphIndex, contours);
+		Glyph glyph(glyphIndex, contours);
+
+		glyph.mAdvance = Core::Math::Vec2i{mFace->glyph->advance.x >> 6, mFace->glyph->advance.y >> 6};
+		glyph.mHorizontalBearing = Core::Math::Vec2i{
+			mFace->glyph->metrics.horiBearingX >> 6,
+			((mFace->ascender + mFace->bbox.yMax - mFace->glyph->metrics.horiBearingY) >> 6)
+		};
+
+		return glyph;
 	}
 
 

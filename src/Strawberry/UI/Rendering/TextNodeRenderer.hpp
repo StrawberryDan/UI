@@ -16,11 +16,9 @@ namespace Strawberry::UI
 	public:
 		TextNodeRenderer(Vulkan::Framebuffer& framebuffer, unsigned int subpassIndex);
 
-
 		void Submit(uint32_t drawIndex, const TextNode& node);
 
 		void Render(Vulkan::CommandBuffer& commandBuffer, Core::Math::Mat4f projectionMatrix);
-
 
 		void LoadFont(Vulkan::Queue& queue, std::string ID, FontFace&& fontFace);
 
@@ -42,7 +40,7 @@ namespace Strawberry::UI
 		struct Glyph
 		{
 			std::string       font;
-			Core::Math::Vec2u position;
+			Core::Math::Vec2i position;
 			Core::Math::Vec2u size;
 			uint32_t          glyphAddressPageIndex;
 			Core::Math::Vec2u glyphAddressCoordinate;
