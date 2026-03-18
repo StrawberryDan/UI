@@ -20,8 +20,5 @@ void main()
         usampler2DArray(FONT_ATLAS, _sampler),
         vec3(textureCoordinate, glyph.glyphAddressPageIndex));
 
-    fragColor.r = fontSample.r;
-    fragColor.g = fontSample.r;
-    fragColor.b = fontSample.r;
-    fragColor.a = fontSample.r;
+    fragColor = vec4(fontSample.r);
 }
