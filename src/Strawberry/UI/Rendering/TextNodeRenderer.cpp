@@ -122,15 +122,16 @@ namespace Strawberry::UI
 		FontMap    fontMap(fontFace);
 		GPUFontMap gpuFontMap = fontMap.CopyToGPU(queue);
 
-		auto& insertedFontmap = mFontMaps.insert_or_assign(ID, LoadedFont
-														   {
-															   .fontFace = (std::move(fontFace)),
-															   .cpuFontMap = std::move(fontMap),
-															   .gpuFontMap = (std::move(gpuFontMap)),
-															   .descriptorSet = queue.GetDevice().
-																					  AllocateDescriptorSet(mPipelineLayout
-																											.GetSetLayout(1))
-														   }).first->second;
+		auto& insertedFontmap = mFontMaps.insert_or_assign(
+			ID, LoadedFont
+			{
+				.fontFace = (std::move(fontFace)),
+				.cpuFontMap = std::move(fontMap),
+				.gpuFontMap = (std::move(gpuFontMap)),
+				.descriptorSet = queue.GetDevice()
+					.AllocateDescriptorSet(mPipelineLayout
+					.GetSetLayout(1))
+		   }).first->second;
 
 		insertedFontmap.descriptorSet.SetUniformBuffer(0, 0, mConstantsBuffer);
 		insertedFontmap.descriptorSet.SetTexture(1, 0, insertedFontmap.gpuFontMap.mView, VK_IMAGE_LAYOUT_GENERAL);
