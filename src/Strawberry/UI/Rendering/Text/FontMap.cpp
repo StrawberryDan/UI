@@ -33,14 +33,14 @@ namespace Strawberry::UI
 
 		mPages.emplace_back();
 		mPages.back().mAtlas = Core::Image<Core::PixelGreyscale>(mPageSize);
-		for (auto&& glyph: glyphs)
+		for (auto&& glyph : glyphs)
 		{
 			Core::Assert(glyph.bitmap.Width() < mPageSize[0]);
 			Core::Assert(glyph.bitmap.Height() < mPageSize[1]);
 			if (offset[0] > mPageSize[0] - glyph.bitmap.Width())
 			{
 				offset[0] = 0;
-				offset[1] += rowMaxHeight;
+				offset[1] += rowMaxHeight + GLYPH_PADDING;
 				rowMaxHeight = 0;
 			}
 
@@ -64,7 +64,7 @@ namespace Strawberry::UI
 								.extent = glyph.bitmap.Size()
 							});
 
-			offset[0] += glyph.bitmap.Width();
+			offset[0] += glyph.bitmap.Width() + GLYPH_PADDING;
 		}
 	}
 
@@ -96,6 +96,9 @@ namespace Strawberry::UI
 
 	GPUFontMap FontMap::CopyToGPU(Vulkan::Queue& queue) const noexcept
 	{
+		Core::Assert(mPages.size() < queue.GetDevice().GetPhysicalDevice().GetLimits().maxImageArrayLayers,
+			"Font map has too many pages to be stored in GPU");
+
 		Vulkan::CommandPool   commandPool(queue);
 		Vulkan::CommandBuffer commandBuffer(commandPool);
 
@@ -109,8 +112,7 @@ namespace Strawberry::UI
 							   .WithExtent(mPageSize)
 							   .WithFormat(VK_FORMAT_R8_UINT)
 							   .WithUsage(VK_IMAGE_USAGE_TRANSFER_DST_BIT | VK_IMAGE_USAGE_SAMPLED_BIT)
-							   .WithArrayLayers(queue.GetDevice().GetPhysicalDevice().GetLimits().
-													  maxPerStageDescriptorSamplers)
+							   .WithArrayLayers(mPages.size())
 							   .Build();
 
 		for (int i = 0; i < mPages.size(); i++)
