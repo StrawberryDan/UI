@@ -2,16 +2,20 @@
 #include "ColoredNodeRenderer.hpp"
 #include "TextNodeRenderer.hpp"
 #include "../../../../../Vulkan/src/Strawberry/Vulkan/Memory/Allocator/ChainAllocator.hpp"
+#include "Strawberry/UI/NodeTree.hpp"
 
 
 namespace Strawberry::UI
 {
+	class NodeTree;
+
 	class Renderer
 	{
 	public:
 		Renderer(Vulkan::Framebuffer& framebuffer, uint32_t subpassIndex);
 
 
+		void Submit(const NodeTree& nodeTree);
 		void Submit(const Node& node);
 		void SubmitColouredNode(const ColoredNode& node);
 		void SubmitTextNode(const TextNode& node);

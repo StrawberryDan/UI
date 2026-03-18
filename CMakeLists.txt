@@ -49,6 +49,7 @@ if (NOT TARGET StrawberryUI)
 		src/Strawberry/UI/Rendering/TextNodeRenderer.hpp
 		src/Strawberry/UI/TextNode.cpp
 		src/Strawberry/UI/TextNode.hpp
+        src/Strawberry/UI/NodeTree.hpp
 	)
 	target_link_libraries(StrawberryUI PUBLIC StrawberryCore StrawberryVulkan StrawberryAudio freetype)
 	target_include_directories(StrawberryUI PUBLIC src)

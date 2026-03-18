@@ -3,14 +3,21 @@
 #include "../../../../../Vulkan/src/Strawberry/Vulkan/Resource/Framebuffer.hpp"
 #include "Strawberry/Core/Math/Transformations.hpp"
 #include "Strawberry/UI/Node.hpp"
+#include "Strawberry/UI/NodeTree.hpp"
 
 
 namespace Strawberry::UI
 {
 	Renderer::Renderer(Vulkan::Framebuffer& framebuffer, uint32_t subpassIndex)
 		: mProjectionMatrix(CreateProjectionMatrix(framebuffer))
-		  , mColoredNodeRenderer(framebuffer, subpassIndex)
+		, mColoredNodeRenderer(framebuffer, subpassIndex)
 		, mTextNodeRenderer(framebuffer, subpassIndex) {}
+
+
+	void Renderer::Submit(const NodeTree& nodeTree)
+	{
+		nodeTree.Visit([this] (const auto& x) { Submit(*x); });
+	}
 
 
 	void Renderer::SubmitColouredNode(const ColoredNode& node)
