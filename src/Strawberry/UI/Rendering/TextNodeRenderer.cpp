@@ -20,7 +20,7 @@ namespace Strawberry::UI
 	size_t DEFAULT_GLYPH_BUFFER_SIZE = 1024;
 
 
-	TextNodeRenderer::TextNodeRenderer(Vulkan::Framebuffer& framebuffer, unsigned int subpassIndex)
+	TextNodeRenderer::TextNodeRenderer(Vulkan::Framebuffer& framebuffer, unsigned int subpassIndex, Core::Math::Vec2f contentScale)
 		: mPipelineLayout([&]() {
 			  return Vulkan::PipelineLayout::Builder(framebuffer.GetDevice())
 					 .WithDescriptor(0, VK_DESCRIPTOR_TYPE_STORAGE_BUFFER,
@@ -51,6 +51,7 @@ namespace Strawberry::UI
 							.WithUsage(VK_BUFFER_USAGE_TRANSFER_DST_BIT | VK_BUFFER_USAGE_STORAGE_BUFFER_BIT)
 							.Build())
 		  , mGlyphBufferDescriptorSet(framebuffer.GetDevice(), mPipelineLayout.GetSetLayout(0))
+		  , mContentScale(contentScale)
 		  , mConstantsBuffer(
 							 Vulkan::Buffer::Builder(framebuffer.GetDevice(),
 													 Vulkan::MemoryTypeCriteria::HostVisible())
@@ -94,12 +95,23 @@ namespace Strawberry::UI
 
 		if (!mGlyphBuffer.empty())
 		{
-			mConstantsBuffer.SetData(Core::IO::DynamicByteBuffer::FromObjects(projectionMatrix, mFontMaps.at(mGlyphBuffer[0].font).cpuFontMap.GetPageSize()));
+			mConstantsBuffer.SetData(
+				Core::IO::DynamicByteBuffer::FromObjects(
+					projectionMatrix,
+					mFontMaps.at(mGlyphBuffer[0].font).cpuFontMap.GetPageSize()));
 
 			for (auto& glyph: mGlyphBuffer)
 			{
-				glyphBufferContents.Push(glyph.position);
-				glyphBufferContents.Push(glyph.size);
+				auto position = glyph.position;
+				position[0] *= mContentScale[0];
+				position[1] *= mContentScale[1];
+
+				auto size = glyph.size;
+				size[0] *= mContentScale[0];
+				size[1] *= mContentScale[1];
+
+				glyphBufferContents.Push(position);
+				glyphBufferContents.Push(size);
 				glyphBufferContents.Push(glyph.glyphAddressPageIndex);
 				glyphBufferContents.Push<uint32_t>(0);
 				glyphBufferContents.Push(glyph.glyphAddressCoordinate);

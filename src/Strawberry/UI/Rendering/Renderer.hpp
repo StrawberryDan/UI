@@ -12,7 +12,7 @@ namespace Strawberry::UI
 	class Renderer
 	{
 	public:
-		Renderer(Vulkan::Framebuffer& framebuffer, uint32_t subpassIndex);
+		Renderer(Vulkan::Framebuffer& framebuffer, uint32_t subpassIndex, Core::Math::Vec2f contentScale);
 
 
 		void Submit(const NodeTree& nodeTree);
@@ -35,7 +35,7 @@ namespace Strawberry::UI
 		unsigned int mLastDrawIndex = 0;
 		Core::Math::Mat4f mProjectionMatrix;
 
-
+		Core::Math::Vec2f mContentScale;
 		ColoredNodeRenderer mColoredNodeRenderer;
 		TextNodeRenderer mTextNodeRenderer;
 	};

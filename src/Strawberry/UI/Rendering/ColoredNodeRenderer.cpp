@@ -21,7 +21,7 @@ static const uint8_t FRAGMENT_SHADER_CODE[] =
 
 namespace Strawberry::UI
 {
-	ColoredNodeRenderer::ColoredNodeRenderer(Vulkan::Framebuffer& framebuffer, uint32_t subpassIndex)
+	ColoredNodeRenderer::ColoredNodeRenderer(Vulkan::Framebuffer& framebuffer, uint32_t subpassIndex, Core::Math::Vec2f contentScale)
 		: mColouredNodePipelineLayout(CreateColouredNodePipelineLayout(framebuffer.GetDevice()))
 		  , mColouredNodePipeline(CreateColouredNodePipeline(framebuffer, mColouredNodePipelineLayout, subpassIndex))
 		  , mInputBuffer(
@@ -29,6 +29,7 @@ namespace Strawberry::UI
 						 .WithSize(1024 * 1024)
 						 .WithUsage(VK_BUFFER_USAGE_VERTEX_BUFFER_BIT | VK_BUFFER_USAGE_TRANSFER_DST_BIT)
 						 .Build())
+		  , mContentScale(contentScale)
 		  , mDescriptorPool(framebuffer.GetDevice(), 0, 1, {
 								VkDescriptorPoolSize{ .type = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, .descriptorCount = 1 }
 							})
@@ -47,12 +48,20 @@ namespace Strawberry::UI
 
 	void ColoredNodeRenderer::Submit(uint32_t drawIndex, const ColoredNode& node)
 	{
+		auto position = node.GetPosition();
+		position[0] *= mContentScale[0];
+		position[1] *= mContentScale[1];
+
+		auto extent = node.GetExtent();
+		extent[0] *= mContentScale[0];
+		extent[1] *= mContentScale[1];
+
 		mEntries.emplace_back(
 							  ColouredNodeEntry
 							  {
 								  .drawIndex = drawIndex,
-								  .position = node.GetPosition(),
-								  .extent = node.GetExtent(),
+								  .position = position,
+								  .extent = extent,
 								  .color = node.GetColor(),
 							  });
 	}

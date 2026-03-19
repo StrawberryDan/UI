@@ -14,7 +14,7 @@ namespace Strawberry::UI
 	class TextNodeRenderer
 	{
 	public:
-		TextNodeRenderer(Vulkan::Framebuffer& framebuffer, unsigned int subpassIndex);
+		TextNodeRenderer(Vulkan::Framebuffer& framebuffer, unsigned int subpassIndex, Core::Math::Vec2f contentScale);
 
 		void Submit(uint32_t drawIndex, const TextNode& node);
 
@@ -51,6 +51,7 @@ namespace Strawberry::UI
 		Vulkan::Buffer        mGPUGlyphBuffer;
 		Vulkan::DescriptorSet mGlyphBufferDescriptorSet;
 
+		Core::Math::Vec2f     mContentScale;
 		Vulkan::Buffer        mConstantsBuffer;
 	};
 }

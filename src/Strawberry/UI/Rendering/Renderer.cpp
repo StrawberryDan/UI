@@ -8,10 +8,11 @@
 
 namespace Strawberry::UI
 {
-	Renderer::Renderer(Vulkan::Framebuffer& framebuffer, uint32_t subpassIndex)
+	Renderer::Renderer(Vulkan::Framebuffer& framebuffer, uint32_t subpassIndex, Core::Math::Vec2f contentScale)
 		: mProjectionMatrix(CreateProjectionMatrix(framebuffer))
-		, mColoredNodeRenderer(framebuffer, subpassIndex)
-		, mTextNodeRenderer(framebuffer, subpassIndex) {}
+		, mContentScale(contentScale)
+		, mColoredNodeRenderer(framebuffer, subpassIndex, mContentScale)
+		, mTextNodeRenderer(framebuffer, subpassIndex, mContentScale) {}
 
 
 	void Renderer::Submit(const NodeTree& nodeTree)

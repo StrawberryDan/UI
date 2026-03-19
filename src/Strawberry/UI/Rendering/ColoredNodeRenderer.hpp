@@ -31,7 +31,7 @@ namespace Strawberry::UI
 	class ColoredNodeRenderer
 	{
 	public:
-		ColoredNodeRenderer(Vulkan::Framebuffer& framebuffer, uint32_t subpassIndex);
+		ColoredNodeRenderer(Vulkan::Framebuffer& framebuffer, uint32_t subpassIndex, Core::Math::Vec2f contentScale);
 
 
 		void Submit(uint32_t drawIndex, const ColoredNode& node);
@@ -64,6 +64,7 @@ namespace Strawberry::UI
 
 		Vulkan::Buffer mInputBuffer;
 
+		Core::Math::Vec2f mContentScale;
 		Vulkan::DescriptorPool mDescriptorPool;
 		Vulkan::DescriptorSet  mRenderConstantsDescriptorSet;
 		Vulkan::Buffer         mRenderConstantsBuffer;
