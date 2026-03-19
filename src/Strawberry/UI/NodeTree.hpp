@@ -13,14 +13,14 @@ namespace Strawberry::UI
 	{
 	public:
 		NodeTree();
-		// using NodeTreeType::NodeTreeType;
+		using NodeTreeType::NodeTreeType;
 
 
 		using NodeTreeType::AddNode;
 		template <typename N>
 		Config::NodeID AddNode(Config::NodeID parent, N&& n)
 		{
-			return AddNode(parent, std::make_unique<N>(std::forward<N>(n)));
+			return NodeTreeType::AddNode(parent, std::make_unique<std::decay_t<N>>(std::forward<N>(n)));
 		}
 	};
 }
