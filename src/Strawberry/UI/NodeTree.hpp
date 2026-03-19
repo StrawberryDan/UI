@@ -1,8 +1,8 @@
 #pragma once
 
 
+#include "Node.hpp"
 #include "Strawberry/Core/Math/Graph/Tree.hpp"
-#include "Strawberry/Core/Math/Graph/TreeWalker.hpp"
 
 
 namespace Strawberry::UI
@@ -11,6 +11,16 @@ namespace Strawberry::UI
 	class NodeTree
 		: public NodeTreeType
 	{
-		using NodeTreeType::NodeTreeType;
+	public:
+		NodeTree();
+		// using NodeTreeType::NodeTreeType;
+
+
+		using NodeTreeType::AddNode;
+		template <typename N>
+		Config::NodeID AddNode(Config::NodeID parent, N&& n)
+		{
+			return AddNode(parent, std::make_unique<N>(std::forward<N>(n)));
+		}
 	};
 }
