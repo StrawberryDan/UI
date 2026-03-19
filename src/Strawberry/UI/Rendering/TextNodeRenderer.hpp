@@ -16,7 +16,7 @@ namespace Strawberry::UI
 	public:
 		TextNodeRenderer(Vulkan::Framebuffer& framebuffer, unsigned int subpassIndex, Core::Math::Vec2f contentScale);
 
-		void Submit(uint32_t drawIndex, const TextNode& node);
+		void Submit(const TextNode& node);
 
 		void Render(Vulkan::CommandBuffer& commandBuffer, Core::Math::Mat4f projectionMatrix);
 

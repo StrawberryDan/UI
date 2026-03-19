@@ -17,19 +17,23 @@ namespace Strawberry::UI
 
 	void Renderer::Submit(const NodeTree& nodeTree)
 	{
-		nodeTree.Visit([this] (const auto& x) { Submit(*x); });
+
+		nodeTree.Visit([&, this] (const auto& x)
+		{
+			Submit(*x);
+		});
 	}
 
 
-	void Renderer::SubmitColouredNode(const ColoredNode& node)
+	void Renderer::Submit(const ColoredNode& node)
 	{
 		mColoredNodeRenderer.Submit(mLastDrawIndex++, node);
 	}
 
 
-	void Renderer::SubmitTextNode(const TextNode& node)
+	void Renderer::Submit(const TextNode& node)
 	{
-		mTextNodeRenderer.Submit(mLastDrawIndex++, node);
+		mTextNodeRenderer.Submit(node);
 	}
 
 

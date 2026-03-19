@@ -17,8 +17,8 @@ namespace Strawberry::UI
 
 		void Submit(const NodeTree& nodeTree);
 		void Submit(const Node& node);
-		void SubmitColouredNode(const ColoredNode& node);
-		void SubmitTextNode(const TextNode& node);
+		void Submit(const ColoredNode& node);
+		void Submit(const TextNode& node);
 
 
 		void Render(Vulkan::CommandBuffer& commandBuffer);

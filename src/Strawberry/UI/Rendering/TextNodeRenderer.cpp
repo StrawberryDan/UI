@@ -65,7 +65,7 @@ namespace Strawberry::UI
 	}
 
 
-	void TextNodeRenderer::Submit(uint32_t drawIndex, const TextNode& node)
+	void TextNodeRenderer::Submit(const TextNode& node)
 	{
 		LoadedFont& font = mFontMaps.at(node.GetFont());
 

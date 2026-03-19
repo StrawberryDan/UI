@@ -13,6 +13,6 @@ namespace Strawberry::UI
 
 	void ColoredNode::Render(Renderer& renderer) const
 	{
-		renderer.SubmitColouredNode(*this);
+		renderer.Submit(*this);
 	}
 }
