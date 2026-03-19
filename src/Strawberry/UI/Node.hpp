@@ -30,7 +30,7 @@ namespace Strawberry::UI
 		Extent SetExtent(Extent extent) noexcept { return mExtent = extent; }
 
 
-		virtual void Render(Renderer& nodeRenderer) const = 0;
+		virtual void Render(Renderer& nodeRenderer) const {}
 
 
 	private:
