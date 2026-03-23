@@ -24,7 +24,7 @@ if (NOT TARGET StrawberryUI)
 	FetchContent_MakeAvailable(FREETYPE)
 
 
-	find_strawberry_library(NAMES Core Vulkan Audio)
+	find_strawberry_library(NAMES Core 2D Audio)
 
 
 	new_strawberry_library(NAME StrawberryUI SOURCE
@@ -52,7 +52,7 @@ if (NOT TARGET StrawberryUI)
 		src/Strawberry/UI/NodeTree.cpp
         src/Strawberry/UI/NodeTree.hpp
 	)
-	target_link_libraries(StrawberryUI PUBLIC StrawberryCore StrawberryVulkan StrawberryAudio freetype)
+	target_link_libraries(StrawberryUI PUBLIC StrawberryCore Strawberry2D StrawberryAudio freetype)
 	target_include_directories(StrawberryUI PUBLIC src)
 
 	add_target_shaders(TARGET StrawberryUI
