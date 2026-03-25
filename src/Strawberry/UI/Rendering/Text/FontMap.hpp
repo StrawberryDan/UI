@@ -17,8 +17,6 @@
 //----------------------------------------------------------------------------------------------------------------------
 namespace Strawberry::UI
 {
-	class Renderer;
-
 	struct GPUFontMap
 	{
 		Vulkan::Sampler   sampler;

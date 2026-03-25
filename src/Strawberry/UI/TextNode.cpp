@@ -7,11 +7,6 @@
 
 namespace Strawberry::UI
 {
-	void TextNode::Render(Renderer& renderer) const
-	{
-		renderer.Submit(*this);
-	}
-
 	std::u32string TextNode::SetString(const std::u32string& string) noexcept
 	{
 		return mGlyphs = string;

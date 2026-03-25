@@ -5,8 +5,6 @@
 
 namespace Strawberry::UI
 {
-	class Renderer;
-
 	/// Class representing a UI node. A Node possesses a position and an extent.
 	class Node
 	{
@@ -28,9 +26,6 @@ namespace Strawberry::UI
 
 		Extent GetExtent()        const noexcept { return mExtent; }
 		Extent SetExtent(Extent extent) noexcept { return mExtent = extent; }
-
-
-		virtual void Render(Renderer& nodeRenderer) const {}
 
 
 	private:

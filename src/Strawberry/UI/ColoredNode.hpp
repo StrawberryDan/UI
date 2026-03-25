@@ -19,9 +19,6 @@ namespace Strawberry::UI
 		Color SetColor(Color color) noexcept { return mColor = color; }
 
 
-		void Render(Renderer& nodeRenderer) const override;
-
-
 	private:
 		Color mColor;
 	};

@@ -8,6 +8,7 @@
 #include "Strawberry/Vulkan/Pipeline/PipelineLayout.hpp"
 #include "Strawberry/Vulkan/Resource/Buffer.hpp"
 // Strawberry Core
+#include "RenderBatcher.hpp"
 #include "Strawberry/Core/Math/Matrix.hpp"
 
 
@@ -31,12 +32,22 @@ namespace Strawberry::UI
 	class ColoredNodeRenderer
 	{
 	public:
-		ColoredNodeRenderer(Vulkan::Framebuffer& framebuffer, uint32_t subpassIndex, Core::Math::Vec2f contentScale);
+		struct RenderQueueEntry
+		{
+			Core::Math::Vec2f position;
+			Core::Math::Vec2f extent;
+			Core::Math::Vec4f color;
+		};
 
 
-		void Submit(uint32_t drawIndex, const ColoredNode& node);
+		ColoredNodeRenderer(Vulkan::Framebuffer& framebuffer, uint32_t subpassIndex, const Core::Math::Mat4f& projectionMatrix, Core::Math::Vec2f contentScale);
 
-		void Render(Vulkan::CommandBuffer& commandBuffer, Core::Math::Mat4f projectionMatrix);
+
+		RenderBatcher::Batch MakeBatch(const ColoredNode& node);
+
+
+		void RenderBatch(const Vulkan::Buffer& batch) const;
+
 
 	private:
 		static Vulkan::PipelineLayout CreateColouredNodePipelineLayout(Vulkan::Device& device);
@@ -46,25 +57,12 @@ namespace Strawberry::UI
 																   uint32_t                subpassIndex);
 
 
-		struct ColouredNodeEntry
-		{
-			unsigned int      drawIndex;
-			Core::Math::Vec2f position;
-			Core::Math::Vec2f extent;
-			Core::Math::Vec4f color;
-		};
-
-
-		std::vector<ColouredNodeEntry> mEntries;
-
-
 		Vulkan::PipelineLayout   mColouredNodePipelineLayout;
 		Vulkan::GraphicsPipeline mColouredNodePipeline;
 
 
-		Vulkan::Buffer mInputBuffer;
-
-		Core::Math::Vec2f mContentScale;
+		Core::Math::Mat4f      mProjectionMatrix;
+		Core::Math::Vec2f      mContentScale;
 		Vulkan::DescriptorPool mDescriptorPool;
 		Vulkan::DescriptorSet  mRenderConstantsDescriptorSet;
 		Vulkan::Buffer         mRenderConstantsBuffer;

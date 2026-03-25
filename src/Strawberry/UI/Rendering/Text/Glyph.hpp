@@ -44,7 +44,7 @@ namespace Strawberry::UI
 		/// This glyph's contours.
 		ContourList mContours;
 
-		Core::Math::Vec2i mAdvance;
-		Core::Math::Vec2i mHorizontalBearing;
+		Core::Math::Vec2f mAdvance;
+		Core::Math::Vec2f mHorizontalBearing;
 	};
 }

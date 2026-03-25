@@ -1,4 +1,6 @@
 #include "Strawberry/UI/Rendering/ColoredNodeRenderer.hpp"
+
+#include "RenderBatcher.hpp"
 #include "Strawberry/Core/Math/Matrix.hpp"
 #include "Strawberry/Core/Math/Transformations.hpp"
 #include "Strawberry/UI/ColoredNode.hpp"
@@ -21,23 +23,23 @@ static const uint8_t FRAGMENT_SHADER_CODE[] =
 
 namespace Strawberry::UI
 {
-	ColoredNodeRenderer::ColoredNodeRenderer(Vulkan::Framebuffer& framebuffer, uint32_t subpassIndex, Core::Math::Vec2f contentScale)
-		: mColouredNodePipelineLayout(CreateColouredNodePipelineLayout(framebuffer.GetDevice()))
-		  , mColouredNodePipeline(CreateColouredNodePipeline(framebuffer, mColouredNodePipelineLayout, subpassIndex))
-		  , mInputBuffer(
-						 Vulkan::Buffer::Builder(framebuffer.GetDevice(), Vulkan::MemoryTypeCriteria::HostVisible())
-						 .WithSize(1024 * 1024)
-						 .WithUsage(VK_BUFFER_USAGE_VERTEX_BUFFER_BIT | VK_BUFFER_USAGE_TRANSFER_DST_BIT)
-						 .Build())
-		  , mContentScale(contentScale)
-		  , mDescriptorPool(framebuffer.GetDevice(), 0, 1, {
+	ColoredNodeRenderer::ColoredNodeRenderer(
+		Vulkan::Framebuffer& framebuffer,
+		uint32_t subpassIndex,
+		const Core::Math::Mat4f& projectionMatrix,
+		Core::Math::Vec2f contentScale)
+			: mColouredNodePipelineLayout(CreateColouredNodePipelineLayout(framebuffer.GetDevice()))
+			, mColouredNodePipeline(CreateColouredNodePipeline(framebuffer, mColouredNodePipelineLayout, subpassIndex))
+			, mProjectionMatrix(projectionMatrix)
+			, mContentScale(contentScale)
+			, mDescriptorPool(framebuffer.GetDevice(), 0, 1, {
 								VkDescriptorPoolSize{ .type = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, .descriptorCount = 1 }
 							})
-		  , mRenderConstantsDescriptorSet(mDescriptorPool, mColouredNodePipelineLayout.GetSetLayout(0))
-		  , mRenderConstantsBuffer(
+			, mRenderConstantsDescriptorSet(mDescriptorPool, mColouredNodePipelineLayout.GetSetLayout(0))
+			, mRenderConstantsBuffer(
 								   Vulkan::Buffer::Builder(framebuffer.GetDevice(),
 														   Vulkan::MemoryTypeCriteria::HostVisible())
-								   .WithSize(sizeof(Core::Math::Mat4f))
+								   .WithData(Core::IO::DynamicByteBuffer::FromObjects(mProjectionMatrix))
 								   .WithUsage(VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT | VK_BUFFER_USAGE_TRANSFER_DST_BIT)
 								   .Build())
 
@@ -46,7 +48,7 @@ namespace Strawberry::UI
 	}
 
 
-	void ColoredNodeRenderer::Submit(uint32_t drawIndex, const ColoredNode& node)
+	RenderBatcher::Batch ColoredNodeRenderer::MakeBatch(const ColoredNode& node)
 	{
 		auto position = node.GetPosition();
 		position[0] *= mContentScale[0];
@@ -56,26 +58,26 @@ namespace Strawberry::UI
 		extent[0] *= mContentScale[0];
 		extent[1] *= mContentScale[1];
 
-		mEntries.emplace_back(
-							  ColouredNodeEntry
-							  {
-								  .drawIndex = drawIndex,
-								  .position = position,
-								  .extent = extent,
-								  .color = node.GetColor(),
-							  });
-	}
 
+		RenderBatcher::Batch batch;
+		batch.pipeline = &mColouredNodePipeline;
+		batch.vertexCount = 6;
+		batch.instanceCount = 1;
 
-	void ColoredNodeRenderer::Render(Vulkan::CommandBuffer& commandBuffer, Core::Math::Mat4f projectionMatrix)
-	{
-		mRenderConstantsBuffer.SetData(Core::IO::DynamicByteBuffer::FromObjects(projectionMatrix));
-		mInputBuffer.SetData({ mEntries.data(), mEntries.size() * sizeof(ColouredNodeEntry) });
-		commandBuffer.BindPipeline(mColouredNodePipeline);
-		commandBuffer.BindVertexBuffer(0, mInputBuffer);
-		commandBuffer.BindDescriptorSet(mColouredNodePipeline, 0, mRenderConstantsDescriptorSet);
-		commandBuffer.Draw(6, static_cast<uint32_t>(mEntries.size()));
-		mEntries.clear();
+		batch.vertexBuffers.emplace(
+			0,
+			Vulkan::Buffer::Builder(mColouredNodePipeline.GetDevice(), Vulkan::MemoryTypeCriteria::HostVisible())
+				.WithData(
+					Core::IO::DynamicByteBuffer::FromObjects(
+						position,
+						extent,
+						node.GetColor()))
+				.WithUsage(VK_BUFFER_USAGE_VERTEX_BUFFER_BIT | VK_BUFFER_USAGE_TRANSFER_DST_BIT)
+				.Build());
+
+		batch.descriptorSets.emplace(0, &mRenderConstantsDescriptorSet);
+
+		return std::move(batch);
 	}
 
 
@@ -83,8 +85,6 @@ namespace Strawberry::UI
 	{
 		return Vulkan::PipelineLayout::Builder(device)
 			   .WithDescriptor(0, VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, VK_SHADER_STAGE_VERTEX_BIT)
-			   .WithDescriptor(1, VK_DESCRIPTOR_TYPE_SAMPLED_IMAGE, VK_SHADER_STAGE_FRAGMENT_BIT,
-							   device.GetPhysicalDevice().GetLimits().maxPerStageDescriptorSampledImages)
 			   .Build();
 	}
 
@@ -98,15 +98,13 @@ namespace Strawberry::UI
 		Vulkan::RenderPass& renderPass = frameBuffer.GetRenderPass();
 		return Vulkan::GraphicsPipeline::Builder(pipelineLayout, renderPass, subpassIndex)
 			   .WithInputAssembly(VK_PRIMITIVE_TOPOLOGY_TRIANGLE_LIST)
-			   .WithInputBinding(0, sizeof(ColouredNodeEntry), VK_VERTEX_INPUT_RATE_INSTANCE)
-			   .WithInputAttribute(0, 0, offsetof(ColouredNodeEntry, drawIndex), VK_FORMAT_R32_UINT)
-			   .WithInputAttribute(1, 0, offsetof(ColouredNodeEntry, position), VK_FORMAT_R32G32_SFLOAT)
-			   .WithInputAttribute(2, 0, offsetof(ColouredNodeEntry, extent), VK_FORMAT_R32G32_SFLOAT)
-			   .WithInputAttribute(3, 0, offsetof(ColouredNodeEntry, color), VK_FORMAT_R32G32B32A32_SFLOAT)
+			   .WithInputBinding(0, 2 * sizeof(Core::Math::Vec2f) + sizeof(Core::Math::Vec4f), VK_VERTEX_INPUT_RATE_INSTANCE)
+			   .WithInputAttribute(0, 0, offsetof(RenderQueueEntry, position), VK_FORMAT_R32G32_SFLOAT)
+			   .WithInputAttribute(1, 0, offsetof(RenderQueueEntry, extent), VK_FORMAT_R32G32_SFLOAT)
+			   .WithInputAttribute(2, 0, offsetof(RenderQueueEntry, color), VK_FORMAT_R32G32B32A32_SFLOAT)
 			   .WithViewport(frameBuffer, false)
-			   .WithRasterization(VK_POLYGON_MODE_FILL, VK_CULL_MODE_BACK_BIT, VK_FRONT_FACE_CLOCKWISE)
+			   .WithRasterization(VK_POLYGON_MODE_FILL, VK_CULL_MODE_NONE, VK_FRONT_FACE_COUNTER_CLOCKWISE)
 			   .WithAlphaColorBlending()
-			   .WithDepthTesting()
 			   .WithShaderStage(VK_SHADER_STAGE_VERTEX_BIT,
 								Vulkan::Shader::Compile(device, VERTEX_SHADER_CODE).Unwrap())
 			   .WithShaderStage(VK_SHADER_STAGE_FRAGMENT_BIT,

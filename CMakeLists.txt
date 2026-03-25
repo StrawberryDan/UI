@@ -47,6 +47,7 @@ if (NOT TARGET StrawberryUI)
 		src/Strawberry/UI/Rendering/Text/GlyphBitmap.hpp
 		src/Strawberry/UI/Rendering/TextNodeRenderer.cpp
 		src/Strawberry/UI/Rendering/TextNodeRenderer.hpp
+		src/Strawberry/UI/Rendering/RenderBatcher.hpp
 		src/Strawberry/UI/TextNode.cpp
 		src/Strawberry/UI/TextNode.hpp
 		src/Strawberry/UI/NodeTree.cpp

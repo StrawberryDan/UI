@@ -11,9 +11,6 @@ namespace Strawberry::UI
 		: public Node
 	{
 	public:
-		void Render(Renderer& renderer) const override;
-
-
 		const std::string& GetFont() const { return mFontName; }
 		void SetFont(const std::string& newFont) { mFontName = newFont; }
 

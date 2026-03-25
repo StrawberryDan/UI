@@ -10,9 +10,4 @@ namespace Strawberry::UI
 		: Node(position, extent)
 		, mColor(color)
 	{}
-
-	void ColoredNode::Render(Renderer& renderer) const
-	{
-		renderer.Submit(*this);
-	}
 }

@@ -1,4 +1,5 @@
 #pragma once
+#include "Strawberry/UI/Rendering/RenderBatcher.hpp"
 #include "Strawberry/Core/Math/Matrix.hpp"
 #include "Strawberry/Vulkan/Queue/CommandBuffer.hpp"
 #include "Strawberry/Vulkan/Pipeline/PipelineLayout.hpp"
@@ -14,15 +15,29 @@ namespace Strawberry::UI
 	class TextNodeRenderer
 	{
 	public:
-		TextNodeRenderer(Vulkan::Framebuffer& framebuffer, unsigned int subpassIndex, Core::Math::Vec2f contentScale);
+		struct RenderQueueEntry
+		{
+			Core::Math::Vec2f position;
+			Core::Math::Vec2f extent;
+			uint32_t glyphAddressPageIndex;
+			Core::Math::Vec2u glyphAddressCoordinate;
+			Core::Math::Vec2u glyphAddressExtent;
 
-		void Submit(const TextNode& node);
+			std::string_view font;
+		};
 
-		void Render(Vulkan::CommandBuffer& commandBuffer, Core::Math::Mat4f projectionMatrix);
+
+		TextNodeRenderer(Vulkan::Framebuffer& framebuffer, unsigned int subpassIndex, const Core::Math::Mat4f projectionMatrix, Core::Math::Vec2f contentScale);
+
+		RenderBatcher::Batch MakeBatch(const TextNode& node);
+
+		void RenderBatch(const Vulkan::Buffer& batch) const;
 
 		void LoadFont(Vulkan::Queue& queue, std::string ID, FontFace&& fontFace);
 
 	private:
+		Core::Math::Vec2u mPageSize = {4096, 4096};
+
 		struct LoadedFont
 		{
 			FontFace              fontFace;
@@ -35,16 +50,6 @@ namespace Strawberry::UI
 
 		Vulkan::PipelineLayout   mPipelineLayout;
 		Vulkan::GraphicsPipeline mGraphicsPipeline;
-
-
-		struct Glyph
-		{
-			std::string       font;
-			Core::Math::Vec2i position;
-			Core::Math::Vec2u size;
-			uint32_t          glyphAddressPageIndex;
-			Core::Math::Vec2u glyphAddressCoordinate;
-		};
 
 
 		std::vector<Glyph>    mGlyphBuffer;
