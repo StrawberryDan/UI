@@ -1,9 +1,9 @@
 #pragma once
-#include "Strawberry/UI/Rendering/RenderBatcher.hpp"
 #include "Strawberry/Core/Math/Matrix.hpp"
 #include "Strawberry/Vulkan/Queue/CommandBuffer.hpp"
 #include "Strawberry/Vulkan/Pipeline/PipelineLayout.hpp"
 #include "Strawberry/Vulkan/Pipeline/GraphicsPipeline.hpp"
+#include "Strawberry/Vulkan/Queue/Batch.hpp"
 #include "Strawberry/Vulkan/Resource/Buffer.hpp"
 #include "Text/FontMap.hpp"
 
@@ -29,7 +29,7 @@ namespace Strawberry::UI
 
 		TextNodeRenderer(Vulkan::Framebuffer& framebuffer, unsigned int subpassIndex, const Core::Math::Mat4f projectionMatrix, Core::Math::Vec2f contentScale);
 
-		RenderBatcher::Batch MakeBatch(const TextNode& node);
+		Vulkan::Batch MakeBatch(const TextNode& node);
 
 		void RenderBatch(const Vulkan::Buffer& batch) const;
 

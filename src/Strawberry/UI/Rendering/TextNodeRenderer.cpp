@@ -1,7 +1,6 @@
 #include "TextNodeRenderer.hpp"
 #include "TextNodeRenderer.hpp"
 
-#include "RenderBatcher.hpp"
 #include "Strawberry/UI/TextNode.hpp"
 #include "Strawberry/Vulkan/Resource/Buffer.hpp"
 #include "Strawberry/Vulkan/Resource/Buffer.hpp"
@@ -70,12 +69,12 @@ namespace Strawberry::UI
 	{}
 
 
-	RenderBatcher::Batch TextNodeRenderer::MakeBatch(const TextNode& node)
+	Vulkan::Batch TextNodeRenderer::MakeBatch(const TextNode& node)
 	{
-		RenderBatcher::Batch batch;
-		batch.pipeline = &mGraphicsPipeline;
-		batch.vertexCount = 6;
-		batch.instanceCount = static_cast<unsigned int>(node.GetString().size());
+		Vulkan::Batch batch(mGraphicsPipeline);
+		batch.WithVertexCount(6);
+		batch.WithInstanceCount(node.GetString().size());
+
 		Core::IO::DynamicByteBuffer inputBufferData;
 
 		LoadedFont& font = mFontMaps.at(node.GetFont());
@@ -97,13 +96,13 @@ namespace Strawberry::UI
 			glyphCursor += glyph.Advance();
 		}
 
-		batch.vertexBuffers.emplace(0,
+		batch.WithVertexBuffer(0,
 			Vulkan::Buffer::Builder(mGraphicsPipeline.GetDevice(), Vulkan::MemoryTypeCriteria::HostVisible())
 			.WithData(inputBufferData)
 			.WithUsage(VK_BUFFER_USAGE_VERTEX_BUFFER_BIT | VK_BUFFER_USAGE_TRANSFER_DST_BIT)
 			.Build());
 
-		batch.descriptorSets.emplace(0, &mFontMaps.at(node.GetFont()).descriptorSet);
+		batch.WithDescriptorSet(0, &mFontMaps.at(node.GetFont()).descriptorSet);
 
 		return std::move(batch);
 	}

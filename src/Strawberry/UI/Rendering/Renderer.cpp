@@ -19,21 +19,21 @@ namespace Strawberry::UI
 
 	void Renderer::Render(const NodeTree& nodeTree, Vulkan::CommandBuffer& commandBuffer)
 	{
-		mRenderBatcher.Clear();
+		mRenderBatcher.NewBatch();
 
 		nodeTree.Visit([&, this] (const auto& x)
 		{
 			if (auto node = dynamic_cast<const ColoredNode*>(x.get()))
 			{
-				mRenderBatcher.Append(mColoredNodeRenderer.MakeBatch(*node));
+				mRenderBatcher.Enqueue(mColoredNodeRenderer.MakeBatch(*node));
 			}
 			else if (auto node = dynamic_cast<const TextNode*>(x.get()))
 			{
-				mRenderBatcher.Append(mTextNodeRenderer.MakeBatch(*node));
+				mRenderBatcher.Enqueue(mTextNodeRenderer.MakeBatch(*node));
 			}
 		});
 
-		mRenderBatcher.Render(commandBuffer);
+		mRenderBatcher.WriteQueue(commandBuffer);
 	}
 
 

@@ -8,8 +8,8 @@
 #include "Strawberry/Vulkan/Pipeline/PipelineLayout.hpp"
 #include "Strawberry/Vulkan/Resource/Buffer.hpp"
 // Strawberry Core
-#include "RenderBatcher.hpp"
 #include "Strawberry/Core/Math/Matrix.hpp"
+#include "Strawberry/Vulkan/Queue/Batch.hpp"
 
 
 namespace Strawberry::UI
@@ -43,7 +43,7 @@ namespace Strawberry::UI
 		ColoredNodeRenderer(Vulkan::Framebuffer& framebuffer, uint32_t subpassIndex, const Core::Math::Mat4f& projectionMatrix, Core::Math::Vec2f contentScale);
 
 
-		RenderBatcher::Batch MakeBatch(const ColoredNode& node);
+		Vulkan::Batch MakeBatch(const ColoredNode& node);
 
 
 		void RenderBatch(const Vulkan::Buffer& batch) const;

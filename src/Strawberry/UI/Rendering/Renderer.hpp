@@ -1,9 +1,9 @@
 #pragma once
 #include "ColoredNodeRenderer.hpp"
-#include "RenderBatcher.hpp"
 #include "TextNodeRenderer.hpp"
 #include "../../../../../Vulkan/src/Strawberry/Vulkan/Memory/Allocator/ChainAllocator.hpp"
 #include "Strawberry/UI/NodeTree.hpp"
+#include "Strawberry/Vulkan/Queue/BatchRenderer.hpp"
 
 
 namespace Strawberry::UI
@@ -36,10 +36,7 @@ namespace Strawberry::UI
 		Core::Math::Mat4f mProjectionMatrix;
 
 
-		using RenderBatcher = RenderBatcher;
-
-
-		RenderBatcher mRenderBatcher;
+		Vulkan::BatchRenderer mRenderBatcher;
 
 
 		ColoredNodeRenderer mColoredNodeRenderer;

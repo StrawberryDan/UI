@@ -1,6 +1,5 @@
 #include "Strawberry/UI/Rendering/ColoredNodeRenderer.hpp"
 
-#include "RenderBatcher.hpp"
 #include "Strawberry/Core/Math/Matrix.hpp"
 #include "Strawberry/Core/Math/Transformations.hpp"
 #include "Strawberry/UI/ColoredNode.hpp"
@@ -48,7 +47,7 @@ namespace Strawberry::UI
 	}
 
 
-	RenderBatcher::Batch ColoredNodeRenderer::MakeBatch(const ColoredNode& node)
+	Vulkan::Batch ColoredNodeRenderer::MakeBatch(const ColoredNode& node)
 	{
 		auto position = node.GetPosition();
 		position[0] *= mContentScale[0];
@@ -59,12 +58,10 @@ namespace Strawberry::UI
 		extent[1] *= mContentScale[1];
 
 
-		RenderBatcher::Batch batch;
-		batch.pipeline = &mColouredNodePipeline;
-		batch.vertexCount = 6;
-		batch.instanceCount = 1;
+		Vulkan::Batch batch(mColouredNodePipeline);
+		batch.WithVertexCount(6);
 
-		batch.vertexBuffers.emplace(
+		batch.WithVertexBuffer(
 			0,
 			Vulkan::Buffer::Builder(mColouredNodePipeline.GetDevice(), Vulkan::MemoryTypeCriteria::HostVisible())
 				.WithData(
@@ -75,7 +72,7 @@ namespace Strawberry::UI
 				.WithUsage(VK_BUFFER_USAGE_VERTEX_BUFFER_BIT | VK_BUFFER_USAGE_TRANSFER_DST_BIT)
 				.Build());
 
-		batch.descriptorSets.emplace(0, &mRenderConstantsDescriptorSet);
+		batch.WithDescriptorSet(0, &mRenderConstantsDescriptorSet);
 
 		return std::move(batch);
 	}
