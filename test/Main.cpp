@@ -24,10 +24,10 @@ int main()
 	Vulkan::Instance instance;
 	auto&            physicalDevice   = instance.GetPhysicalDevices()[0];
 	auto             queueFamilyIndex = physicalDevice.SearchQueueFamilies(VK_QUEUE_GRAPHICS_BIT | VK_QUEUE_TRANSFER_BIT)[0];
-	Vulkan::Device   device(physicalDevice, VkPhysicalDeviceFeatures{},
-	                      {
-		                      Vulkan::QueueCreateInfo{.familyIndex = queueFamilyIndex, .count = 1}
-	                      });
+	Vulkan::Device device = Vulkan::Device::Builder(physicalDevice)
+		.WithQueue(Vulkan::QueueCriteria::Graphics() | Vulkan::QueueCriteria::Transfer())
+		.Build();
+
 	Vulkan::Surface   surface(window, device);
 	Vulkan::Queue&    queue = device.GetQueue(queueFamilyIndex, 0);
 	Vulkan::Swapchain swapchain(queue, surface, window.GetSize(), VK_PRESENT_MODE_FIFO_KHR);
@@ -54,15 +54,19 @@ int main()
 	UI::FontMap fontMap(fontFace, FT_RENDER_MODE_NORMAL);
 
 
-	UI::Renderer renderer(framebuffer, 0);;
+	UI::Renderer    renderer(framebuffer, 0, window.GetContentScale());
+	UI::NodeTree    nodeTree;;
+
 	UI::ColoredNode root;
 	root.SetExtent({400, 600});
 	root.SetColor({1.0f, 1.0f, 0.0f, 1.0f});
+	nodeTree.AddNode(0, root);
 
 	UI::ColoredNode root2;
 	root2.SetPosition({100.0f, 100.0f});
 	root2.SetExtent({100, 100});
 	root2.SetColor({0.0f, 0.0f, 1.0f, 1.0f});
+	nodeTree.AddNode(0, root2);
 
 
 	Vulkan::CommandPool commandPool(queue);
@@ -85,11 +89,9 @@ int main()
 				.ToLayout(VK_IMAGE_LAYOUT_GENERAL)
 										   	});;
 		commandBuffer.BeginRenderPass(renderPass, framebuffer);
-		renderer.Submit(root);
-		renderer.Submit(root2);
-		renderer.Render(commandBuffer);
+		renderer.Render(nodeTree, commandBuffer);
 		commandBuffer.EndRenderPass();
-		commandBuffer.BlitToSwapchain(swapchain, framebuffer);
+		commandBuffer.BlitToSwapchain(swapchain, framebuffer.GetAttachment(0));
 		commandBuffer.End();
 
 		queue.Submit(commandBuffer);
