@@ -1,5 +1,5 @@
 #include "Strawberry/UI/Rendering/ColoredNodeRenderer.hpp"
-
+#include "RenderContext.hpp"
 #include "Strawberry/Core/Math/Matrix.hpp"
 #include "Strawberry/Core/Math/Transformations.hpp"
 #include "Strawberry/UI/ColoredNode.hpp"
@@ -47,9 +47,9 @@ namespace Strawberry::UI
 	}
 
 
-	Vulkan::Batch ColoredNodeRenderer::MakeBatch(const ColoredNode& node)
+	Vulkan::Batch ColoredNodeRenderer::MakeBatch(const ColoredNode& node, const RenderContext& renderContext)
 	{
-		auto position = node.GetPosition();
+		auto position = renderContext.position;
 		position[0] *= mContentScale[0];
 		position[1] *= mContentScale[1];
 

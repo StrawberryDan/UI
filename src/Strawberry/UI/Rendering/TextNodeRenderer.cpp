@@ -1,8 +1,7 @@
 #include "TextNodeRenderer.hpp"
-#include "TextNodeRenderer.hpp"
+#include "RenderContext.hpp"
 
 #include "Strawberry/UI/TextNode.hpp"
-#include "Strawberry/Vulkan/Resource/Buffer.hpp"
 #include "Strawberry/Vulkan/Resource/Buffer.hpp"
 
 
@@ -69,7 +68,7 @@ namespace Strawberry::UI
 	{}
 
 
-	Vulkan::Batch TextNodeRenderer::MakeBatch(const TextNode& node)
+	Vulkan::Batch TextNodeRenderer::MakeBatch(const TextNode& node, const RenderContext& renderContext)
 	{
 		Vulkan::Batch batch(mGraphicsPipeline);
 		batch.WithVertexCount(6);
@@ -85,7 +84,7 @@ namespace Strawberry::UI
 			auto                  glyph        = font.fontFace.LoadGlyphOfCodepoint(codepoint).Unwrap();
 			FontMap::GlyphAddress glyphAddress = font.cpuFontMap.GetGlyphAddress(codepoint).Unwrap();
 
-			auto pos = node.GetPosition() + glyphCursor + glyph.Bearing();
+			auto pos = renderContext.position + glyphCursor + glyph.Bearing();
 
 			inputBufferData.Push(mContentScale.Piecewise(std::multiplies{}, pos));
 			inputBufferData.Push(glyphAddress.extent.Piecewise(std::multiplies{}, mContentScale));

@@ -10,6 +10,7 @@
 
 namespace Strawberry::UI
 {
+	struct RenderContext;
 	class TextNode;
 
 	class TextNodeRenderer
@@ -29,7 +30,7 @@ namespace Strawberry::UI
 
 		TextNodeRenderer(Vulkan::Framebuffer& framebuffer, unsigned int subpassIndex, const Core::Math::Mat4f projectionMatrix, Core::Math::Vec2f contentScale);
 
-		Vulkan::Batch MakeBatch(const TextNode& node);
+		Vulkan::Batch MakeBatch(const TextNode& node, const RenderContext& renderContext);
 
 		void RenderBatch(const Vulkan::Buffer& batch) const;
 

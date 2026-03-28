@@ -39,7 +39,7 @@ int main()
 			VK_ATTACHMENT_LOAD_OP_CLEAR,
 			VK_ATTACHMENT_STORE_OP_STORE,
 			VK_IMAGE_LAYOUT_GENERAL,
-			VK_IMAGE_LAYOUT_GENERAL)
+			VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL)
 		.WithSubpass(
 			Vulkan::SubpassDescription()
 				.WithColorAttachment(0, VK_IMAGE_LAYOUT_GENERAL))
@@ -85,9 +85,9 @@ int main()
 			{
 				Vulkan::ImageMemoryBarrier(
 					framebuffer.GetAttachment(0),
-					VK_IMAGE_ASPECT_COLOR_BIT).FromLayout(VK_IMAGE_LAYOUT_UNDEFINED)
-				.ToLayout(VK_IMAGE_LAYOUT_GENERAL)
-										   	});;
+					VK_IMAGE_ASPECT_COLOR_BIT)
+					.FromLayout(VK_IMAGE_LAYOUT_UNDEFINED)
+					.ToLayout(VK_IMAGE_LAYOUT_GENERAL)});;
 		commandBuffer.BeginRenderPass(renderPass, framebuffer);
 		renderer.Render(nodeTree, commandBuffer);
 		commandBuffer.EndRenderPass();

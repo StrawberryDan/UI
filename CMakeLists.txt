@@ -32,8 +32,10 @@ if (NOT TARGET StrawberryUI)
 		src/Strawberry/UI/ColoredNode.cpp
 		src/Strawberry/UI/Node.cpp
 		src/Strawberry/UI/Node.cpp
+		src/Strawberry/UI/NodeTree.cpp
 		src/Strawberry/UI/Rendering/ColoredNodeRenderer.cpp
 		src/Strawberry/UI/Rendering/ColoredNodeRenderer.hpp
+		src/Strawberry/UI/Rendering/RenderContext.hpp
 		src/Strawberry/UI/Rendering/Renderer.cpp
 		src/Strawberry/UI/Rendering/Renderer.hpp
 		src/Strawberry/UI/Rendering/Text/FontFace.cpp
@@ -49,8 +51,7 @@ if (NOT TARGET StrawberryUI)
 		src/Strawberry/UI/Rendering/TextNodeRenderer.hpp
 		src/Strawberry/UI/TextNode.cpp
 		src/Strawberry/UI/TextNode.hpp
-		src/Strawberry/UI/NodeTree.cpp
-        src/Strawberry/UI/NodeTree.hpp
+		src/Strawberry/UI/NodeTree.hpp
 	)
 	target_link_libraries(StrawberryUI PUBLIC StrawberryCore Strawberry2D StrawberryAudio freetype)
 	target_include_directories(StrawberryUI PUBLIC src)

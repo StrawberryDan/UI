@@ -14,6 +14,7 @@
 
 namespace Strawberry::UI
 {
+	struct RenderContext;
 	class FontMap;
 	class TextNode;
 	class ColoredNode;
@@ -43,7 +44,7 @@ namespace Strawberry::UI
 		ColoredNodeRenderer(Vulkan::Framebuffer& framebuffer, uint32_t subpassIndex, const Core::Math::Mat4f& projectionMatrix, Core::Math::Vec2f contentScale);
 
 
-		Vulkan::Batch MakeBatch(const ColoredNode& node);
+		Vulkan::Batch MakeBatch(const ColoredNode& node, const RenderContext& renderContext);
 
 
 		void RenderBatch(const Vulkan::Buffer& batch) const;
