@@ -8,11 +8,12 @@
 // Standard Library
 #include <ranges>
 
+#include "Strawberry/Window/Window.hpp"
 
 
 namespace Strawberry::UI
 {
-	Core::Result<FontFace, Core::IO::Error> FontFace::FromFile(const std::filesystem::path& path)
+	Core::Result<FontFace, Core::IO::Error> FontFace::FromFile(const std::filesystem::path& path, unsigned int size)
 	{	ZoneScoped;
 
 		if (!std::filesystem::exists(path)) return Core::IO::Error::NotFound;
@@ -26,6 +27,8 @@ namespace Strawberry::UI
 			default:
 				Core::Unreachable();
 		}
+
+		face.SetSizePixels(size);
 
 		return face;
 	}
@@ -61,16 +64,22 @@ namespace Strawberry::UI
 	}
 
 
-	void FontFace::SetSizePoints(unsigned int points, Core::Math::Vec2f dpi)
+	void FontFace::SetSizePoints(unsigned int points, Core::Math::Vec2f dpi, Core::Math::Vec2f contentScale)
 	{
 		auto dpi2 = dpi.Map(&std::roundf).AsType<unsigned>();
-		SetSizePoints(points, dpi2[0], dpi2[1]);
+		SetSizePoints(points, dpi2[0], dpi2[1], contentScale);
 	}
 
 
-	void FontFace::SetSizePoints(unsigned int points, unsigned dpiX, unsigned dpiY)
+	void FontFace::SetSizePoints(unsigned int points, const Window::Window& window)
 	{
-		FT_Set_Char_Size(mFace, 0, points << 6, dpiX, dpiY);
+		SetSizePoints(points, window.GetDPI(), window.GetContentScale());
+	}
+
+
+	void FontFace::SetSizePoints(unsigned int points, int dpiX, int dpiY, Core::Math::Vec2f contentScale)
+	{
+		FT_Set_Char_Size(mFace, 0, ((unsigned int) contentScale[1] * points) << 6, dpiX, dpiY);
 	}
 
 

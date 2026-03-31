@@ -7,6 +7,8 @@
 #include "Glyph.hpp"
 #include "Freetype.hpp"
 #include "Strawberry/UI/Rendering/Text/GlyphBitmap.hpp"
+// Strawberry Window
+#include "Strawberry/Window/Window.hpp"
 // Strawberry Core
 #include "Strawberry/Core/Types/Result.hpp"
 #include "Strawberry/Core/Util/Image.hpp"
@@ -22,7 +24,7 @@ namespace Strawberry::UI
 	{
 	public:
 		/// Tries to load a font face from a file.
-		static Core::Result<FontFace, Core::IO::Error> FromFile(const std::filesystem::path& path);
+		static Core::Result<FontFace, Core::IO::Error> FromFile(const std::filesystem::path& path, unsigned int size = 32);
 
 
 		FontFace(const FontFace&)            = delete;
@@ -35,8 +37,9 @@ namespace Strawberry::UI
 		/// Sets the nominal height of the font in pixels.
 		void SetSizePixels(unsigned int pixels);
 
-		void SetSizePoints(unsigned int points, Core::Math::Vec2f dpi);
-		void SetSizePoints(unsigned int points, unsigned dpiX, unsigned dpiY);
+		void SetSizePoints(unsigned int points, const Window::Window& window);
+		void SetSizePoints(unsigned int points, Core::Math::Vec2f dpi, Core::Math::Vec2f contentScale);
+		void SetSizePoints(unsigned int points, int dpiX, int dpiY, Core::Math::Vec2f contentScale);
 
 
 		/// Loads the glyph at the given index
