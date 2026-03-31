@@ -1,5 +1,6 @@
 #include "SpriteNodeRenderer.hpp"
 
+#include "RenderContext.hpp"
 #include "Strawberry/Core/Math/Matrix.hpp"
 #include "Strawberry/UI/SpriteNode.hpp"
 #include "Strawberry/Vulkan/Resource/Buffer.hpp"
@@ -75,7 +76,7 @@ namespace Strawberry::UI
 		}
 
 		Core::IO::DynamicByteBuffer inputBufferData;
-		inputBufferData.Push(spriteNode.GetPosition().Piecewise(std::multiplies{}, mContentScale));
+		inputBufferData.Push(renderContext.position.Piecewise(std::multiplies{}, mContentScale));
 		inputBufferData.Push(spriteNode.GetScale() * spriteNode.GetExtent().Piecewise(std::multiplies{}, mContentScale));
 		inputBufferData.Push(spriteNode.GetTexture().Region().Min().AsType<float>().Piecewise(std::divides{}, spriteNode.GetTexture().Image()->GetSize().AsSize<2>()));
 		inputBufferData.Push(spriteNode.GetTexture().Region().Max().AsType<float>().Piecewise(std::divides{}, spriteNode.GetTexture().Image()->GetSize().AsSize<2>()));
