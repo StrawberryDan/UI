@@ -63,7 +63,7 @@ namespace Strawberry::UI
 		if (!mTextureDescriptors.contains(spriteNode.GetTexture().Image()->GetHandle())) [[unlikely]]
 		{
 			auto imageView = Vulkan::ImageView::Builder(*spriteNode.GetTexture().Image(), VK_IMAGE_ASPECT_COLOR_BIT)
-				.WithFormat(VK_FORMAT_R8G8B8A8_UNORM)
+				.WithFormat(VK_FORMAT_R8G8B8A8_SRGB)
 				.WithType(VK_IMAGE_VIEW_TYPE_2D_ARRAY)
 				.Build();
 			mImageViews.emplace(spriteNode.GetTexture().Image()->GetHandle(), std::move(imageView));
