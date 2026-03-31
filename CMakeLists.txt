@@ -51,19 +51,26 @@ if (NOT TARGET StrawberryUI)
 		src/Strawberry/UI/Rendering/TextNodeRenderer.hpp
 		src/Strawberry/UI/TextNode.cpp
 		src/Strawberry/UI/TextNode.hpp
+		src/Strawberry/UI/SpriteNode.cpp
+		src/Strawberry/UI/SpriteNode.hpp
 		src/Strawberry/UI/NodeTree.hpp
+		src/Strawberry/UI/Rendering/SpriteNodeRenderer.cpp
+		src/Strawberry/UI/Rendering/SpriteNodeRenderer.hpp
 	)
 	target_link_libraries(StrawberryUI PUBLIC StrawberryCore Strawberry2D StrawberryAudio freetype)
 	target_include_directories(StrawberryUI PUBLIC src)
 
 	add_target_shaders(TARGET StrawberryUI
 		SHADERS
-		${CMAKE_CURRENT_SOURCE_DIR}/src/Strawberry/UI/Rendering/ColouredNodeRenderer.vert
-		${CMAKE_CURRENT_SOURCE_DIR}/src/Strawberry/UI/Rendering/ColoredNodeRenderer.frag
-        ${CMAKE_CURRENT_SOURCE_DIR}/src/Strawberry/UI/Rendering/TextNodeRenderer.vert
-		${CMAKE_CURRENT_SOURCE_DIR}/src/Strawberry/UI/Rendering/TextNodeRenderer.frag
-        LIBRARIES
-        ${CMAKE_CURRENT_SOURCE_DIR}/src/Strawberry/UI/Rendering/TextNodeRenderer.glsl)
+			${CMAKE_CURRENT_SOURCE_DIR}/src/Strawberry/UI/Rendering/ColouredNodeRenderer.vert
+			${CMAKE_CURRENT_SOURCE_DIR}/src/Strawberry/UI/Rendering/ColoredNodeRenderer.frag
+			${CMAKE_CURRENT_SOURCE_DIR}/src/Strawberry/UI/Rendering/TextNodeRenderer.vert
+			${CMAKE_CURRENT_SOURCE_DIR}/src/Strawberry/UI/Rendering/TextNodeRenderer.frag
+			${CMAKE_CURRENT_SOURCE_DIR}/src/Strawberry/UI/Rendering/SpriteNodeRenderer.vert
+			${CMAKE_CURRENT_SOURCE_DIR}/src/Strawberry/UI/Rendering/SpriteNodeRenderer.frag
+		LIBRARIES
+			${CMAKE_CURRENT_SOURCE_DIR}/src/Strawberry/UI/Rendering/SpriteNodeRenderer.glsl
+			${CMAKE_CURRENT_SOURCE_DIR}/src/Strawberry/UI/Rendering/TextNodeRenderer.glsl)
 
 
 	new_strawberry_executable(NAME StrawberryUI_Test SOURCE

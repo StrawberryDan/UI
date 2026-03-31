@@ -72,7 +72,7 @@ namespace Strawberry::UI
 	{
 		Vulkan::Batch batch(mGraphicsPipeline);
 		batch.WithVertexCount(6);
-		batch.WithInstanceCount(node.GetString().size());
+		batch.WithInstanceCount((unsigned int) node.GetString().size());
 
 		Core::IO::DynamicByteBuffer inputBufferData;
 

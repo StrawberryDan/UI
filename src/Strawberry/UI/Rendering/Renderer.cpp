@@ -7,15 +7,19 @@
 #include "Strawberry/UI/TextNode.hpp"
 #include "Strawberry/UI/Node.hpp"
 #include "Strawberry/UI/NodeTree.hpp"
+#include "Strawberry/UI/SpriteNode.hpp"
 
 
 namespace Strawberry::UI
 {
-	Renderer::Renderer(Vulkan::Framebuffer& framebuffer, uint32_t subpassIndex, Core::Math::Vec2f contentScale)
+	Renderer::Renderer(Vulkan::Queue& queue, Vulkan::Framebuffer& framebuffer, uint32_t subpassIndex, Core::Math::Vec2f contentScale)
 		: mProjectionMatrix(CreateProjectionMatrix(framebuffer))
 		, mContentScale(contentScale)
 		, mColoredNodeRenderer(framebuffer, subpassIndex, mProjectionMatrix, mContentScale)
-		, mTextNodeRenderer(framebuffer, subpassIndex, mProjectionMatrix, mContentScale) {}
+		, mTextNodeRenderer(framebuffer, subpassIndex, mProjectionMatrix, mContentScale)
+		, mSpriteNodeRenderer(framebuffer, subpassIndex, mProjectionMatrix, mContentScale)
+		, mTextureAtlas(queue, {4096, 4096}, 1)
+	{}
 
 
 	void Renderer::Render(const NodeTree& nodeTree, Vulkan::CommandBuffer& commandBuffer)
@@ -28,7 +32,7 @@ namespace Strawberry::UI
 		{
 			auto parent = visitContext.GetParent();
 			const auto parentContext = parent.HasValue() ? renderContextMap.at(parent.Value()) : RenderContext{};
-			auto myContext = parentContext.Apply(*visitContext.Value().get());
+			RenderContext myContext = parentContext.Apply(*visitContext.Value().get());
 			renderContextMap.emplace(visitContext.CurrentNode(), myContext);
 
 			if (auto coloredNode = dynamic_cast<const ColoredNode*>(visitContext.Value().get()))
@@ -39,9 +43,19 @@ namespace Strawberry::UI
 			{
 				mRenderBatcher.Enqueue(mTextNodeRenderer.MakeBatch(*textNode, myContext));
 			}
+			else if (auto spriteNode = dynamic_cast<const SpriteNode*>(visitContext.Value().get()))
+			{
+				mRenderBatcher.Enqueue(mSpriteNodeRenderer.MakeBatch(*spriteNode, myContext));
+			}
 		});
 
 		mRenderBatcher.WriteQueue(commandBuffer);
+	}
+
+
+	TwoD::TextureReference Renderer::GetTexture(const TwoD::TextureAtlas::Handle& handle)
+	{
+		return mTextureAtlas.GetTextureReference(handle);
 	}
 
 
