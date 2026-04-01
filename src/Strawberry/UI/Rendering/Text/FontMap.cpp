@@ -102,11 +102,14 @@ namespace Strawberry::UI
 		Vulkan::CommandPool   commandPool(queue);
 		Vulkan::CommandBuffer commandBuffer(commandPool);
 
-		Vulkan::Buffer stagingBuffer = Vulkan::Buffer::Builder(queue.GetDevice(),
-															   Vulkan::MemoryTypeCriteria::HostVisible())
-									   .WithSize(mPageSize.Fold(std::multiplies()))
-									   .WithUsage(VK_BUFFER_USAGE_TRANSFER_DST_BIT | VK_BUFFER_USAGE_TRANSFER_SRC_BIT)
-									   .Build();
+		std::vector<Vulkan::Buffer> pageBuffers;
+		for (unsigned int i = 0; i < mPages.size(); i++)
+		{
+			pageBuffers.emplace_back(Vulkan::Buffer::Builder(queue.GetDevice(), Vulkan::MemoryTypeCriteria::HostVisible())
+				.WithData(mPages[i].mAtlas.AsBytes())
+				.WithUsage(VK_BUFFER_USAGE_TRANSFER_SRC_BIT | VK_BUFFER_USAGE_TRANSFER_DST_BIT)
+				.Build());
+		}
 
 		Vulkan::Image images = Vulkan::Image::Builder(queue.GetDevice(), Vulkan::MemoryTypeCriteria::DeviceLocal())
 							   .WithExtent(mPageSize)
@@ -115,12 +118,9 @@ namespace Strawberry::UI
 							   .WithArrayLayers(mPages.size())
 							   .Build();
 
+		commandBuffer.Begin(true);
 		for (int i = 0; i < mPages.size(); i++)
 		{
-			stagingBuffer.SetData(Core::IO::DynamicByteBuffer(mPages[i].mAtlas.Data(),
-															  mPages[i].mAtlas.Size().Fold(std::multiplies())));
-
-			commandBuffer.Begin(true);
 			commandBuffer.PipelineBarrier(
 										  VK_PIPELINE_STAGE_ALL_COMMANDS_BIT,
 										  VK_PIPELINE_STAGE_ALL_COMMANDS_BIT,
@@ -130,7 +130,7 @@ namespace Strawberry::UI
 											  .FromLayout(VK_IMAGE_LAYOUT_UNDEFINED)
 											  .ToLayout(VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL)
 										  });
-			commandBuffer.CopyBufferToImage(stagingBuffer, images, i);
+			commandBuffer.CopyBufferToImage(pageBuffers[i], images, i);
 			commandBuffer.PipelineBarrier(
 										  VK_PIPELINE_STAGE_ALL_COMMANDS_BIT,
 										  VK_PIPELINE_STAGE_ALL_COMMANDS_BIT,
@@ -140,11 +140,10 @@ namespace Strawberry::UI
 											  .FromLayout(VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL)
 											  .ToLayout(VK_IMAGE_LAYOUT_GENERAL)
 										  });
-			commandBuffer.End();
-
-
-			queue.Submit(commandBuffer);
 		}
+		commandBuffer.End();
+		queue.Submit(commandBuffer);
+		commandBuffer.Wait();
 
 		Vulkan::ImageView view = Vulkan::ImageView::Builder(images, VK_IMAGE_ASPECT_COLOR_BIT)
 								 .WithType(VK_IMAGE_VIEW_TYPE_2D_ARRAY)
