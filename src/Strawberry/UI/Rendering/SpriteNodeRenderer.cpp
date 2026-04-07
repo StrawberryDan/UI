@@ -42,7 +42,7 @@ namespace Strawberry::UI
 				.WithInputAttribute(1, 0, sizeof(Core::Math::Vec2f), VK_FORMAT_R32G32_SFLOAT)
 				.WithInputAttribute(2, 0, sizeof(Core::Math::Vec2f), VK_FORMAT_R32G32_SFLOAT)
 				.WithInputAttribute(3, 0, sizeof(Core::Math::Vec2f), VK_FORMAT_R32G32_SFLOAT)
-				.WithInputAttribute(4, 0, sizeof(Core::Math::Vec2f), VK_FORMAT_R32_UINT)
+				.WithInputAttribute(4, 0, sizeof(uint32_t), VK_FORMAT_R32_UINT)
 				.WithViewport(framebuffer)
 				.WithAlphaColorBlending()
 				.WithRasterization(VK_POLYGON_MODE_FILL, VK_CULL_MODE_NONE, VK_FRONT_FACE_COUNTER_CLOCKWISE)
