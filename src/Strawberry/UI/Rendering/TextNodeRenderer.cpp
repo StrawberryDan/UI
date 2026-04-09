@@ -56,7 +56,7 @@ namespace Strawberry::UI
 							.WithSize(sizeof(Glyph) * DEFAULT_GLYPH_BUFFER_SIZE)
 							.WithUsage(VK_BUFFER_USAGE_TRANSFER_DST_BIT | VK_BUFFER_USAGE_STORAGE_BUFFER_BIT)
 							.Build())
-		  , mGlyphBufferDescriptorSet(framebuffer.GetDevice(), mPipelineLayout.GetSetLayout(0))
+		  , mGlyphBufferDescriptorSet(Vulkan::DescriptorSet::Allocate(framebuffer.GetDevice(), mPipelineLayout.GetSetLayout(0)).Unwrap())
 		  , mContentScale(contentScale)
 		  , mConstantsBuffer(
 				Vulkan::Buffer::Builder(
@@ -161,7 +161,7 @@ namespace Strawberry::UI
 															   .gpuFontMap = (std::move(gpuFontMap)),
 															   .descriptorSet = queue.GetDevice()
 																					 .AllocateDescriptorSet(mPipelineLayout
-																											.GetSetLayout(0))
+																											.GetSetLayout(0)).Unwrap()
 														   }).first->second;
 
 		insertedFontmap.descriptorSet.SetUniformBuffer(0, 0, mConstantsBuffer);

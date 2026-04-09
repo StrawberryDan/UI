@@ -54,6 +54,6 @@ namespace Strawberry::UI
 		SpriteNodeRenderer  mSpriteNodeRenderer;
 
 
-		TwoD::TextureAtlas  mTextureAtlas;
+		TwoD::DiffuseTextureAtlas mTextureAtlas;
 	};
 }

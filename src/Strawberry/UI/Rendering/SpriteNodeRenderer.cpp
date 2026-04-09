@@ -47,7 +47,7 @@ namespace Strawberry::UI
 				.WithAlphaColorBlending()
 				.WithRasterization(VK_POLYGON_MODE_FILL, VK_CULL_MODE_NONE, VK_FRONT_FACE_COUNTER_CLOCKWISE)
 				.Build())
-		, mDrawConstantsDescriptor(mPipeline.CreateDescriptorSet(0))
+		, mDrawConstantsDescriptor(mPipeline.CreateDescriptorSet(0).Unwrap())
 		, mDrawConstantsBuffer(Vulkan::Buffer::Builder(mPipeline.GetDevice(), Vulkan::MemoryTypeCriteria::HostVisible())
 			.WithSize(sizeof(Core::Math::Mat4f))
 			.WithUsage(VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT)
@@ -70,7 +70,7 @@ namespace Strawberry::UI
 			mImageViews.emplace(spriteNode.GetTexture().Image()->GetHandle(), std::move(imageView));
 
 
-			Vulkan::DescriptorSet descriptorSet = mPipeline.CreateDescriptorSet(1);
+			Vulkan::DescriptorSet descriptorSet = mPipeline.CreateDescriptorSet(1).Unwrap();
 			descriptorSet.SetCombinedImageSampler(0, 0, mImageSampler, mImageViews.at(spriteNode.GetTexture().Image()->GetHandle()), VK_IMAGE_LAYOUT_GENERAL);
 			mTextureDescriptors.emplace(spriteNode.GetTexture().Image()->GetHandle(), std::move(descriptorSet));
 		}

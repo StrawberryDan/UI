@@ -34,7 +34,7 @@ namespace Strawberry::UI
 			, mDescriptorPool(framebuffer.GetDevice(), 0, 1, {
 								VkDescriptorPoolSize{ .type = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, .descriptorCount = 1 }
 							})
-			, mRenderConstantsDescriptorSet(mDescriptorPool, mColouredNodePipelineLayout.GetSetLayout(0))
+			, mRenderConstantsDescriptorSet(Vulkan::DescriptorSet::Allocate(mDescriptorPool, mColouredNodePipelineLayout.GetSetLayout(0)).Unwrap())
 			, mRenderConstantsBuffer(
 								   Vulkan::Buffer::Builder(framebuffer.GetDevice(),
 														   Vulkan::MemoryTypeCriteria::HostVisible())
